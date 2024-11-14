@@ -1,0 +1,12 @@
+Instructions to start api backend:
+
+for windows:
+
+setup venv:
+python.exe -m venv AI_Radiologist_venv
+.\AI_Radiologist_venv\Scripts\activate
+
+
+pip install -r requirements.txt
+
+python.exe -m pip install --upgrade pip
