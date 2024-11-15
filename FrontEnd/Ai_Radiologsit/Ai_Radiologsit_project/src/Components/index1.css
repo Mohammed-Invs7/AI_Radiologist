@@ -1,0 +1,56 @@
+.index1-p{
+margin-bottom: 0px;
+align-items: center;
+text-align: center;
+color: rgba(37, 34, 34, 0.747);
+
+}
+
+.box-x-ray{
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(230, 220, 220, 0.822);
+    margin: 30px 16%;
+    width: 70%;
+    height: 300px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 8px 8px 8px 5px rgba(0, 0, 0, 0.466);
+    border-radius: 20px;
+}
+
+.bn-x-ray {
+    background-color: white !important;
+    border-radius: 7px;
+    box-sizing: border-box;
+    color: #00a84f;
+    margin-top: 25px;
+    height: 36px;
+    font-size: 15px;
+    padding: 0px;
+    position: relative;
+    text-decoration: none;
+    width: 246px;
+    z-index: 2;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.438);
+}
+
+.bn-x-ray:hover {
+    background-image: linear-gradient(to right, #006175 0%, #00a950 100%);}
+
+.bn-x-ray .bn-x-ray-span {
+    background-image: linear-gradient(to right, #006175 0%, #00a950 100%);
+    align-items: center;
+    background: #ffffff;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    transition: background 0.5s ease;
+    width: 100%;
+}
+
+.bn-x-ray:hover .bn-x-ray-span {
+    background: transparent;
+}
