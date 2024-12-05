@@ -5,13 +5,12 @@ import Image3 from '../assets/Vector 2.png'
 import Image4 from '../assets/Vector 3.png'
 import Image5 from '../assets/healthicons_xray-outline.png'
 
-export default function Index3( ) {
+const HowUseIt =( )=> {
     return (
     <div>
         <div className='m-5 text-center ' >
                 <h4 style={{ fontWeight: "700" ,fontSize:"64px" ,color: '#2C9E84'}}>How Use it</h4>
-                <p style={{color: 'rgba(0, 0, 0, 0.31)'}}>Get expertly crafted reports with layman-friendly summaries<br></br>
-                        and personalized follow-up explanations.</p>
+                <p style={{color: 'rgba(0, 0, 0, 0.31)'}}>Get accurate reports with simplified summaries tailored to your needs.</p>
         </div>
         <div className="justify-content-center d-flex align-items-center">
             <Card className="justify-content-center d-flex align-items-center flex-column
@@ -68,3 +67,4 @@ export default function Index3( ) {
     </div>
     )
 }
+export default HowUseIt ;

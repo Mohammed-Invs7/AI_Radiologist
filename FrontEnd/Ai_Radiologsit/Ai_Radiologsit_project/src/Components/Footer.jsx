@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Footer({imge}) {
+const Footer = ({imge}) =>  {
   return (
       <div>
           
@@ -12,3 +12,4 @@ export default function Footer({imge}) {
     </div>
   )
 }
+export default Footer;

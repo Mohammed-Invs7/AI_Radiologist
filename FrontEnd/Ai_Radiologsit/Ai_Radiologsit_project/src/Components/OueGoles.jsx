@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Index2( {imeg , text}) {
+const OurGoles=( {imeg , text})=> {
     return (
     
     <div style={{backgroundColor:"#00a84f;"}}>
@@ -20,3 +20,4 @@ export default function Index2( {imeg , text}) {
     </div>
     )
 }
+export default OurGoles;

@@ -1,27 +1,32 @@
 import React from 'react'
+import { useNavigate} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container , Button } from 'react-bootstrap';
 import './index1.css'
 import x_ray_logo from '../assets/x-ray.png'
 
-export default function Index1() {
+const Index1 = () => {
+    
+    const navigate = useNavigate();
+
+  const goToUpload = () => {
+    navigate('/Upload'); // التنقل إلى صفحة تسجيل الدخول
+  };
     return (
         <div>
         <Container style={{ textAlign:"center" ,alignItems:"center", justifyContent: "center", marginTop: "50px " }}>
             <div style={{ margin: " 0px 25%" }}>
                 <div className='index1-h'>
-                <h2>Empower Your Medical Choices </h2>               
-                <h2 style={{ textAlign: 'center', marginBottom: "50px" }}>with Instant AI X-ray Insights</h2>
+                <h2>Use AI to instantly analyze <br/> X-rays  </h2>               
+                <h2 style={{ textAlign: 'center', marginBottom: "50px" }}>and make quick medical decisions from home</h2>
                 </div>
                 <div>
-                    <p className='index1-p'>Save time and money with AI to make quick radiology dicisons at</p>
-                    <p className='index1-p'>home without for the doctor in the hospitsl</p>
-                </div>
+                    <p className='index1-p'> saving you time and costs without the need to wait in the hospital</p>                </div>
             </div>
             <div className='box-x-ray'>
                 <img style={{height:"100px"}} src={x_ray_logo} alt="logo" />
                 <p>Drog and drop your imge here</p>
-                <Button className='bn-x-ray'>
+                <Button onClick={goToUpload} className='bn-x-ray'>
                     <span className='bn-x-ray-span'>Interpret Your x-ray</span>
                     </Button>{' '}
 
@@ -31,3 +36,4 @@ export default function Index1() {
     </div>
     )
 }
+export default Index1;
