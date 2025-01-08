@@ -1,0 +1,42 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">
+        <img src="{% static '/admin/test_logo_air-removebg.png' %}" alt="Logo" style="height: 40px; vertical-align: middle;">
+        Ai Radiologist Administration
+    </a>
+</h1>
+{% endblock %}
+
+
+{% block extrastyle %}
+<style>
+
+   {# #025559#}
+   {# #017276#}
+   {# #7ee1dd#}
+   {# #fff #f5f5f5#}
+   {# #000#}
+   {##017276#}
+    #header {
+        background-color: #7ee1dd; /* لون الهيدر */
+    }
+    #site-name {
+        color: #7ee1de !important;
+    }
+    #branding h1 a:link, #branding h1 a:visited {
+    color: #459aff;
+}
+    {#body {#}
+    {#    background-color: #f7f7f9; /* لون الخلفية */#}
+
+    #user-tools {
+        color: #1f1f1f !important;
+    }
+    #header h1 {
+        color: #f5f5f5; /* لون النص في الهيدر */
+    }
+</style>
+{% endblock %}
