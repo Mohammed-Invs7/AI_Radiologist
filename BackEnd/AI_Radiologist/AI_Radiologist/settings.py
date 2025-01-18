@@ -74,8 +74,12 @@ WSGI_APPLICATION = 'AI_Radiologist.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ai_radiologist',  # Replace with your database name
+        'USER': 'Dev',   # Replace with your MySQL username
+        'PASSWORD': 'Dev1234',  # Replace with your MySQL password
+        'HOST': 'localhost',       # Replace with your database host (default is localhost)
+        'PORT': '3306',            # Replace with your database port (default is 3306)
     }
 }
 
