@@ -1,3 +1,6 @@
 curl -X POST -H "Content-Type: application/json" -d "{\"email\": \"test@gmail.com\", \"password\": \"123\"}" http://localhost:8000/api/token/
 curl -X POST -H "Content-Type: application/json" -d "{"email": "test@gmail.com", "password": "boatymcboatface"}" http://localhost:8000/api/token/
 curl -X POST -H "Content-Type: application/json" -d "{\"email\": \"test@gmail.com\", \"password\": \"123\"}" http://localhost:8000/api/token/
+
+
+curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM3Mzg0OTQ0LCJpYXQiOjE3MzczODQ2NDQsImp0aSI6IjNmMjZjZmJlNDIyYzQxOGFiNjNkOTU5OGQ4NWVjNDc1IiwidXNlcl9pZCI6MX0.bWIFAAMgz5nEQ8ImxJWknmm70FRQzCLUlJadoyGhu88" http://localhost:8000/

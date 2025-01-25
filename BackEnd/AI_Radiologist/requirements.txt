@@ -5,3 +5,4 @@ requests
 django-cors-headers
 mysqlclient
 djangorestframework-simplejwt
+dj-rest-auth[with_social]==6.0.0

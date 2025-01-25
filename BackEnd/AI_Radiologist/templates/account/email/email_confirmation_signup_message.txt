@@ -1,0 +1,10 @@
+Hello {{ user.username }},
+
+Welcome to the AI Radiologist website! We're excited to have you join us. Please confirm your email address by clicking the link below:
+
+[Confirm Your Email: {{ activate_url }}]
+
+If you didn’t sign up for this account, you can safely ignore this email.
+
+Best regards,
+The AI Radiologist Team

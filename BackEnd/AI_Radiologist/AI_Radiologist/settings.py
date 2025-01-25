@@ -25,31 +25,90 @@ SECRET_KEY = 'django-insecure-)h+f-51vdyw(%+ebnlnnsfzl7j92hi!s47*%7n@$me84)8cabm
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '::1']
-
+# Auth details
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+
     ],
+}
+
+from datetime import timedelta
+
+# djangorestframework-simplejwt
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+}
+
+# dj-rest-auth
+REST_AUTH = {
+    "USE_JWT": True,
+    "JWT_AUTH_COOKIE": "_auth",  # Name of access token cookie
+    "JWT_AUTH_REFRESH_COOKIE": "_refresh", # Name of refresh token cookie
+    "JWT_AUTH_HTTPONLY": False,  # Makes sure refresh token is sent
+
+    'LOGIN_SERIALIZER': 'users.serializers.CustomLoginSerializer',
+    'REGISTER_SERIALIZER': 'users.serializers.CustomRegisterSerializer',
+    'USER_DETAILS_SERIALIZER': 'users.serializers.CustomUserDetailsSerializer',
+
 }
 
 AUTH_USER_MODEL = 'users.User'
 
+# django-allauth settings
+
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_AUTHENTICATION_METHOD = "email"  # Use Email / Password authentication
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_EMAIL_VERIFICATION = "none" # Do not require email confirmation
+ACCOUNT_EMAIL_VERIFICATION = "mandatory" # Require email confirmation
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True  # No need to sent POST request to confirmation link
+LOGIN_URL = "/api/v1/auth/login/"  # Path, users will be redirected to after email verification
+
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = False
+
+import os
+
+# # The URL to redirect to after a successful email confirmation, in case no user is logged in.
+# ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = os.environ.get(
+#     "EMAIL_CONFIRM_REDIRECT_URL", "https://myapp.com/login"
+# )
+# # The URL to redirect to after a successful email confirmation, in case of an authenticated user.
+# ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = os.environ.get(
+#     "EMAIL_CONFIRM_REDIRECT_URL", "https://myapp.com/login"
+# )
+
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    #'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'django.contrib.sites',
+
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework.authtoken',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'dj_rest_auth.registration',
+
     'users',
 ]
+
+# django.contrib.sites
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -59,9 +118,20 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = 'AI_Radiologist.urls'
+
+# Django SMTP
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "asdmloon1@gmail.com" # email sending address
+EMAIL_HOST_PASSWORD = "kdyv rwro yxxw pzqa"
+
 
 TEMPLATES = [
     {
