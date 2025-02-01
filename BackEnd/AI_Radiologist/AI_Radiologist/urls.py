@@ -14,6 +14,8 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from tkinter.font import names
+
 from django.contrib import admin
 from django.urls import path, include, re_path
 from rest_framework.routers import DefaultRouter
@@ -25,6 +27,7 @@ from allauth.account.views import ConfirmEmailView
 from users.views import GoogleLogin, GoogleLoginCallback, LoginPage
 
 router = DefaultRouter()
+
 urlpatterns = [
     path("login/", LoginPage.as_view(), name="login"),
     #path('admin/', admin.site.urls),
@@ -46,7 +49,7 @@ urlpatterns = [
         GoogleLoginCallback.as_view(),
         name="google_login_callback",
     ),
-
+    path('api/v1/reports/', include('users.urls')),
 
 ]
 

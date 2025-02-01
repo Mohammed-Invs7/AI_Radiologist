@@ -14,6 +14,7 @@ from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.registration.views import SocialLoginView
 from django.conf import settings
+from sqlparse.tokens import Generic
 
 
 class GoogleLogin(SocialLoginView):
@@ -58,3 +59,70 @@ class LoginPage(View):
             },
         )
 
+from weasyprint import HTML, CSS
+from django.template.loader import get_template
+from django.http import FileResponse
+import io
+
+class GenerateReportPDF(APIView):
+    def get(self, request):
+
+        context = {
+            "full_name": "Ali Bin Shamlan",
+            "radiology_modality": "X-ray",
+            "reported_on": "07 Dec 2024 - 04:35 PM",
+            "age": "23 years",
+            "anatomical_region": "Chest",
+            "gender": "Male"
+        }
+
+        template = get_template('pdf/pdf_template.html')
+
+        html_content = template.render(context)
+        pdf_file = HTML(string=html_content).write_pdf()
+
+        pdf_stream = io.BytesIO(pdf_file)
+
+        response = FileResponse(pdf_stream, content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="home_page.pdf"'
+        return response
+
+# send pdf that already in disk
+
+# from django.http import FileResponse
+# from rest_framework.views import APIView
+# import os
+#
+# class GenerateReportPDF(APIView):
+#     def get(self, request):
+#         pdf_path = "Report1.pdf"
+#
+#
+#         if not os.path.exists(pdf_path):
+#             return Response({"error": "File not found"}, status=404)
+#
+#
+#         pdf_file = open(pdf_path, "rb")
+#
+#
+#         response = FileResponse(pdf_file, content_type="application/pdf")
+#         response["Content-Disposition"] = 'attachment; filename="Report1.pdf"'
+#
+#         return response
+
+
+
+
+
+
+# from rest_framework.decorators import api_view
+# from rest_framework.response import Response
+# from rest_framework.reverse import reverse
+#
+
+# @api_view(['GET'])
+# def api_root(request, format=None):
+#     return Response({
+#         'users': reverse('user-list', request=request, format=format),
+#         'snippets': reverse('snippet-list', request=request, format=format)
+#     })

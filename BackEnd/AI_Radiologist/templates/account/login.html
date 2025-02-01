@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,10 +59,21 @@
             font-size: 14px;
             color: #888;
         }
+
+        .header {
+        background-color: #7ee1dd;
+        color: #ffffff;
+        padding: 20px;
+        text-align: center;
+      }
     </style>
 </head>
 <body>
     <div class="container">
+        <td class="header">
+            <img src="{% static '/admin/test_logo_air-removebg.png' %}" alt="AI Radiologist Logo" />
+            <h1>Welcome to AI Radiologist</h1>
+        </td>
         <h1 class="title">Sign In</h1>
         <a href="https://accounts.google.com/o/oauth2/v2/auth?redirect_uri={{ google_callback_uri }}&prompt=consent&response_type=code&client_id={{ google_client_id }}&scope=openid%20email%20profile&access_type=offline"
            class="google-btn">
