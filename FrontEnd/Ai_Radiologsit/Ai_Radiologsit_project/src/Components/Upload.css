@@ -1,0 +1,121 @@
+/* الأسلوب العام */
+.upload-container {
+    background: #fff;
+    border-radius: 4px;
+    height: 508px;
+}
+
+.upload-header {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.upload-header h3 {
+    font-weight: bold;
+}
+
+.upload-header p {
+    margin: 0;
+}
+
+.upload-header hr {
+    background: #000;
+    width: 100%;
+    margin: 2px 0 19px;
+}
+
+/* صندوق الرفع */
+.upload-box {
+    box-shadow: 4px 4px black;
+    width: 65%;
+    border: 2px solid #785a5a6b;
+    border-radius: 30px;
+    text-align: center;
+    height: auto;
+}
+
+/* صورة الرفع */
+.upload-preview {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+
+.upload-icon1 {
+    margin-top: 20px;
+    width: 50px;
+}
+.upload-icon2{
+    position: absolute;
+        top: 21px;
+        left: 110px;
+        width: 157px
+}
+.upload-icon3 {
+    position: absolute;
+    top: 22px;
+    right: 94px;
+    width: 157px
+}
+
+.upload-icon4 {
+    position: absolute;
+    top: 65%;
+    right: 35%;
+    width: 8%;
+    /* ✅ تأثير سلس */
+}
+
+/* ✅ تغيير `top` بعد رفع الصورة */
+.expanded-icon4 {
+    top: 82%;
+}
+/* زر اختيار الملف */
+.upload-label {
+    background: #80808038;
+    color: black;
+    padding: 0.5rem;
+    font-family: sans-serif;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+/* اسم الملف */
+.file-name {
+    margin-left: 0.3rem;
+}
+
+/* القائمة المنسدلة */
+.upload-select {
+    padding: 1.5px;
+    border-radius: 4px;
+    border: none;
+    margin-top: 10px;
+}
+
+/* زر الفحص */
+.upload-button {
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    background:linear-gradient(90deg, #017276 0%, #80DFDF 100%);
+    border-radius: 20px;
+    color: white;
+    padding: 5px 35px;
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+.upload-button:disabled {
+    background: #ccc;
+    cursor: not-allowed; 
+    border: none;
+}
+
+.box-upload{
+    height: auto;
+    width: 90%;
+    border: 2px dashed #785a5a6b;
+    box-shadow: none;
+    margin-bottom: 20px;
+}
