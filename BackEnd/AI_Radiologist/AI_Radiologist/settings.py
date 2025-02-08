@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+
+from django.core.files.uploadedfile import UploadedFile
 from dotenv import load_dotenv
 
 load_dotenv(".env")
@@ -237,6 +239,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+UPLOADED_FILES_URL = '/uploaded_files/'
+UPLOADED_FILES_ROOT = BASE_DIR / 'uploaded_files'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
