@@ -51,6 +51,35 @@ class CustomRegisterSerializer(serializers.Serializer):
 
         return user
 
+
+
+class CustomUserDetailsSerializer(UserDetailsSerializer):
+    # Override or add fields
+    gender = serializers.ChoiceField(choices=[('M', 'Male'), ('F', 'Female')])
+    age = serializers.SerializerMethodField(read_only=True)
+    # Mark these fields as read-only (they will be available in the output but not editable)
+    date_of_birth = serializers.DateField(read_only=True)
+    # phone_number = serializers.CharField(max_length=15, read_only=True)
+    # user_type = serializers.PrimaryKeyRelatedField(queryset=UserType.objects.all(), read_only=True)
+    join_date = serializers.DateTimeField(read_only=True)
+
+    def get_age(self, obj):
+        return obj.age
+
+    class Meta(UserDetailsSerializer.Meta):
+        # Only include first_name, last_name, and gender as editable fields.
+        # The rest are read-only.
+        fields = UserDetailsSerializer.Meta.fields + (
+            'first_name',
+            'last_name',
+            'gender',
+            'age',
+            'date_of_birth',
+            'join_date',
+            # 'phone_number',
+            # 'user_type',
+        )
+
 # class CustomRegisterSerializer(serializers.Serializer):
 #     email = serializers.EmailField(required=True)
 #     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
@@ -132,21 +161,6 @@ class CustomRegisterSerializer(serializers.Serializer):
 #             raise serializers.ValidationError("Date of birth cannot be in the future.")
 #         return value
 #
-class CustomUserDetailsSerializer(UserDetailsSerializer):
-    gender = serializers.ChoiceField(choices=[('M', 'Male'), ('F', 'Female')])
-    date_of_birth = serializers.DateField()
-    phone_number = serializers.CharField(max_length=15, required=False)
-    user_type = serializers.PrimaryKeyRelatedField(queryset=UserType.objects.all(), required=True)
-
-    class Meta(UserDetailsSerializer.Meta):
-        fields = UserDetailsSerializer.Meta.fields + (
-            'first_name',
-            'last_name',
-            'gender',
-            'date_of_birth',
-            'phone_number',
-            'user_type',
-        )
 
 # class CustomRegisterSerializer(RegisterSerializer):
 #     username = None

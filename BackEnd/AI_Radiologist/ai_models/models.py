@@ -26,14 +26,14 @@ def get_model_upload_to(instance, filename):
     # model_type_name = instance.model.model_type.type_name
     return fr'uploaded_files/models/{instance.name}_{instance.id}_.{extension}'
 
-class Model(models.Model):
+class AIModel(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
     model_path = models.FileField(max_length=255, upload_to=r'uploaded_files/models/') #validators=[FileExtensionValidator(allowed_extensions=['pdf', 'jpg', 'png'])]
     active_status = models.BooleanField(default=True)
     upload_date = models.DateTimeField(auto_now_add=True)
     version = models.CharField(max_length=50)
-    radio_detail = models.ForeignKey(RadiologyDetails, on_delete=models.CASCADE, related_name="models")
+    radio_detail = models.ForeignKey(RadiologyDetails, on_delete=models.CASCADE, related_name="ai_models")
 
     def __str__(self):
         return f"{self.name} (v{self.version})"

@@ -52,10 +52,10 @@ urlpatterns = [
         name="google_login_callback",
     ),
     # apps
-    path('api/v1/reports/', include('reports.urls.user_urls')),
+    path('api/v1/user/reports/', include('reports.urls.user_urls')),
     path('api/v1/admin/reports/', include('reports.urls.admin_urls')),
 
-    path('api/v1/users/', include('users.urls.user_urls')),
+    path('api/v1/user/', include('users.urls.user_urls')),
     path('api/v1/admin/users/', include('users.urls.admin_urls')),
 
     path('api/v1/admin/ai_models/', include('ai_models.urls'))

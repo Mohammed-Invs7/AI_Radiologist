@@ -141,7 +141,8 @@ INSTALLED_APPS = [
     'dj_rest_auth.registration',
 
     'users',
-    # 'reports',
+    'reports',
+    'ai_models',
 ]
 
 # django.contrib.sites
