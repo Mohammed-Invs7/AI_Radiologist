@@ -3,17 +3,27 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import NavBar from "./NavBar";
 import image1 from "../assets/image-upload.png";
+import Image2 from '../assets/spark, sparkle, 29.png'
+import Image3 from '../assets/spark, sparkle, 28.png'
+import Image4 from '../assets/arrow, hand drawn, scribble, doodle, 12.png'
+
+
+
+import "./Upload.css"; // 🔹 استيراد ملف CSS
 
 const Upload = () => {
   const [fileName, setFileName] = useState("No file chosen");
   const [selectedType, setSelectedType] = useState("");
-  const [imagePreview, setImagePreview] = useState(null); // لإدارة رابط الصورة
+  const [selectedBodyPart, setSelectedBodyPart] = useState("");
+  const [imagePreview, setImagePreview] = useState(null);
+  const [isImageUploaded, setIsImageUploaded] = useState(false); // ✅ حالة جديدة
 
   const handleFileChange = (event) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       setFileName(file.name);
-      setImagePreview(URL.createObjectURL(file)); // إنشاء رابط عرض للصورة
+      setImagePreview(URL.createObjectURL(file));
+      setIsImageUploaded(true); // ✅ تحديث الحالة عند رفع الصورة
     }
   };
 
@@ -21,113 +31,69 @@ const Upload = () => {
     setSelectedType(event.target.value);
   };
 
+  const handleBodyPartChange = (event) => {
+    setSelectedBodyPart(event.target.value);
+  };
+
   const handleCheckImage = () => {
-    alert(`Checking the ${selectedType} image: ${fileName}`);
-    // هنا يمكنك تنفيذ أي منطق لفحص الصورة مثل إرسالها إلى خادم
+    alert(`Checking the ${selectedType} image of ${selectedBodyPart}: ${fileName}`);
   };
 
   return (
     <div>
       <NavBar />
-      <div className="d-flex flex-column align-items-center "
-        style={{
-          background: "#fff",
-          margin: "50px 10%",
-          borderRadius: "4px",
-          height: "508px"
-        }}>
-        <div className="mt-5 d-flex flex-column align-items-center">
-          <h3>Upload Your Image</h3>
-          <p style={{ margin: "0px" }}>Upload X-ray</p>
-          <hr style={{
-            background: "#000",
-            width: "100%",
-            margin: "2px 0px 19px"
-          }} />
-        </div>
-        <div className="d-flex flex-column align-items-center text-center"
-          style={{
-            width: "80%",
-            border: "2px dashed #785a5a6b", // إطار بخط متقطع
-            padding: "20px", // مسافة داخلية
-            borderRadius: "10px", // زاوية مستديرة للإطار
-          }} >
-          {/* عرض صورة افتراضية أو صورة تم رفعها */}
-          {imagePreview ? (
-            <img
-              src={imagePreview}
-              alt="Preview"
-              style={{ width: "150px", height: "150px", objectFit: "cover" }}
-            />
-          ) : (
-            <img src={image1} style={{ width: "80px" }} alt="Upload" />
-          )}
+      <img src={Image2} alt="Upload" className="upload-icon2" />
+      <img src={Image3} alt="Upload" className="upload-icon3" />
 
-          {/* العنصر المخفي */}
-          <input
-            type="file"
-            id="actual-btn"
-            hidden
-            onChange={handleFileChange}
-            accept="image/*" // السماح برفع الصور فقط
-          />
+      <div className="upload-container d-flex flex-column align-items-center">
+        <div className={`upload-box d-flex flex-column align-items-center mt-5 ${isImageUploaded ? "expanded" : ""}`}>
+          <div className="upload-header">
+            <h3>Upload Your Image</h3>
+          </div>
+          <div className="upload-box d-flex flex-column align-items-center box-upload">
+            {imagePreview ? (
+              <img src={imagePreview} alt="Preview" className="upload-preview" />
+            ) : (
+              <img src={image1} alt="Upload" className="upload-icon1" />
+            )}
 
-          {/* زر رفع الملف المخصص */}
-          <label
-            htmlFor="actual-btn"
-            style={{
-              background:"#80808038",
-              border:"1px double #00a84f",
-              color: "black",
-              padding: "0.5rem",
-              fontFamily: "sans-serif",
-              borderRadius: "0.3rem",
-              cursor: "pointer",
-              marginTop: "1rem",
-            }}
-          >
-            Choose File
-          </label>
+            <input type="file" id="actual-btn" hidden onChange={handleFileChange} accept="image/*" />
 
-          {/* اسم الملف الذي تم اختياره */}
-          <span
-            id="file-chosen"
-            style={{
-              marginLeft: "0.3rem",
-            }}
-          >
-            {fileName}
-          </span>
+            <label htmlFor="actual-btn" className="upload-label">
+              Choose File
+            </label>
 
-          {/* القائمة المنسدلة */}
-          <select
-            value={selectedType}
-            onChange={handleTypeChange}
-            style={{
-              padding: "1.5px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-              marginTop: "10px",
-            }}
-          >
-            <option value="">Choose the type</option>
-            <option value="X-ray">X-ray</option>
-            <option value="MRI">MRI</option>
-            <option value="CT Scan">CT Scan</option>
-          </select>
+            <span className="file-name">{fileName}</span>
 
-          {/* زر الفحص */}
-          <button
-            className=" mt-3"
-            onClick={handleCheckImage}
-            disabled={!imagePreview || !selectedType} // الزر معطل إذا لم يتم إدخال المدخلات المطلوبة
-            style={{
-              background:"#00a84f",
-              borderRadius: "5px",
-            }}
-          >
-            Check X-ray
-          </button>
+            {/* ✅ اختيار نوع الصورة */}
+            <select value={selectedType} onChange={handleTypeChange} className="upload-select">
+              <option value="">Choose the type</option>
+              <option value="X-ray">X-ray</option>
+              <option value="MRI">MRI</option>
+              <option value="CT Scan">CT Scan</option>
+            </select>
+
+            {/* ✅ اختيار الجزء من الجسم */}
+            <select value={selectedBodyPart} onChange={handleBodyPartChange} className="upload-select">
+              <option value="">Choose Body Part</option>
+              <option value="Head">Head</option>
+              <option value="Chest">Chest</option>
+              <option value="Abdomen">Abdomen</option>
+              <option value="Spine">Spine</option>
+              <option value="Arm">Arm</option>
+              <option value="Leg">Leg</option>
+            </select>
+
+            <img src={Image4} alt="Upload"   className={`upload-icon4 ${isImageUploaded ? "expanded-icon4" : ""}`}/>
+
+            <button
+              className="upload-button"
+              onClick={handleCheckImage}
+              disabled={!imagePreview || !selectedType || !selectedBodyPart}
+            >
+              Upload
+            </button>
+          </div>
         </div>
       </div>
     </div>
