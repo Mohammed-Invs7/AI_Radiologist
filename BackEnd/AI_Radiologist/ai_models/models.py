@@ -24,7 +24,7 @@ class RadiologyDetails(models.Model):
 def get_model_upload_to(instance, filename):
     extension = filename.split('.')[-1]  # استخراج الامتداد من اسم الملف
     # model_type_name = instance.model.model_type.type_name
-    return fr'uploaded_files/models/{instance.name}_{instance.id}_.{extension}'
+    return fr'models/{instance.name}_{instance.id}_.{extension}'
 
 class AIModel(models.Model):
     name = models.CharField(max_length=100)

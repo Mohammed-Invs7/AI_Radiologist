@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-)h+f-51vdyw(%+ebnlnnsfzl7j92hi!s47*%7n@$me84)8cabm
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '::1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '::1', '172.16.10.80','192.168.1.80']
 DOMAIN_NAME = "http://localhost:8000"
 
 # Auth details
@@ -241,8 +241,8 @@ USE_TZ = True
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-UPLOADED_FILES_URL = '/uploaded_files/'
-UPLOADED_FILES_ROOT = BASE_DIR / 'uploaded_files'
+# UPLOADED_FILES_URL = '/uploaded_files/'
+# UPLOADED_FILES_ROOT = BASE_DIR / 'uploaded_files'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]

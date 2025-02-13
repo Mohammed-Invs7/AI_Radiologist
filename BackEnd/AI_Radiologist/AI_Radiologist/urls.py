@@ -17,12 +17,11 @@ Including another URLconf
 from tkinter.font import names
 
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path, include, re_path
 from rest_framework.routers import DefaultRouter
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
+
 from allauth.account.views import ConfirmEmailView
 from users.views import GoogleLogin, GoogleLoginCallback, LoginPage
 
@@ -60,7 +59,7 @@ urlpatterns = [
 
     path('api/v1/admin/ai_models/', include('ai_models.urls'))
 
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 ''' 
 /api/v1/auth/login/ dj_rest_auth.views.LoginView rest_login

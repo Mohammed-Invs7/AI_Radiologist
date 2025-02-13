@@ -10,7 +10,7 @@ class UserReportListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Report
-        fields = ['id', 'title', 'user', 'model', 'image_path', 'report_date', 'radiology_modality', 'body_anatomical_region']
+        fields = ['id', 'title', 'radiology_modality', 'body_anatomical_region', 'report_date', 'image_path',] # 'user', 'model',
 
 class UserReportDetailSerializer(serializers.ModelSerializer):
     radiology_modality = serializers.CharField(source='model.radio_detail.radio_mod.name', read_only=True)
@@ -18,7 +18,9 @@ class UserReportDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Report
-        fields = '__all__'
+        fields = ['id', 'title', 'radiology_modality', 'body_anatomical_region', 'report_date', 'image_path', 'report_details',]
+
+        read_only_fields = ['id', 'radiology_modality', 'body_anatomical_region', 'image_path',  'report_date', 'report_details',]
 
     def update(self, instance, validated_data):
         # Allow updating only the 'title' field

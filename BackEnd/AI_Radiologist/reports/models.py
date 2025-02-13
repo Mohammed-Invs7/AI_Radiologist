@@ -6,7 +6,7 @@ from django.utils import timezone
 def get_report_image_upload_to(instance, filename):
     extension = filename.split('.')[-1]  # استخراج الامتداد من اسم الملف
     model_type_name = instance.model.model_type.type_name
-    return fr'media/images_reports/{model_type_name}_{instance.id}_{timezone.now().strftime("%Y%m%d_%H%M%S")}.{extension}'
+    return fr'images_reports/{model_type_name}_{instance.id}_{timezone.now().strftime("%Y%m%d_%H%M%S")}.{extension}'
 
 class Report(models.Model):
     id = models.AutoField(primary_key=True)
