@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 from datetime import date
+from django.core.validators import FileExtensionValidator
 
 from rest_framework.exceptions import ValidationError
 
@@ -33,6 +34,9 @@ class UserType(models.Model):
     def __str__(self):
         return self.name
 
+def get_profile_image_upload_to(instance, filename):
+    extension = filename.split('.')[-1]
+    return fr'users_data/user_{instance.id}/profile.{extension}'
 
 class User(AbstractBaseUser):
     email = models.EmailField(unique=True)
@@ -46,6 +50,12 @@ class User(AbstractBaseUser):
     ]
     gender = models.CharField(max_length=1, choices=gender_choices, null=False, blank=False)
     date_of_birth = models.DateField(null=False, blank=False)
+    profile_image = models.ImageField(
+        upload_to= get_profile_image_upload_to, blank=True,
+        validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png'])],
+        default='users_data/default_data/account_default.jpg'
+    )
+
     phone_number = models.CharField(max_length=15, null=True, blank=True)
     join_date = models.DateTimeField(auto_now_add=True)
 

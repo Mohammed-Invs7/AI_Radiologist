@@ -9,12 +9,44 @@ from urllib.parse import urljoin
 import requests
 from django.urls import reverse
 from rest_framework.views import APIView
+from django.contrib.auth import get_user_model
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from .serializers import AdminUserDetailsSerializer
+from users.permissions import IsAdminUser
 
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.registration.views import SocialLoginView
 from django.conf import settings
-from sqlparse.tokens import Generic
+
+
+# Admin
+
+
+
+User = get_user_model()
+
+class AdminUserListCreateView(ListCreateAPIView):
+    """
+    View to list all users and allow creating a new user.
+    """
+    permission_classes = [IsAdminUser]
+    queryset = User.objects.all()
+    serializer_class = AdminUserDetailsSerializer
+
+class AdminUserDetailView(RetrieveUpdateDestroyAPIView):
+    """
+    View to retrieve, update, or delete a specific user.
+    The serializer ensures that 'join_date' and 'age' are read-only,
+    and 'user_type' is editable via its name (slug).
+    """
+    permission_classes = [IsAdminUser]
+    queryset = User.objects.all()
+    serializer_class = AdminUserDetailsSerializer
+
+
+
+###########
 
 
 class GoogleLogin(SocialLoginView):

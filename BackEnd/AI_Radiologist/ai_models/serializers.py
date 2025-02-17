@@ -1,10 +1,10 @@
 from rest_framework import serializers
-from dj_rest_auth.registration.serializers import RegisterSerializer
-from dj_rest_auth.serializers import LoginSerializer, UserDetailsSerializer
-from django.contrib.auth.password_validation import validate_password
 from rest_framework.exceptions import ValidationError
-from users.models import User, UserType
+from ai_models.models import AIModel, RadiologyDetails, RadiologyModality, BodyAnatomicalRegion
 from datetime import date
+
+
+
 
 class CustomLoginSerializer(LoginSerializer):
     username = None

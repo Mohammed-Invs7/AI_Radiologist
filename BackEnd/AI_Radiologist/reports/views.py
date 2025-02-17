@@ -1,14 +1,15 @@
-from django.shortcuts import render
+# from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView, RetrieveAPIView, GenericAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
-from rest_framework import mixins, viewsets
+from rest_framework import mixins, viewsets, status
 from rest_framework.permissions import IsAuthenticated
-from rich.diagnose import report
 
 from reports.models import Report
-from reports.serializers import UserReportListSerializer, UserReportDetailSerializer
-from weasyprint import HTML, CSS
+from reports.serializers import UserReportListSerializer, UserReportDetailSerializer, AdminReportListSerializer, AdminReportDetailSerializer
+from users.permissions import IsAdminUser
+
+from weasyprint import HTML #CSS
 from django.template.loader import get_template
 from django.http import FileResponse
 import io
@@ -44,28 +45,6 @@ class UserReportsCountView(APIView):
         report_count = Report.objects.filter(user=request.user).count()
         return Response({"report_count": report_count})
 
-# class GenerateReportPDF2(APIView):
-#     def get(self, request):
-#
-#         context = {
-#             "full_name": "Ali Bin Shamlan",
-#             "radiology_modality": "X-ray",
-#             "reported_on": "07 Dec 2024 - 04:35 PM",
-#             "age": "23 years",
-#             "anatomical_region": "Chest",
-#             "gender": "Male"
-#         }
-#
-#         template = get_template('pdf/pdf_template.html')
-#
-#         html_content = template.render(context)
-#         pdf_file = HTML(string=html_content).write_pdf()
-#
-#         pdf_stream = io.BytesIO(pdf_file)
-#
-#         response = FileResponse(pdf_stream, content_type='application/pdf')
-#         response['Content-Disposition'] = 'attachment; filename="home_page.pdf"'
-#         return response
 
 class GenerateReportPDF(APIView):
     permission_classes = [IsAuthenticated]
@@ -97,3 +76,56 @@ class GenerateReportPDF(APIView):
         response = FileResponse(pdf_stream, content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename="{report.title}.pdf"'
         return response
+
+
+# Admin
+
+class AdminReportsListView(ListAPIView):
+    """
+    View to list reports for all users.
+    The list view does not include 'image_path' and 'report_details'.
+    """
+    serializer_class = AdminReportListSerializer
+    permission_classes = [IsAdminUser]
+    queryset = Report.objects.all()
+
+
+
+class AdminReportsDetailView(RetrieveAPIView):
+    """
+    View to retrieve specific report for all users.
+    it includes 'image_path' and 'report_details'.
+    """
+    serializer_class = AdminReportDetailSerializer
+    permission_classes = [IsAdminUser]
+    queryset = Report.objects.all()
+
+    # def get_serializer_class(self):
+    #     if self.request.method in ['PUT', 'PATCH']:
+    #         return ReportUpdateSerializer
+    #     return AdminReportDetailSerializer
+
+
+
+# class GenerateReportPDF2(APIView):
+#     def get(self, request):
+#
+#         context = {
+#             "full_name": "Ali Bin Shamlan",
+#             "radiology_modality": "X-ray",
+#             "reported_on": "07 Dec 2024 - 04:35 PM",
+#             "age": "23 years",
+#             "anatomical_region": "Chest",
+#             "gender": "Male"
+#         }
+#
+#         template = get_template('pdf/pdf_template.html')
+#
+#         html_content = template.render(context)
+#         pdf_file = HTML(string=html_content).write_pdf()
+#
+#         pdf_stream = io.BytesIO(pdf_file)
+#
+#         response = FileResponse(pdf_stream, content_type='application/pdf')
+#         response['Content-Disposition'] = 'attachment; filename="home_page.pdf"'
+#         return response

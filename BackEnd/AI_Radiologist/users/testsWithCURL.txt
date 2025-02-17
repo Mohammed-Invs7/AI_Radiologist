@@ -4,3 +4,14 @@ curl -X POST -H "Content-Type: application/json" -d "{\"email\": \"test@gmail.co
 
 
 curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM3Mzg0OTQ0LCJpYXQiOjE3MzczODQ2NDQsImp0aSI6IjNmMjZjZmJlNDIyYzQxOGFiNjNkOTU5OGQ4NWVjNDc1IiwidXNlcl9pZCI6MX0.bWIFAAMgz5nEQ8ImxJWknmm70FRQzCLUlJadoyGhu88" http://localhost:8000/
+
+
+curl -X POST http://localhost:8000/api/v1/auth/login/ ^
+-H "Content-Type: application/json" ^
+-d "{\"email\": \"test@gmail.com\", \"password\": \"1234\"}"
+
+
+curl -X PATCH http://localhost:8000/api/v1/auth/user/ ^
+-H "Content-Type: application/json" ^
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NzgyODE5LCJpYXQiOjE3Mzk3NzkyMTksImp0aSI6ImNhODNiMzAyMmZhZTQwMTRiY2FjMTBkNDM0YzA4MjEyIiwidXNlcl9pZCI6MX0.eqXHpBIyu3jsLD6SAXG1ebW89S80yceAOGrgOIHye8I" ^
+-d "{\"last_name\": \"Bamasoodffffd\"}"

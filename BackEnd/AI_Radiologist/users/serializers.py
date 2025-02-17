@@ -5,6 +5,8 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework.exceptions import ValidationError
 from users.models import User, UserType
 from datetime import date
+from django.core.validators import FileExtensionValidator
+
 
 class CustomLoginSerializer(LoginSerializer):
     username = None
@@ -61,7 +63,9 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
     date_of_birth = serializers.DateField(read_only=True)
     # phone_number = serializers.CharField(max_length=15, read_only=True)
     # user_type = serializers.PrimaryKeyRelatedField(queryset=UserType.objects.all(), read_only=True)
+    profile_image = serializers.ImageField(validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png'])],allow_empty_file=True)
     join_date = serializers.DateTimeField(read_only=True)
+
 
     def get_age(self, obj):
         return obj.age
@@ -76,9 +80,29 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
             'age',
             'date_of_birth',
             'join_date',
+            'profile_image'
             # 'phone_number',
             # 'user_type',
         )
+
+# Admin Serializers
+
+class AdminUserDetailsSerializer(serializers.ModelSerializer):
+    age = serializers.ReadOnlyField()
+    user_type = serializers.SlugRelatedField(
+        slug_field='name',
+        queryset=UserType.objects.all()
+    )
+
+    class Meta:
+        model = User
+        fields = [
+            'email', 'first_name', 'last_name', 'gender', 'age',
+            'date_of_birth', 'phone_number', 'join_date', 'user_type'
+        ]
+        read_only_fields = ['join_date', 'age']
+
+
 
 # class CustomRegisterSerializer(serializers.Serializer):
 #     email = serializers.EmailField(required=True)
