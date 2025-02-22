@@ -70,19 +70,19 @@ const Upload_Page = () => {
       if (response.status === 200) {
         setFormData((prev) => ({
           ...prev,
-          predictionResult: response.data.prediction, // ✅ تحديث النتيجة
+          predictionResult: response.data.prediction, //  تحديث النتيجة
           loading: false,
         }));
       } else {
-        throw new Error(response.statusText || "❌ Prediction failed");
+        throw new Error(response.statusText || " Prediction failed");
       }
     } catch (error) {
       setFormData((prev) => ({
         ...prev,
-        predictionResult: `❌ خطأ: ${error.response?.data?.error || error.message}`,
+        predictionResult: ` Error: ${error.response?.data?.error || error.message}`,
         loading: false,
       }));
-      console.error("❌ Error:", error);
+      console.error(" Error:", error);
     }
   };
 
@@ -97,7 +97,7 @@ const Upload_Page = () => {
           <h3 className="upload-header">Upload Your Image</h3>
 
           <form onSubmit={handleSubmit} className="d-flex flex-column align-items-center">
-            {/* ✅ Display selected image or default icon */}
+            {/*  Display selected image or default icon */}
             <img src={formData.imagePreview || Image1} alt="Preview" className={formData.imagePreview ? "upload-preview" : "upload-icon1"} />
 
             {/*  File selection button */}
@@ -124,15 +124,15 @@ const Upload_Page = () => {
               <option value="Leg">Leg</option>
             </select>
 
-            {/* ✅ Arrow icon */}
+            {/*  Arrow icon */}
             <img src={Image4} alt="Upload" className={`upload-icon4 ${formData.imagePreview ? "image-uploaded" : ""}`} />
 
-            {/* ✅ Upload button */}
+            {/*  Upload button */}
             <button type="submit" className="upload-button" disabled={formData.loading}>
               {formData.loading ? "Processing..." : "Upload"}
             </button>
 
-            {/* ✅ Show loading spinner */}
+            {/*  Show loading spinner */}
             {formData.loading && (
               <div className="text-center mt-3">
                 <div className="spinner-border text-primary" role="status">
@@ -141,7 +141,7 @@ const Upload_Page = () => {
               </div>
             )}
 
-            {/* ✅ Display AI prediction result */}
+            {/*  Display AI prediction result */}
             {formData.predictionResult && (
               <div className="result-box mt-3">
                 <h5>AI Prediction:</h5>

@@ -46,16 +46,16 @@ const Registration = () => {
         const response = await axios.post(`${API_URL}/register`, formData);
 
         if (response.status === 200) {  
-            setMessage("✅ تم التسجيل بنجاح! جاري التحويل...");
+            setMessage("✅ Successfully registered! Redirecting...");
             localStorage.setItem("username", response.data.username); 
             setTimeout(() => navigate("/login"), 2500);
         } else {
-            setMessage(`❌ حدث خطأ غير متوقع. الكود: ${response.status}`);
+            setMessage(`❌ An unexpected error occurred. Code: ${response.status}`);
         }
     } catch (error) {
-        setMessage(`❌ خطأ: ${error.response?.data?.error || "حدث خطأ أثناء التسجيل"}`);
+        setMessage(`❌ Error: ${error.response?.data?.error || "An error occurred during registration"}`);
     } finally {
-        setLoading(false);  // ✅ إيقاف التحميل
+        setLoading(false);  // ✅ Stop loading
     } 
 };
 

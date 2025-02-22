@@ -4,72 +4,36 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Img1 from '../../../assets/WhatsApp Image 2024-12-06 at 9.21.37 AM 3.png';
 
-//const API_URL = "http://localhost:5000"; //  Server (Backend) URL
+//const API_URL = "http://localhost:5000"; // Backend server URL
 
 const Login = () => {
-    const navigate = useNavigate(); // ✅ استخدام useNavigate
+    const navigate = useNavigate(); // Using useNavigate
     const [formData, setFormData] = useState({
         email: "",
         password: ""
     });
 
-    const [message, setMessage] = useState(""); // ✅ حالة لتخزين رسالة الخطأ أو النجاح
+    const [message, setMessage] = useState(""); // State to store error or success message
 
-    // ✅ تحديث حقول الإدخال
+    // Update input fields when user enters data
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-   // ✅ إرسال بيانات تسجيل الدخول إلى السيرفر
-// const handleSubmit = async (e) => {
-//     e.preventDefault(); // ✅ منع إعادة تحميل الصفحة
-//     setMessage(""); // ✅ مسح الرسالة السابقة
-
-//     try {
-//         const response = await axios.post(`${API_URL}/login`, formData, {
-//             headers: { "Content-Type": "application/json" }
-//         });
-
-//         // ✅ التحقق من نجاح الطلب باستخدام response.status
-//         if (response.status === 200) {
-//             setMessage("✅ تسجيل الدخول ناجح! جاري التحويل...");
-
-//             // ✅ حفظ بيانات المستخدم في localStorage بعد تسجيل الدخول
-//             localStorage.setItem("user", JSON.stringify({ 
-//                 username: response.data.username, 
-//                 profilePic: response.data.profilePic // ✅ حفظ الصورة الشخصية للمستخدم
-//             }));
-
-//             // ✅ إذا كان هناك `token`، احفظه أيضًا
-//             if (response.data.token) {
-//                 localStorage.setItem("token", response.data.token);
-//             }
-
-//             // ✅ تصحيح `setTimeout` وإعادة التوجيه إلى الصفحة الرئيسية
-//             setTimeout(() => navigate("/"), 2000);
-//         } else {
-//             setMessage(`❌ حدث خطأ غير متوقع. الكود: ${response.status}`);
-//         }
-//     } catch (error) {
-//         setMessage(`❌ خطأ: ${error.response?.data?.error || "فشل تسجيل الدخول. حاول مرة أخرى."}`);
-//         console.error("❌ Error:", error);
-//     }
-// };
-
-    
+    // Send login data to the server
     const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent page reload
     setMessage(""); // Clear previous message
 
     try {
-        // ✅ محاكاة الاستجابة بدون API
+        // Simulate response without API
         const fakeApiResponse = {
             username: "Ali  Shamlan",
             profilePic: Img1,
             token: "fake-jwt-token-123456"
         };
 
-        // ✅ حفظ بيانات المستخدم في localStorage
+        // Save user data in localStorage
         localStorage.setItem("user", JSON.stringify({
             username: fakeApiResponse.username,
             profilePic: fakeApiResponse.profilePic
@@ -84,7 +48,6 @@ const Login = () => {
         setMessage(`Error: ${err.message}. Please try again.`);
     }
 };
-
 
     return (
         <div className="row m-0">
@@ -104,10 +67,10 @@ const Login = () => {
                     <p>Log in to your account</p>
                 </div>
 
-                {/* ✅ عرض رسالة النجاح أو الخطأ */}
+                {/* Show success or error message */}
                 {message && <div className="alert alert-info">{message}</div>}
 
-                {/* ✅ نموذج تسجيل الدخول */}
+                {/* Login form */}
                 <form className="w-100" style={{ maxWidth: "400px" }} onSubmit={handleSubmit}>
                     {/* Email input field */}
                     <div className="input-group mb-3">
@@ -142,7 +105,7 @@ const Login = () => {
                     </button>
                 </form>
 
-                {/* ✅ روابط إضافية */}
+                {/* Additional links */}
                 <div className="text-links">
                     <a href="/forgot-password">Forgot Password?</a>
                     <br />
