@@ -20,7 +20,42 @@ const Login = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    // Send login data to the server
+   // Send login data to the server
+// const handleSubmit = async (e) => {
+//     e.preventDefault(); // Prevent page reload
+//     setMessage(""); // Clear previous message
+
+//     try {
+//         const response = await axios.post(`${API_URL}/login`, formData, {
+//             headers: { "Content-Type": "application/json" }
+//         });
+
+//         // Check if request is successful using response.status
+//         if (response.status === 200) {
+//             setMessage("✅ Login successful! Redirecting...");
+
+//             // Save user data in localStorage after login
+//             localStorage.setItem("user", JSON.stringify({ 
+//                 username: response.data.username, 
+//                 profilePic: response.data.profilePic // Save user's profile picture
+//             }));
+
+//             // If there is a `token`, save it as well
+//             if (response.data.token) {
+//                 localStorage.setItem("token", response.data.token);
+//             }
+
+//             // Correct `setTimeout` and redirect to the home page
+//             setTimeout(() => navigate("/"), 2000);
+//         } else {
+//             setMessage(`❌ An unexpected error occurred. Code: ${response.status}`);
+//         }
+//     } catch (error) {
+//         setMessage(`❌ Error: ${error.response?.data?.error || "Login failed. Please try again."}`);
+//         console.error("❌ Error:", error);
+//     }
+// };
+    
     const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent page reload
     setMessage(""); // Clear previous message
@@ -48,6 +83,7 @@ const Login = () => {
         setMessage(`Error: ${err.message}. Please try again.`);
     }
 };
+
 
     return (
         <div className="row m-0">
