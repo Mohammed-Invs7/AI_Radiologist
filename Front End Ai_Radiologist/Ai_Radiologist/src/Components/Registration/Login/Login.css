@@ -1,0 +1,85 @@
+/* General background */
+.fluid {
+    background: white;
+    height: 100%;
+}
+
+/* Sidebar */
+.sidebar {
+    background: linear-gradient(180deg, #025559 0%, #017276 20%, #80DFDF 100%);
+    border-radius: 0px 100px 100px 0px;
+    color: white;
+
+}
+
+.sidebar h2 {
+    margin: 100px 0px 200px 0px;
+    font-weight: bold;
+}
+
+.sidebar p {
+    font-size: 1.25rem;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+/* Login section */
+.login-container {
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+/* Title */
+.login-title {
+    font-weight: bold;
+}
+
+/* Input styling */
+.input-group {
+    border: 1px solid rgb(141, 140, 140);
+    border-radius: 0px;
+}
+
+.input-group-text {
+    background: white;
+}
+
+.input-group input {
+    border-radius: 0px;
+    border: none;
+}
+
+/* Login button */
+.btn-login {
+    background: linear-gradient(90deg, #017276 0%, #80DFDF 100%);
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        color: white;
+        width: 100%;
+        padding: 10px;
+        transition: 0.3s ease-in-out;
+    }
+
+/* Additional links */
+.text-links {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.text-links a {
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.text-links a:first-child {
+    color: gray;
+}
+
+.text-links a:last-child {
+    color: #212121;
+}
