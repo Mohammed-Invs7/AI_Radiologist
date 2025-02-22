@@ -25,16 +25,25 @@ from rest_framework.routers import DefaultRouter
 from allauth.account.views import ConfirmEmailView
 from users.views import GoogleLogin, GoogleLoginCallback, LoginPage
 
-router = DefaultRouter()
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+
+from dj_rest_auth.views import PasswordResetConfirmView
 
 urlpatterns = [
+
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    # Optional UI:
+    path('', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'), #api/schema/swagger-ui/
+    path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+
     # Pages that not an api endpoints
     path("login/", LoginPage.as_view(), name="login"),
     #########################################################
     #path('admin/', admin.site.urls),
     # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('', include(router.urls)),
+
+    path('api/v1/auth/password/reset/confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path("api/v1/auth/", include("dj_rest_auth.urls")),
     re_path(
         r"^api/v1/auth/registration/account-confirm-email/(?P<key>[-:\w]+)/$",
@@ -59,7 +68,9 @@ urlpatterns = [
 
     path('api/v1/admin/ai_models/', include('ai_models.urls'))
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 ''' 
 /api/v1/auth/login/ dj_rest_auth.views.LoginView rest_login

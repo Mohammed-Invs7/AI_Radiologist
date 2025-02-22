@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-)h+f-51vdyw(%+ebnlnnsfzl7j92hi!s47*%7n@$me84)8cabm
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '::1', '172.16.10.80','172.19.174.80' ,'192.168.1.80', '*']
-DOMAIN_NAME = "http://localhost:8000"
+DOMAIN_NAME = "http://172.19.174.80:8000"#"http://localhost:8000"
 
 # Auth details
 
@@ -69,6 +69,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
 
     ],
+'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 from datetime import timedelta
@@ -89,7 +90,10 @@ REST_AUTH = {
     'LOGIN_SERIALIZER': 'users.serializers.CustomLoginSerializer',
     'REGISTER_SERIALIZER': 'users.serializers.CustomRegisterSerializer',
     'USER_DETAILS_SERIALIZER': 'users.serializers.CustomUserDetailsSerializer',
+    'PASSWORD_RESET_SERIALIZER': 'users.serializers.CustomPasswordResetSerializer',
 
+    # 'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}/',
+    # 'USE_CUSTOM_TEMPLATES': True
 }
 
 AUTH_USER_MODEL = 'users.User'
@@ -118,6 +122,8 @@ ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = False
 #     "EMAIL_CONFIRM_REDIRECT_URL", "https://myapp.com/login"
 # )
 
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -139,11 +145,27 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google', # <- Support Login with Google
     'dj_rest_auth.registration',
+    'dj_rest_auth',
 
     'users',
     'reports',
     'ai_models',
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
 ]
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'AI Radiologist API',
+    'DESCRIPTION': 'A comprehensive API for the AI Radiologist application, providing advanced image analysis and classification services to support accurate medical diagnostics and efficient patient data management.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+
+    'SWAGGER_UI_DIST': 'SIDECAR',  # shorthand to use the sidecar instead
+    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    'REDOC_DIST': 'SIDECAR',
+
+}
+
 
 # django.contrib.sites
 SITE_ID = 1

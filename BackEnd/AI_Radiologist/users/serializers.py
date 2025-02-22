@@ -1,12 +1,18 @@
 from rest_framework import serializers
-from dj_rest_auth.registration.serializers import RegisterSerializer
-from dj_rest_auth.serializers import LoginSerializer, UserDetailsSerializer
+from dj_rest_auth.serializers import LoginSerializer, UserDetailsSerializer, PasswordResetSerializer
 from django.contrib.auth.password_validation import validate_password
 from rest_framework.exceptions import ValidationError
 from users.models import User, UserType
 from datetime import date
 from django.core.validators import FileExtensionValidator
 
+
+class CustomPasswordResetSerializer(PasswordResetSerializer):
+
+    def get_email_options(self):
+        return {
+            'email_template_name': 'registration/password_reset_email.html'
+        }
 
 class CustomLoginSerializer(LoginSerializer):
     username = None
@@ -84,6 +90,7 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
             # 'phone_number',
             # 'user_type',
         )
+
 
 # Admin Serializers
 

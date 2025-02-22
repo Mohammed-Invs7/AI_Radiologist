@@ -38,6 +38,21 @@ class UserReportsViewSet(mixins.ListModelMixin,
 
 
 class UserReportsCountView(APIView):
+    """
+        API view for retrieving the count of reports for the authenticated user.
+
+        This view filters the Report records based on the currently logged-in user and
+        returns the total number of reports as a JSON response.
+
+        HTTP Method:
+          GET - Retrieves the count of the user's reports.
+
+        Permissions:
+          Only authenticated users can access this view.
+
+        Response:
+          200 OK: Returns a JSON object containing the key 'report_count' with the number of reports.
+        """
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
@@ -47,6 +62,24 @@ class UserReportsCountView(APIView):
 
 
 class GenerateReportPDF(APIView):
+    """
+    API view for generating a PDF report for an authenticated user.
+
+    This view retrieves a report based on the provided report ID (pk) for the currently authenticated user.
+    It then renders a PDF using a designated HTML template populated with the report's details, such as:
+      - Full name, age, and gender of the user.
+      - Radiology modality and anatomical region information.
+      - Report date and detailed report content.
+
+    The generated PDF is returned as a downloadable file in the HTTP response.
+
+    HTTP Method:
+      GET - Expects the report ID as a URL parameter.
+
+    Responses:
+      200: Returns the PDF file as an attachment if the report is found.
+      404: Returns an error response if the report does not exist.
+    """
     permission_classes = [IsAuthenticated]
 
     def get(self, request, pk):
