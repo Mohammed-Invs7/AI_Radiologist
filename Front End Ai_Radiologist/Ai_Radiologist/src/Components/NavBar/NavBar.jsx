@@ -3,7 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap
 import Logo from "./Logo";
 import "./NavBar.css"; 
+import axios from "axios";
 
+// Backend server URL
+    const API_URL = "http://127.0.0.1:8000/api/v1/auth/logout/";
 const NavBar = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -15,10 +18,30 @@ const NavBar = () => {
   }, []);
 
   // Handle user logout
-  const handleLogout = () => {
-    localStorage.removeItem("user"); // Remove user from localStorage
-    setUser(null); // Set user state to null
-    navigate("/"); // Redirect to the home page
+  const handleLogout  = async () => {
+    if (window.confirm("Are you sure you want to log out?")) {
+      try {
+        const token = localStorage.getItem("token");
+
+        if (token) {
+          await axios.post(`${API_URL}`, {}, {
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+          });
+          localStorage.removeItem("user");
+          localStorage.removeItem("token");
+
+          setUser(null);
+          navigate("/");
+
+        } else {
+          console.error("No token found in localStorage");
+        }
+      } catch (error) {
+        console.error("Eroor during logout:", error);
+      }
+    }
   };
 
   return (
