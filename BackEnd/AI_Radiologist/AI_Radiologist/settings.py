@@ -30,8 +30,11 @@ SECRET_KEY = 'django-insecure-)h+f-51vdyw(%+ebnlnnsfzl7j92hi!s47*%7n@$me84)8cabm
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '::1', '172.16.10.80','172.19.174.80' ,'192.168.1.80', '*']
+ALLOWED_HOSTS = ['172.29.103.150','localhost', '127.0.0.1', '::1', '172.16.10.80','172.19.174.80' ,'192.168.1.80', '*']
 DOMAIN_NAME = "http://172.19.174.80:8000"#"http://localhost:8000"
+
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Auth details
 
@@ -128,6 +131,7 @@ ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = False
 
 INSTALLED_APPS = [
     #'django.contrib.admin',
+    'corsheaders',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -171,6 +175,7 @@ SPECTACULAR_SETTINGS = {
 SITE_ID = 1
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
