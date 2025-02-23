@@ -6,21 +6,23 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import './Registration.css'
 
 // Backend server URL
-const API_URL = "http://localhost:5000"; 
+const API_URL = "http://127.0.0.1:8000/api/v1/auth/registration/"; 
 
 const Registration = () => {
     // Store user data
     const [formData, setFormData] = useState({
-        name: "",
-        username: "",
+        first_name: "",
+        last_name: "",
         email: "",
         password: "",
-        dob: "",
+        password_confirm:"",
+        date_of_birth: "",
         gender: ""
     });
 
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);  // Loading state
+    const[isChecked, setIsChecked] = useState(false);
     const navigate = useNavigate();
 
     // Update values when user inputs data
@@ -38,16 +40,46 @@ const Registration = () => {
     if (!isValidEmail) {
         setMessage("Please enter a valid email address.");
         return;
-    }
+        }
+        
+        // Validate password strength
+        const isPasswordStorong = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/.test(formData.password);
+        if (!isPasswordStorong) {
+            setMessage("Password must contain at least 8 characters, including a lowercase letter, an uppercase letter, a number, and a special character.");
+            return;
+        }
 
+        // Validate password and confirm password match
+        if (formData.password !== formData.password_confirm) {
+            setMessage("Passwords do not match!");
+            return;
+        }
+
+        // Validate age (18+)
+        const today = new Date();
+        const birthDay = new Date(formData.date_of_birth);
+        const age = today.getFullYear() - birthDay.getFullYear();
+        const month = today.getMonth() - birthDay.getMonth();
+        if (age < 18 || (age === 18 && month  < 0)) {
+            setMessage("You must be at least 18 years old to register.");
+            return;
+        }
+
+        if (!isChecked) {
+            setMessage("You must agree to the terms and conditions to register.");
+            return;
+        }
+
+        const username = formData.first_name + " " + formData.last_name;
+        
     setLoading(true);
 
     try {
-        const response = await axios.post(`${API_URL}/register`, formData);
+        const response = await axios.post(`${API_URL}`, ...formData, username);
 
         if (response.status === 200) {  
             setMessage("✅ Successfully registered! Redirecting...");
-            localStorage.setItem("username", response.data.username); 
+            localStorage.setItem("username", response.data.username); // Save the new username 
             setTimeout(() => navigate("/login"), 2500);
         } else {
             setMessage(`❌ An unexpected error occurred. Code: ${response.status}`);
@@ -90,14 +122,14 @@ const Registration = () => {
                         {/* Input fields */}
                         <div className="input-group mb-3">
                             <span className="input-group-text"><i className="bi bi-person"></i></span>
-                            <input type="text" name="name" placeholder="Name" className="form-control"
-                                value={formData.name} onChange={handleChange} required />
+                            <input type="text" name="first_name" placeholder="first_name" className="form-control"
+                                value={formData.first_name} onChange={handleChange} required />
                         </div>
 
                         <div className="input-group mb-3">
                             <span className="input-group-text"><i className="bi bi-person"></i></span>
-                            <input type="text" name="username" placeholder="User Name" className="form-control"
-                                value={formData.username} onChange={handleChange} required />
+                            <input type="text" name="last_name" placeholder="last_name" className="form-control"
+                                value={formData.last_name} onChange={handleChange} required />
                         </div>
 
                         <div className="input-group mb-3">
@@ -113,9 +145,15 @@ const Registration = () => {
                         </div>
 
                         <div className="input-group mb-3">
+                            <span className="input-group-text"><i className="bi bi-lock"></i></span>
+                            <input type="password" name="password_confirm" placeholder="password_confirm" className="form-control"
+                                value={formData.password_confirm} onChange={handleChange} required />
+                        </div>
+
+                        <div className="input-group mb-3">
                             <span className="input-group-text"><i className="bi bi-calendar"></i></span>
-                            <input type="date" name="dob" className="form-control"
-                                value={formData.dob} onChange={handleChange} required />
+                            <input type="date" name="date_of_birth" className="form-control"
+                                value={formData.date_of_birth} onChange={handleChange} required />
                         </div>
 
                         {/* Gender selection */}
@@ -123,18 +161,30 @@ const Registration = () => {
                             <label className="form-label d-block">Gender</label>
                             <div className="d-flex">
                                 <div className="form-check form-check-inline">
-                                    <input type="radio" name="gender" value="male" className="form-check-input"
-                                        checked={formData.gender === "male"} onChange={handleChange} required />
+                                    <input type="radio" name="gender" value="M" className="form-check-input"
+                                        checked={formData.gender === "M"} onChange={handleChange} required />
                                     <label className="form-check-label">Male</label>
                                 </div>
                                 <div className="form-check form-check-inline">
-                                    <input type="radio" name="gender" value="female" className="form-check-input"
-                                        checked={formData.gender === "female"} onChange={handleChange} required />
+                                    <input type="radio" name="gender" value="F" className="form-check-input"
+                                        checked={formData.gender === "F"} onChange={handleChange} required />
                                     <label className="form-check-label">Female</label>
                                 </div>
                             </div>
                         </div>
-
+{/* Terms and Conditions */}
+                        <div className="form-check">
+                            <input
+                                type="checkbox"
+                                className="form-check-input"
+                                id="terms"
+                                checked={isChecked}
+                                onChange={(e) => setIsChecked(e.target.checked)}
+                            />
+                            <label className="form-check-label" htmlFor="terms">
+                                I agree to the <a href="/terms">terms and conditions</a>.
+                            </label>
+                        </div>
                         {/* Submit button */}
                         <button type="submit" className="btn btn-submit">
                             Become a Member →

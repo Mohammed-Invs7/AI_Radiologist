@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import Img1 from '../../../assets/WhatsApp Image 2024-12-06 at 9.21.37 AM 3.png';
+// import Img1 from '../../../assets/WhatsApp Image 2024-12-06 at 9.21.37 AM 3.png';
 
-//const API_URL = "http://localhost:5000"; // Backend server URL
+const API_URL = "http://127.0.0.1:8000/api/v1/auth/login/"; // Backend server URL
 
 const Login = () => {
     const navigate = useNavigate(); // Using useNavigate
@@ -21,68 +22,42 @@ const Login = () => {
     };
 
    // Send login data to the server
-// const handleSubmit = async (e) => {
-//     e.preventDefault(); // Prevent page reload
-//     setMessage(""); // Clear previous message
-
-//     try {
-//         const response = await axios.post(`${API_URL}/login`, formData, {
-//             headers: { "Content-Type": "application/json" }
-//         });
-
-//         // Check if request is successful using response.status
-//         if (response.status === 200) {
-//             setMessage("✅ Login successful! Redirecting...");
-
-//             // Save user data in localStorage after login
-//             localStorage.setItem("user", JSON.stringify({ 
-//                 username: response.data.username, 
-//                 profilePic: response.data.profilePic // Save user's profile picture
-//             }));
-
-//             // If there is a `token`, save it as well
-//             if (response.data.token) {
-//                 localStorage.setItem("token", response.data.token);
-//             }
-
-//             // Correct `setTimeout` and redirect to the home page
-//             setTimeout(() => navigate("/"), 2000);
-//         } else {
-//             setMessage(`❌ An unexpected error occurred. Code: ${response.status}`);
-//         }
-//     } catch (error) {
-//         setMessage(`❌ Error: ${error.response?.data?.error || "Login failed. Please try again."}`);
-//         console.error("❌ Error:", error);
-//     }
-// };
-    
-    const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent page reload
     setMessage(""); // Clear previous message
 
     try {
-        // Simulate response without API
-        const fakeApiResponse = {
-            username: "Ali  Shamlan",
-            profilePic: Img1,
-            token: "fake-jwt-token-123456"
-        };
+        const response = await axios.post(`${API_URL}`, formData, {
+            headers: { "Content-Type": "application/json" }
+        });
 
-        // Save user data in localStorage
-        localStorage.setItem("user", JSON.stringify({
-            username: fakeApiResponse.username,
-            profilePic: fakeApiResponse.profilePic
-        }));
+        // Check if request is successful using response.status
+        if (response.status === 200) {
+            setMessage("✅ Login successful! Redirecting...");
 
-        localStorage.setItem("token", fakeApiResponse.token);
+            // Save user data in localStorage after login
+            localStorage.setItem("user", JSON.stringify({ 
+                username: response.data.username, 
+                profilePic: response.data.profilePic // Save user's profile picture
+            }));
 
-        setMessage("Login successful! Redirecting...");
-        setTimeout(() => navigate("/"), 2000);
+            // If there is a `token`, save it as well
+            if (response.data.token) {
+                localStorage.setItem("token", response.data.token);
+            }
 
-    } catch (err) {
-        setMessage(`Error: ${err.message}. Please try again.`);
+            // Correct `setTimeout` and redirect to the home page
+            setTimeout(() => navigate("/"), 2000);
+        } else {
+            setMessage(`❌ An unexpected error occurred. Code: ${response.status}`);
+        }
+    } catch (error) {
+        setMessage(`❌ Error: ${error.response?.data?.error || "Login failed. Please try again."}`);
+        console.error("❌ Error:", error);
     }
 };
+    
+
 
 
     return (
