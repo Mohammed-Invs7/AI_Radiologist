@@ -1,20 +1,27 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import PropTypes from "prop-types"; 
 
 const ProtectedRoute = ({ children }) => {
-    const { user, loading } = useAuth(); // Get user authentication state and loading status
+    const { user, loading } = useAuth(); // Retrieve user authentication state and loading status
 
-    // While loading data, do not redirect
+    // Display a loading screen while authentication status is being checked
     if (loading) {
         return <div className="loading-screen">Loading...</div>;
     }
 
-    // After loading is complete, check if the user exists
+    // Redirect to login page if the user is not authenticated
     if (!user) {
         return <Navigate to="/login" replace />;
     }
 
-    return children; // Render the protected component if the user is authenticated
+    // Render the protected component if the user is authenticated
+    return children;
+};
+
+// Define prop types for validation
+ProtectedRoute.propTypes = {
+    children: PropTypes.node.isRequired,
 };
 
 export default ProtectedRoute;
