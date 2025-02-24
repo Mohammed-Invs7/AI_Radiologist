@@ -1,85 +1,60 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../../../context/AuthContext"; // Import authentication context
 import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
-// import Img1 from '../../../assets/WhatsApp Image 2024-12-06 at 9.21.37 AM 3.png';
 
-const API_URL = "http://127.0.0.1:8000/api/v1/auth/login/"; // Backend server URL
+const API_URL = "http://127.0.0.1:8000/api/v1/auth/login/"; // Backend API URL
 
 const Login = () => {
-    const navigate = useNavigate(); // Using useNavigate
-    const [formData, setFormData] = useState({
-        email: "",
-        password: ""
-    });
+    const { login } = useAuth(); // Get login function from AuthContext
+    const navigate = useNavigate(); // Navigation hook
 
-    const [message, setMessage] = useState(""); // State to store error or success message
+    const [formData, setFormData] = useState({ email: "", password: "" }); // State for login form inputs
+    const [message, setMessage] = useState(""); // State for displaying login messages
 
-    // Update input fields when user enters data
+    // Handle input changes and update form data state
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-   // Send login data to the server
-const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent page reload
-    setMessage(""); // Clear previous message
+    // Handle login form submission
+    const handleSubmit = async (e) => {
+        e.preventDefault(); // Prevent page reload
+        setMessage(""); // Reset previous messages
 
-    try {
-        const response = await axios.post(`${API_URL}`, formData, {
-            headers: { "Content-Type": "application/json" }
-        });
+        try {
+            const response = await axios.post(API_URL, formData, {
+                headers: { "Content-Type": "application/json" }
+            });
 
-        // Check if request is successful using response.status
-        if (response.status === 200) {
-            setMessage("✅ Login successful! Redirecting...");
-
-            // Save user data in localStorage after login
-            localStorage.setItem("user", JSON.stringify({ 
-                username: response.data.username, 
-                profilePic: response.data.profilePic // Save user's profile picture
-            }));
-
-            // If there is a `token`, save it as well
-            if (response.data.token) {
-                localStorage.setItem("token", response.data.token);
+            if (response.data.access) {
+                login(response.data.access); // Update authentication state in AuthContext
+                localStorage.setItem("refreshToken", response.data.refresh); // Store refresh token in localStorage
+                navigate('/Upload_Page'); // Redirect to upload page after successful login
+            } else {
+                setMessage("❌ Token is missing in the response!");
             }
-
-            // Correct `setTimeout` and redirect to the home page
-            setTimeout(() => navigate("/"), 2000);
-        } else {
-            setMessage(`❌ An unexpected error occurred. Code: ${response.status}`);
+        } catch {
+            setMessage("Login failed! Please check your credentials."); // Display error message
         }
-    } catch (error) {
-        setMessage(`❌ Error: ${error.response?.data?.error || "Login failed. Please try again."}`);
-        console.error("❌ Error:", error);
-    }
-};
-    
-
-
+    };
 
     return (
         <div className="row m-0">
-            <div className="sidebar col-lg-4 col-md-6 col-sm-12 h-100 h-md-75 h-sm-50
-                d-flex flex-column align-items-center">
-                <div>
-                    <h2>AI Radiologist</h2>
-                    <p className="fs-5 mt-3">At Your Service For <br /> Better Health</p>
-                </div>
+            {/* Sidebar */}
+            <div className="sidebar col-lg-4 col-md-6 d-flex flex-column align-items-center">
+                <h2>AI Radiologist</h2>
+                <p className="fs-5 mt-3">At Your Service For Better Health</p>
             </div>
 
-            {/* Login section */}
-            <div className="col-lg-6 col-md-6 col-sm-12 h-100 h-md-75 h-sm-50 
-                d-flex flex-column align-items-center mt-5">
-                <div className="w-100 text-center m-3">
-                    <h3 className="fw-bold">WELCOME BACK</h3>
-                    <p>Log in to your account</p>
-                </div>
+            {/* Login Form */}
+            <div className="col-lg-6 col-md-6 d-flex flex-column align-items-center mt-5">
+                <h3 className="fw-bold">WELCOME BACK</h3>
+                <p>Log in to your account</p>
 
-                {/* Show success or error message */}
-                {message && <div className="alert alert-info">{message}</div>}
+                {/* Display error message */}
+                {message && <div className="alert alert-danger">{message}</div>}
 
                 {/* Login form */}
                 <form className="w-100" style={{ maxWidth: "400px" }} onSubmit={handleSubmit}>
@@ -111,16 +86,17 @@ const handleSubmit = async (e) => {
                         />
                     </div>
 
-                    <button type="submit" className="btn btn-login">
+                    {/* Login button */}
+                    <button type="submit" className="btn btn-primary w-100">
                         Log In
                     </button>
                 </form>
 
                 {/* Additional links */}
-                <div className="text-links">
+                <div className="text-links mt-3">
                     <a href="/forgot-password">Forgot Password?</a>
                     <br />
-                    <a href="/Registration">Do not have an account? <strong>Registration</strong></a>
+                    <a href="/Registration">Do not have an account? <strong>Register</strong></a>
                 </div>
             </div>
         </div>

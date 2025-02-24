@@ -6,7 +6,7 @@ import "./NavBar.css";
 import axios from "axios";
 
 // Backend server URL
-    const API_URL = "http://127.0.0.1:8000/api/v1/auth/logout/";
+const API_URL = "http://127.0.0.1:8000/api/v1/auth/logout/";
 const NavBar = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -16,33 +16,54 @@ const NavBar = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     setUser(user);
   }, []);
+  
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    console.log("🔄 Token from localStorage on page load:", storedToken);
+
+    if (storedToken) {
+        setUser(true); // تحديث حالة المستخدم
+    }
+}, []);
+
 
   // Handle user logout
-  const handleLogout  = async () => {
+  const handleLogout = async () => {
     if (window.confirm("Are you sure you want to log out?")) {
-      try {
-        const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
-        if (token) {
+        console.log("🔍 Token being sent for logout:", token);
+
+        if (!token) {
+            console.error("❌ No token found in localStorage! Cannot log out.");
+            return;
+        }
+
+        try {
           await axios.post(`${API_URL}`, {}, {
             headers: {
-              "Authorization": `Bearer ${token}`
+              "Authorization": `Bearer ${token}`,
+              "Content-Type": "application/json"
             }
-          });
-          localStorage.removeItem("user");
-          localStorage.removeItem("token");
+            });
 
-          setUser(null);
-          navigate("/");
+            // حذف جميع البيانات من localStorage
+            localStorage.clear();
+            console.log("✅ All localStorage data cleared");
 
-        } else {
-          console.error("No token found in localStorage");
+            // تحديث حالة المستخدم
+            setUser(null);
+
+            // إعادة التوجيه إلى الصفحة الرئيسية
+            navigate("/");
+
+            console.log("✅ Successfully logged out");
+        } catch (error) {
+            console.error("❌ Error during logout:", error.response?.data || error.message);
         }
-      } catch (error) {
-        console.error("Eroor during logout:", error);
-      }
     }
-  };
+};
+
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
