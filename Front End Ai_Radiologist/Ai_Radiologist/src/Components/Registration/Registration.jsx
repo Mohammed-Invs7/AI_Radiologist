@@ -71,17 +71,20 @@ const Registration = () => {
             return;
         }
 
-        const username = formData.first_name + " " + formData.last_name;
         
         setLoading(true); // Start loading
 
         try {
-            const response = await axios.post(API_URL, formData, username);
+            const response = await axios.post(API_URL, formData);
 
-            if (response.status === 200) {  
-                setMessage("✅ Successfully registered! Redirecting...");
-                localStorage.setItem("username", response.data.username); // Save the new username
-                setTimeout(() => navigate("/login"), 2500); // Redirect after success
+            if (response.status === 201 || response.status === 200) {  
+                console.log("Server Response:", response);
+                setMessage({
+                    text: " Registration successful! Please check your email to verify your account.",
+                    type: "success" 
+                });
+                localStorage.setItem("username", response.data.first_name); // Save the new username
+                //setTimeout(() => navigate("/login"), 5000); // Redirect after success
             } else {
                 setMessage(`❌ An unexpected error occurred. Code: ${response.status}`);
             }
@@ -112,7 +115,11 @@ const Registration = () => {
                     </div>
 
                     {/* Display success or error message */}
-                    {message && <div className="alert alert-info">{message}</div>}
+                    {message.text && (
+                        <div className={`alert alert-${message.type} text-center fw-bold`} role="alert">
+                            {message.text}
+                        </div>
+                    )}
 
                     {/* Show loading spinner */}
                     {loading && <div className="spinner-border text-primary" role="status">

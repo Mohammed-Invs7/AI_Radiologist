@@ -43,10 +43,13 @@ const Login = () => {
     return (
         <div className="row m-0">
             {/* Sidebar */}
-            <div className="sidebar col-lg-4 col-md-6 d-flex flex-column align-items-center">
-                <h2>AI Radiologist</h2>
-                <p className="fs-5 mt-3">At Your Service For Better Health</p>
-            </div>
+            <div className="sidebar col-lg-4 col-md-6 col-sm-12 h-100 h-md-75 h-sm-50
+                d-flex flex-column align-items-center">
+                    <div>
+                        <h2>AI Radiologist</h2>
+                        <p className="fs-5 mt-3">At Your Service For <br /> Better Health</p>
+                    </div>
+                </div>
 
             {/* Login Form */}
             <div className="col-lg-6 col-md-6 d-flex flex-column align-items-center mt-5">
