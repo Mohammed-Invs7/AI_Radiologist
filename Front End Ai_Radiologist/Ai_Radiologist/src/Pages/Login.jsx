@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useAuth } from "../../../context/AuthContext"; // Import authentication context
+import { useAuth } from "../context/AuthContext"; // Import authentication context
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const API_URL = "http://127.0.0.1:8000/api/v1/auth/login/"; // Backend API URL

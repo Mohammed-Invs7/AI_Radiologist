@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap
 import Logo from "./Logo";
-import "./NavBar.css"; 
+import "../assets/NavBar.css"; 
 import axios from "axios";
 
 // Backend server URL

@@ -1,6 +1,6 @@
-import RegistrationButton from "../Buttons/RegistrationButton";
-import UploadButton from "../Buttons/UploadButton";
-import NavBar from "../NavBar/NavBar";
+import RegistrationButton from "../Components/RegistrationButton";
+import UploadButton from "../Components/UploadButton";
+import NavBar from "../Components/NavBar";
 
 const Home_Page = () => {
     return (

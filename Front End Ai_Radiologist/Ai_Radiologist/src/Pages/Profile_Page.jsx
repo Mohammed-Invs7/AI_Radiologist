@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import NavBar from '../NavBar/NavBar';
-import Reports from './Reports';
+import NavBar from '../Components/NavBar';
+import Reports from '../Pages/Reports';
 
 const Profile_Page = () => {
     const [searchTerm, setSearchTerm] = useState('');

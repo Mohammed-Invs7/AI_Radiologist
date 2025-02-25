@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "../Registration/Login/Login.css";
+import "../assets/Login.css";
 import Image1 from "../../assets/Vectorprofile.png";
 
 const API_URL = "http://localhost:5000/upload-profile";  // API to store the image
