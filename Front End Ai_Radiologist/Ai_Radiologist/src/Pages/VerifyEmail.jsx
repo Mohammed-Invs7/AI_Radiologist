@@ -24,7 +24,7 @@ export default function VerifyEmail() {
 
                 if (response.status === 200) {
                     setMessage("✅ Email verified successfully! Redirecting to login...");
-                    setTimeout(() => navigate("/login"), 4000); // Redirect to login after 4 seconds
+                    setTimeout(() => navigate("/login"), 5000); // Redirect to login after 4 seconds
                 } else {
                     setMessage("❌ Verification failed. Invalid or expired token.");
                 }

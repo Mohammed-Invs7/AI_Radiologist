@@ -50,7 +50,7 @@ const Registration = () => {
         console.log("Server Response:", response);
         console.log("🔹 Token:", response.data.token);
 
-        if (response.status === 201 || response.status === 200) {  
+        if (response.status === 201 || response.status === 200) {
             setMessage({
                 text: "✅ Registration successful! Please check your email to verify your account.",
                 type: "success"

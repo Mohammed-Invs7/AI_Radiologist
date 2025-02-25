@@ -9,6 +9,8 @@ import { Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import ProtectedRoute from './Components/ProtectedRoute'
 import VerifyEmail from './Pages/VerifyEmail'
+import ForgotPassword from './Pages/ForgotPassword'
+import ResetPassword from './Pages/ResetPassword'
 function App() {
 
   return (
@@ -19,6 +21,8 @@ function App() {
           <Route path="/Registration" element={<Registration />} />
           <Route path="/verify-email/:token" element={<VerifyEmail />} />
           <Route path="/Login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/Upload_page" element={<ProtectedRoute><Upload_Page/></ProtectedRoute>} />
           <Route path="NavBar" element={<NavBar />} />
           <Route path='Profile_Page' element={<Profile_Page />} />        

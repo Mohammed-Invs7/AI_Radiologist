@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext"; // Import authentication context
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -97,7 +97,7 @@ const Login = () => {
 
                 {/* Additional links */}
                 <div className="text-links mt-3">
-                    <a href="/forgot-password">Forgot Password?</a>
+                    <p> <Link to="/forgot-password">Forgot Password ?</Link></p>
                     <br />
                     <a href="/Registration">Do not have an account? <strong>Register</strong></a>
                 </div>
