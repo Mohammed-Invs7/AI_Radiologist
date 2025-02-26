@@ -25,10 +25,10 @@ const Profile_User = () => {
                         <div className="d-flex align-items-center position-absolute" style={{transform: 'translateY(70%)'}}>
                             <div className="d-flex justify-content-center align-items-center rounded-circle border border-dark bg-white shadow"
                                 style={{ width: '100px', height: '100px' }}>
-                                <img src={user.profilePic} alt="User Profile"
+                                <img src={user.profile_image} alt="User Profile"
                                     className="rounded-circle" style={{ width: '88px', height: '88px', objectFit: 'cover' }} />
                             </div>
-                            <h5 className='ms-3 mt-2 text-dark'>{user.username}</h5>
+                            <h5 className='ms-3 mt-2 text-dark'>{user.first_name} {user.last_name}</h5>
                         </div>
                     </div>
                 </div>

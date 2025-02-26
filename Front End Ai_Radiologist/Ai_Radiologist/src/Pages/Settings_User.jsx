@@ -1,22 +1,27 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react"; // Import React hooks for state and side effects
+import axios from "axios"; // Import Axios for API requests
+import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+import { useAuth } from "../context/AuthContext"; // Import AuthContext to get user data and update function
 
-const API_GET_USER = "http://127.0.0.1:8000/api/v1/auth/user/";
-const API_UPDATE_USER = "http://127.0.0.1:8000/api/v1/auth/user/";
+const API_URL = "http://127.0.0.1:8000/api/v1/auth/user/"; // API endpoint for fetching and updating user data
 
 const Settings_User = () => {
-    const [user, setUser] = useState({
-        first_name: "",
-        last_name: "",
-        gender: "M",
-        profile_image: null
-    });
-    const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState("");
-    const navigate = useNavigate();
+    const { user: authUser, updateUser } = useAuth(); // Get authenticated user and update function from AuthContext
+    const navigate = useNavigate(); // Initialize navigation function
 
-    // ✅ التحقق من تسجيل الدخول
+    // Initialize user state with default values or data from AuthContext
+    const [user, setUser] = useState({
+        first_name: authUser?.first_name || "",
+        last_name: authUser?.last_name || "",
+        gender: authUser?.gender || "M",
+        profile_image: authUser?.profile_image || null
+    });
+
+    const [previewImage, setPreviewImage] = useState(authUser?.profile_image || null); // Store preview of uploaded image
+    const [loading, setLoading] = useState(false); // State for loading status
+    const [message, setMessage] = useState(""); // State for success/error messages
+
+    // Redirect to login if no token is found
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (!token) {
@@ -24,42 +29,20 @@ const Settings_User = () => {
         }
     }, [navigate]);
 
-    // ✅ جلب بيانات المستخدم
-    useEffect(() => {
-        const fetchUserData = async () => {
-            setLoading(true);
-            try {
-                const response = await axios.get(API_GET_USER, {
-                    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-                });
-
-                setUser({
-                    first_name: response.data.first_name || "",
-                    last_name: response.data.last_name || "",
-                    gender: response.data.gender || "M",
-                    profile_image: null // لا نحمل الصورة هنا، سيتم رفعها عند التحديث
-                });
-            } catch (error) {
-                console.error("Error fetching user data:", error.response?.data || error);
-                setMessage("❌ Error fetching user data");
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchUserData();
-    }, []);
-
-    // ✅ تحديث القيم عند الإدخال
+    // Handle input field changes (text and file inputs)
     const handleChange = (e) => {
         if (e.target.name === "profile_image") {
-            setUser({ ...user, profile_image: e.target.files[0] });
+            const file = e.target.files[0];
+            if (file) {
+                setUser({ ...user, profile_image: file });
+                setPreviewImage(URL.createObjectURL(file)); // Display image preview
+            }
         } else {
             setUser({ ...user, [e.target.name]: e.target.value });
         }
     };
 
-    // ✅ تحديث بيانات المستخدم عند الضغط على "حفظ التغييرات"
+    // Handle form submission to update user profile
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -75,7 +58,7 @@ const Settings_User = () => {
         }
 
         try {
-            const response = await axios.patch(API_UPDATE_USER, formData, {
+            const response = await axios.patch(API_URL, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -84,12 +67,14 @@ const Settings_User = () => {
 
             if (response.status === 200) {
                 setMessage("✔ Profile updated successfully!");
+                updateUser(response.data); // Update user data in AuthContext
+                setPreviewImage(response.data.profile_image || null); // Update profile image preview
             } else {
                 setMessage("❌ Update failed. Please try again.");
             }
         } catch (error) {
             console.error("Error updating profile:", error.response?.data || error);
-            setMessage(`❌ Error: ${JSON.stringify(error.response?.data) || "Update failed."}`);
+            setMessage(error.response?.data?.detail || "An unexpected error occurred. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -99,12 +84,13 @@ const Settings_User = () => {
         <div className="container mt-5">
             <h2>User Settings</h2>
 
-            {message && <div className="alert alert-info">{message}</div>}
+            {message && <div className="alert alert-info">{message}</div>} {/* Display success/error message */}
 
             {loading ? (
-                <p>Loading user data...</p>
+                <p>Loading user data...</p> // Show loading message while updating
             ) : (
                 <form onSubmit={handleSubmit}>
+                    {/* First Name Input */}
                     <div className="mb-3">
                         <label className="form-label">First Name</label>
                         <input
@@ -117,6 +103,7 @@ const Settings_User = () => {
                         />
                     </div>
 
+                    {/* Last Name Input */}
                     <div className="mb-3">
                         <label className="form-label">Last Name</label>
                         <input
@@ -129,6 +116,7 @@ const Settings_User = () => {
                         />
                     </div>
 
+                    {/* Gender Selection */}
                     <div className="mb-3">
                         <label className="form-label">Gender</label>
                         <select
@@ -142,6 +130,7 @@ const Settings_User = () => {
                         </select>
                     </div>
 
+                    {/* Profile Image Upload */}
                     <div className="mb-3">
                         <label className="form-label">Profile Image</label>
                         <input
@@ -151,8 +140,14 @@ const Settings_User = () => {
                             accept="image/*"
                             onChange={handleChange}
                         />
+                        {previewImage && (
+                            <div className="mt-3">
+                                <img src={previewImage} alt="Profile Preview" className="img-thumbnail" width="150" />
+                            </div>
+                        )}
                     </div>
 
+                    {/* Save Button */}
                     <button type="submit" className="btn btn-success w-100" disabled={loading}>
                         {loading ? "Saving..." : "Save Changes"}
                     </button>

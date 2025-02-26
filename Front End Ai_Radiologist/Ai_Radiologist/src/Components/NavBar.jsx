@@ -1,66 +1,21 @@
-import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap
+import { useAuth } from "../context/AuthContext"; 
+import "bootstrap/dist/css/bootstrap.min.css"; 
+import "bootstrap-icons/font/bootstrap-icons.css"; // Ensure Bootstrap Icons are imported
 import Logo from "./Logo";
-import "../assets/NavBar.css"; 
-import axios from "axios";
+import "../assets/NavBar.css";
 
-// Backend server URL
-const API_URL = "http://127.0.0.1:8000/api/v1/auth/logout/";
 const NavBar = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-  
-  useEffect(() => {
-    // Check if user is in localStorage and set the user state
-    const user = JSON.parse(localStorage.getItem("user"));
-    setUser(user);
-  }, []);
-  
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    console.log("🔄 Token from localStorage on page load:", storedToken);
+  const { user, logout } = useAuth();
 
-    if (storedToken) {
-        setUser(true); // تحديث حالة المستخدم
-    }
-}, []);
-
-
-  // Handle user logout
+  // Logout function
   const handleLogout = async () => {
     if (window.confirm("Are you sure you want to log out?")) {
-      const token = localStorage.getItem("token");
-
-        console.log("🔍 Token being sent for logout:", token);
-
-        if (!token) {
-            console.error("❌ No token found in localStorage! Cannot log out.");
-            return;
-        }
-
-        try {
-          await axios.post(`${API_URL}`, {}, {
-            headers: {
-              "Authorization": `Bearer ${token}`,
-              "Content-Type": "application/json"
-            }
-          });
-          
-            localStorage.clear();
-            console.log("✅ All localStorage data cleared");
-
-          setUser(null);
-
-          navigate("/");
-
-            console.log("✅ Successfully logged out");
-        } catch (error) {
-            console.error("❌ Error during logout:", error.response?.data || error.message);
-        }
+      logout();
+      navigate("/");
     }
-};
-
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
@@ -85,35 +40,32 @@ const NavBar = () => {
         <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <Link className="nav-link Nav-link" to="/">
-                Home
-              </Link>
+              <Link className="nav-link Nav-link" to="/">Home</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link Nav-link" to="/OueGoles">
-                Our Goals
-              </Link>
+              <Link className="nav-link Nav-link" to="/OurGoals">Our Goals</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link Nav-link" to="/HowUseIt">
-                How Use It
-              </Link>
+              <Link className="nav-link Nav-link" to="/HowToUseIt">How To Use It</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link Nav-link" to="/OurTeam">
-                Our Team
-              </Link>
+              <Link className="nav-link Nav-link" to="/OurTeam">Our Team</Link>
             </li>
           </ul>
         </div>
 
-        {/* User section */}
+        {/* User Profile Section */}
         {user ? (
           <div className="dropdown">
-            {/* User profile dropdown */}
             <button className="btn btn-light dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
-              <img src={user.profilePic} alt="" className="rounded-circle me-2" width="35" height="35" />
-              {user.username}
+              <img 
+                src={user.profile_image || "/default-avatar.png"} // Provide a default image
+                alt="Profile" 
+                className="rounded-circle me-2" 
+                width="50" 
+                height="50" 
+              />
+              {user.first_name} {user.last_name}
             </button>
             <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
               <li>
@@ -134,7 +86,6 @@ const NavBar = () => {
             </ul>
           </div>
         ) : (
-          /* Registration button if user is not logged in */
           <button className="Btn-Go-Reg" onClick={() => navigate("/Registration")}>
             <span className="Btn-Go-Reg-span">Registration</span>
           </button>

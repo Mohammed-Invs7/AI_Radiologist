@@ -1,19 +1,20 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useAuth } from "../context/AuthContext"; // Import authentication context
-import "bootstrap/dist/css/bootstrap.min.css";
+import { Link, useNavigate } from "react-router-dom"; // Import navigation functions
+import axios from "axios"; // Import Axios for API requests
+import { useAuth } from "../context/AuthContext"; // Import AuthContext for authentication state
+import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap for styling
 
-const API_URL = "http://127.0.0.1:8000/api/v1/auth/login/"; // Backend API URL
+const API_URL = "http://127.0.0.1:8000/api/v1/auth/login/"; // API endpoint for user authentication
 
 const Login = () => {
     const { login } = useAuth(); // Get login function from AuthContext
-    const navigate = useNavigate(); // Navigation hook
+    const navigate = useNavigate(); // Initialize navigation function
 
-    const [formData, setFormData] = useState({ email: "", password: "" }); // State for login form inputs
-    const [message, setMessage] = useState(""); // State for displaying login messages
+    // Initialize form data state
+    const [formData, setFormData] = useState({ email: "", password: "" }); 
+    const [message, setMessage] = useState(""); // State for error/success messages
 
-    // Handle input changes and update form data state
+    // Handle input field changes
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -21,28 +22,44 @@ const Login = () => {
     // Handle login form submission
     const handleSubmit = async (e) => {
         e.preventDefault(); // Prevent page reload
-        setMessage(""); // Reset previous messages
+        setMessage(""); // Clear previous messages
 
         try {
             const response = await axios.post(API_URL, formData, {
                 headers: { "Content-Type": "application/json" }
             });
 
-            if (response.data.access) {
-                login(response.data.access); // Update authentication state in AuthContext
-                localStorage.setItem("refreshToken", response.data.refresh); // Store refresh token in localStorage
-                navigate('/Upload'); // Redirect to upload page after successful login
+            if (response.data.access) { // Check if access token is received
+                const token = response.data.access;
+                const refreshToken = response.data.refresh;
+
+                console.log("Received Token:", token); // Log token in the console
+
+                // Fetch user data after login
+                const userResponse = await axios.get("http://127.0.0.1:8000/api/v1/auth/user/", {
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+
+                const userData = userResponse.data;
+                console.log("User Data Fetched:", userData); // Log user data
+
+                // Store data in AuthContext and localStorage
+                login(token, userData);
+                localStorage.setItem("refreshToken", refreshToken); // Store refresh token
+                
+                navigate('/Upload'); // Redirect after successful login
             } else {
-                setMessage("❌ Token is missing in the response!");
+                setMessage("Token is missing in the response!");
             }
-        } catch {
+        } catch (error) {
+            console.error("Login Failed:", error.response?.data || error.message);
             setMessage("Login failed! Please check your credentials."); // Display error message
         }
     };
 
     return (
         <div className="row m-0">
-            {/* Sidebar */}
+            {/* Sidebar Section */}
             <div className="sidebar col-lg-4 col-md-6 col-sm-12 h-100 h-md-75 h-sm-50
                 d-flex flex-column align-items-center">
                     <div>
@@ -51,17 +68,16 @@ const Login = () => {
                     </div>
                 </div>
 
-            {/* Login Form */}
+            {/* Login Form Section */}
             <div className="col-lg-6 col-md-6 d-flex flex-column align-items-center mt-5">
                 <h3 className="fw-bold">WELCOME BACK</h3>
                 <p>Log in to your account</p>
 
-                {/* Display error message */}
+                {/* Display error message if exists */}
                 {message && <div className="alert alert-danger">{message}</div>}
 
-                {/* Login form */}
                 <form className="w-100" style={{ maxWidth: "400px" }} onSubmit={handleSubmit}>
-                    {/* Email input field */}
+                    {/* Email Input */}
                     <div className="input-group mb-3">
                         <span className="input-group-text"><i className="bi bi-envelope"></i></span>
                         <input
@@ -75,7 +91,7 @@ const Login = () => {
                         />
                     </div>
 
-                    {/* Password input field */}
+                    {/* Password Input */}
                     <div className="input-group mb-3">
                         <span className="input-group-text"><i className="bi bi-lock"></i></span>
                         <input
@@ -89,15 +105,15 @@ const Login = () => {
                         />
                     </div>
 
-                    {/* Login button */}
+                    {/* Login Button */}
                     <button type="submit" className="btn btn-primary w-100">
                         Log In
                     </button>
                 </form>
 
-                {/* Additional links */}
+                {/* Additional Links */}
                 <div className="text-links mt-3">
-                    <p> <Link to="/forgot-password">Forgot Password ?</Link></p>
+                    <p> <Link to="/forgot-password">Forgot Password?</Link></p>
                     <br />
                     <a href="/Registration">Do not have an account? <strong>Register</strong></a>
                 </div>
