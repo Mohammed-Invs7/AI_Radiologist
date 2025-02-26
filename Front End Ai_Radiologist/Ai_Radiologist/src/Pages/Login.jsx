@@ -31,7 +31,7 @@ const Login = () => {
             if (response.data.access) {
                 login(response.data.access); // Update authentication state in AuthContext
                 localStorage.setItem("refreshToken", response.data.refresh); // Store refresh token in localStorage
-                navigate('/Upload_Page'); // Redirect to upload page after successful login
+                navigate('/Upload'); // Redirect to upload page after successful login
             } else {
                 setMessage("❌ Token is missing in the response!");
             }

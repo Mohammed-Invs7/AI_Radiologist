@@ -45,17 +45,14 @@ const NavBar = () => {
               "Authorization": `Bearer ${token}`,
               "Content-Type": "application/json"
             }
-            });
-
-            // حذف جميع البيانات من localStorage
+          });
+          
             localStorage.clear();
             console.log("✅ All localStorage data cleared");
 
-            // تحديث حالة المستخدم
-            setUser(null);
+          setUser(null);
 
-            // إعادة التوجيه إلى الصفحة الرئيسية
-            navigate("/");
+          navigate("/");
 
             console.log("✅ Successfully logged out");
         } catch (error) {
@@ -120,12 +117,12 @@ const NavBar = () => {
             </button>
             <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
               <li>
-                <Link className="dropdown-item" to="/profile_Page">
+                <Link className="dropdown-item" to="/profile_User">
                   <i className="bi bi-person-circle me-2"></i> Profile
                 </Link>
               </li>
               <li>
-                <Link className="dropdown-item" to="/settings">
+                <Link className="dropdown-item" to="/Settings_User">
                   <i className="bi bi-gear me-2"></i> Settings
                 </Link>
               </li>

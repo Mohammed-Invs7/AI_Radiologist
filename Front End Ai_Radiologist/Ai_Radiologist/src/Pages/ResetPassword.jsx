@@ -24,6 +24,7 @@ const ResetPassword = () => {
                     setValidToken(false);
                 }
             } catch (error) {
+                console.error(error);
                 setValidToken(false);
             }
         };
@@ -49,9 +50,11 @@ const ResetPassword = () => {
             } else {
                 setMessage("Failed to reset password. Please try again.");
             }
-        } catch (error) {
+        }   catch (error) {
+            console.error("Error occurred:", error); 
             setMessage(" Error occurred. Please try again later.");
-        }
+}
+
     };
 
     if (validToken === false) {

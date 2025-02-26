@@ -12,7 +12,7 @@ import NavBar from "../Components/NavBar";
 
 const API_URL = "http://localhost:5000/predict"; // Define the API URL
 
-const Upload_Page = () => { 
+const Upload = () => { 
   // eslint-disable-next-line no-unused-vars
   const { user } = useAuth(); // Retrieve user authentication state
 
@@ -142,4 +142,4 @@ const Upload_Page = () => {
   ); 
 }; 
 
-export default Upload_Page; 
+export default Upload; 

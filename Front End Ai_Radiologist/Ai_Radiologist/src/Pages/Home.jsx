@@ -2,7 +2,7 @@ import RegistrationButton from "../Components/RegistrationButton";
 import UploadButton from "../Components/UploadButton";
 import NavBar from "../Components/NavBar";
 
-const Home_Page = () => {
+const Home = () => {
     return (
         <div>
             <NavBar/>
@@ -13,4 +13,4 @@ const Home_Page = () => {
     );
 };
 
-export default Home_Page;
+export default Home;

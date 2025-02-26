@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // Define API URL
 const API_URL = "http://127.0.0.1:8000/api/v1/user/reports/";
 
-const Reports = () => {
+const Reports_User = () => {
     const [radiologyData, setRadiologyData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -75,4 +75,4 @@ const Reports = () => {
     );
 };
 
-export default Reports;
+export default Reports_User;

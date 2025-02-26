@@ -1,9 +1,10 @@
-import Home_Page from './Pages/Home_Page'
+import Home from './Pages/Home'
 import Registration from './Pages/Registration'
 import Login from './Pages/Login'
-import Upload_Page from './Pages/Upload_Page'
+import Upload from './Pages/Upload'
 import NavBar from './Components/NavBar'
-import Profile_Page from './Pages/Profile_Page'
+import Profile_User from './Pages/Profile_User'
+import Settings_User from './Pages/Settings_User'
 import './App.css'
 import { Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
@@ -17,15 +18,17 @@ function App() {
     <>
       <AuthProvider>
         <Routes>
-          <Route  path="/" element={<Home_Page />} />
+          <Route  path="/" element={<Home />} />
           <Route path="/Registration" element={<Registration />} />
           <Route path="/verify-email/:token" element={<VerifyEmail />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
-          <Route path="/Upload_page" element={<ProtectedRoute><Upload_Page/></ProtectedRoute>} />
+          <Route path="/Upload" element={<ProtectedRoute><Upload/></ProtectedRoute>} />
           <Route path="NavBar" element={<NavBar />} />
-          <Route path='Profile_Page' element={<Profile_Page />} />        
+          <Route path='Profile_User' element={<ProtectedRoute><Profile_User /></ProtectedRoute>} /> 
+          <Route path='Settings_User' element={<ProtectedRoute><Settings_User/></ProtectedRoute>} />        
+
         </Routes>
         </AuthProvider>
     </>

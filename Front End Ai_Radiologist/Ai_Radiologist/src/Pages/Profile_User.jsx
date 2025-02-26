@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NavBar from '../Components/NavBar';
-import Reports from '../Pages/Reports';
+import Reports_User from './Reports_User';
 
-const Profile_Page = () => {
+const Profile_User = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [user, setUser] = useState({ username: null, profilePic: null });
 
@@ -53,10 +53,10 @@ const Profile_Page = () => {
 
             {/* Radiology Reports */}
             <div className="container-fluid mt-4">
-                <Reports />
+                <Reports_User />
             </div>
         </div>
     );
 };
 
-export default Profile_Page;
+export default Profile_User;
