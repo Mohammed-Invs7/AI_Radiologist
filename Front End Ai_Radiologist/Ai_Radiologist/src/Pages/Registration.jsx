@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import '../assets/Registration.css'
+import '../assets/Styling/Form_User.css'
+import Sidebar from "../Components/Sidebar";
 
 // Backend server URL
 const API_URL = "http://127.0.0.1:8000/api/v1/auth/registration/"; 
@@ -77,20 +78,13 @@ const Registration = () => {
 
 
     return (
-        <div>
+        <div >
             <div className="row m-0">
-                {/* Sidebar */}
-                <div className="sidebar col-lg-4 col-md-6 col-sm-12 h-100 h-md-75 h-sm-50
-                d-flex flex-column align-items-center">
-                    <div>
-                        <h2>AI Radiologist</h2>
-                        <p className="fs-5 mt-3">At Your Service For <br /> Better Health</p>
-                    </div>
-                </div>
+                <Sidebar/>
 
                 {/* Registration form */}
                 <div className="col-lg-6 col-md-6 col-sm-12 h-100 h-md-75 h-sm-50 
-                d-flex flex-column align-items-center mt-5">
+                d-flex flex-column align-items-center mt-3">
                     <div className="w-100 text-center m-3">
                         <h3 className="fw-bold">WELCOME</h3>
                     </div>
@@ -107,7 +101,7 @@ const Registration = () => {
                         <span className="visually-hidden">Loading...</span>
                     </div>}
 
-                    <form className="w-100" style={{ maxWidth: "400px" }} onSubmit={handleSubmit}>
+                    <form className="w-100 " style={{ maxWidth: "400px" }} onSubmit={handleSubmit}>
                         {/* Input fields */}
                         <div className="input-group mb-3">
                             <span className="input-group-text"><i className="bi bi-person"></i></span>
@@ -176,15 +170,15 @@ const Registration = () => {
                             Become a Member →
                         </button>
                     </form>
-
-                </div>
-
-                {/* Login link */}
-                <div className="col-lg-2 col-md-6 col-sm-12 h-100 h-md-75 h-sm-50 mt-2">
-                    <a href="/Login" className="login-link">
+                        <div className="mt-3">
+                    <a href="/Login" className="login-link fw-bold">
                         Already a Member? <strong>LOG IN NOW</strong>
                     </a>
                 </div>
+                </div>
+
+                {/* Login link */}
+                
             </div>
         </div>
     );

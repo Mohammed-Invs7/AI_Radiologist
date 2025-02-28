@@ -8,7 +8,7 @@ const UploadButton = () => {
 
         if (token) {
             console.log("Navigating to /upload_page");
-            navigate('/upload_page');
+            navigate('/Upload');
         } else {
             console.log("Redirecting to /login");
             navigate('/login');

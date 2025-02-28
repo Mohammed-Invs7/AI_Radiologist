@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import "../assets/Styling/Form_User.css"
+import Sidebar from "../Components/Sidebar";
 
 const ResetPassword = () => {
     const { uidb64, token } = useParams();
@@ -64,7 +66,7 @@ const ResetPassword = () => {
     if (validToken === false) {
         return (
             <div className="container mt-5">
-                <h2>Invalid or Expired Token</h2>
+                <h2>Invalid</h2>
                 <p>This password reset link is no longer valid.</p>
                 <button className="btn btn-primary" onClick={() => navigate("/forgot-password")}>
                     Request a New Link
@@ -74,21 +76,15 @@ const ResetPassword = () => {
     }
 
     return (
-        <div className="d-flex">
-            <div className="sidebar col-lg-4 col-md-6 col-sm-12 h-100 h-md-75 h-sm-50
-                d-flex flex-column align-items-center">
-                    <div>
-                        <h2>AI Radiologist</h2>
-                        <p className="fs-5 mt-3">At Your Service For <br /> Better Health</p>
-                    </div>
-            </div>
-            <div className="container mt-5">
+        <div className="row m-0">
+        <Sidebar/>
+        <div className="col-lg-6 col-md-6 d-flex flex-column align-items-center mt-5" >
                 <h2>Reset Password</h2>
                 <p>Enter your new password below.</p>
 
                 {message && <div className="alert alert-info">{message}</div>}
 
-                <form onSubmit={handleSubmit}>
+                <form className="w-100" onSubmit={handleSubmit} style={{ maxWidth:"400px" ,}}>
                     <div className="mb-3">
                         <label className="form-label">New Password</label>
                         <input
@@ -111,7 +107,7 @@ const ResetPassword = () => {
                         />
                     </div>
 
-                    <button type="submit" className="btn btn-success w-100">
+                    <button type="submit" className="btn btn-submit">
                         Reset Password
                     </button>
                 </form>

@@ -1,0 +1,38 @@
+.sidebar {
+    background: linear-gradient(180deg, #025559 0%, #017276 20%, #80DFDF 100%);
+    border-radius: 0px 100px 100px 0px;
+    color: white;
+    padding: 118px;
+    animation: sidebarSlideIn 1s ease-out;
+    max-height: 680px;
+}
+
+@keyframes sidebarSlideIn {
+    0% {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.sidebar h2 {
+    margin: 100px 0px 200px 0px;
+    font-weight: bold;
+    animation: fadeInText 1.5s ease-out;
+}
+
+@keyframes fadeInText {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

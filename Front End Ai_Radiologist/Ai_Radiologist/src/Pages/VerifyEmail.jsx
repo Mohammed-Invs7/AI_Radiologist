@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import "../assets/Styling/Form_User.css"
+import Sidebar from "../Components/Sidebar";
 
 const API_VERIFY_URL = "http://127.0.0.1:8000/api/v1/auth/registration/verify-email/";
 
@@ -42,9 +44,12 @@ export default function VerifyEmail() {
     }, [token, navigate]);
 
     return (
-        <div className="container text-center mt-5">
+        <div className="row m-0">
+        <Sidebar/>
+        <div className="col-lg-6 col-md-6 d-flex flex-column align-items-center mt-5" >
             <h2>Email Verification</h2>
             <p className="alert alert-info">{message}</p>
+        </div>
         </div>
     );
 }

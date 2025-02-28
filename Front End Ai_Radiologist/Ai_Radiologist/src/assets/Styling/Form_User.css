@@ -1,0 +1,87 @@
+/* General Styles */
+.input-group {
+    border: 1px solid rgb(141, 140, 140);
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+    /* Animation for smooth transition */
+}
+
+.input-group:focus-within {
+    box-shadow: 0px 0px 5px rgba(0, 150, 150, 0.8);
+    /* Highlighting input field when active */
+    border-color: #017276;
+}
+
+/* Buttons */
+.btn-submit {
+    background: linear-gradient(90deg, #017276 0%, #80DFDF 100%);
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    color: white;
+    width: 100%;
+    padding: 10px;
+    transition: 0.3s ease-in-out;
+    animation: buttonEntrance 1s ease-out;
+    /* Adding animation */
+}
+
+.btn-submit:hover {
+    background: linear-gradient(90deg, #025559 0%, #60CACA 100%);
+    transform: scale(1.05);
+    /* Slightly increase the size when hovering */
+}
+
+@keyframes buttonEntrance {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* Links */
+.login-link {
+    font-size: 12px;
+    color: #212121;
+    text-decoration: none;
+    transition: color 0.3s;
+    animation: linkAppearance 1s ease-out;
+    /* Animation for link appearance */
+}
+
+.login-link:hover {
+    color: #017276;
+}
+
+@keyframes linkAppearance {
+    0% {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Radio Buttons */
+.radio {
+    border: 1px solid rgb(117, 112, 112);
+    border-radius: 5px;
+    padding: 5px;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.radio:hover {
+    border-color: #017276;
+    /* Change border color on hover */
+    transform: scale(1.05);
+    /* Slightly increase size when hovered */
+}

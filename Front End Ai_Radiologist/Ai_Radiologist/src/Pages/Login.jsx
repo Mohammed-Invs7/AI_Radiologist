@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom"; // Import navigation funct
 import axios from "axios"; // Import Axios for API requests
 import { useAuth } from "../context/AuthContext"; // Import AuthContext for authentication state
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap for styling
+import Sidebar from "../Components/Sidebar";
+import "../assets/Styling/Form_User.css"
 
 const API_URL = "http://127.0.0.1:8000/api/v1/auth/login/"; // API endpoint for user authentication
 
@@ -59,14 +61,7 @@ const Login = () => {
 
     return (
         <div className="row m-0">
-            {/* Sidebar Section */}
-            <div className="sidebar col-lg-4 col-md-6 col-sm-12 h-100 h-md-75 h-sm-50
-                d-flex flex-column align-items-center">
-                    <div>
-                        <h2>AI Radiologist</h2>
-                        <p className="fs-5 mt-3">At Your Service For <br /> Better Health</p>
-                    </div>
-                </div>
+        <Sidebar/>
 
             {/* Login Form Section */}
             <div className="col-lg-6 col-md-6 d-flex flex-column align-items-center mt-5">
@@ -106,16 +101,15 @@ const Login = () => {
                     </div>
 
                     {/* Login Button */}
-                    <button type="submit" className="btn btn-primary w-100">
+                    <button type="submit" className="btn btn-submit">
                         Log In
                     </button>
                 </form>
 
                 {/* Additional Links */}
-                <div className="text-links mt-3">
-                    <p> <Link to="/forgot-password">Forgot Password?</Link></p>
-                    <br />
-                    <a href="/Registration">Do not have an account? <strong>Register</strong></a>
+                <div className="text-links mt-3 text-center w-100 fw-bold">
+                    <p > <Link to="/forgot-password" className="login-link">Forgot Password?</Link></p>
+                    <Link to="/Registration" className="login-link">Do not have an account? <strong>Register</strong></Link>
                 </div>
             </div>
         </div>

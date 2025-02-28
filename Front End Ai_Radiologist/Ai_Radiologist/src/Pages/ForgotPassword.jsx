@@ -1,5 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
+import Sidebar from "../Components/Sidebar";
+import "../assets/Styling/Form_User.css";
 //import { useNavigate } from "react-router-dom";
 
 const API_URL = "http://127.0.0.1:8000/api/v1/auth/password/reset/";
@@ -38,23 +40,16 @@ const ForgotPassword = () => {
 
 
     return (
-        <div className="d-flex">
-        <div className="sidebar col-lg-4 col-md-6 col-sm-12 h-100 h-md-75 h-sm-50
-                d-flex flex-column align-items-center">
-                    <div>
-                        <h2>AI Radiologist</h2>
-                        <p className="fs-5 mt-3">At Your Service For <br /> Better Health</p>
-                    </div>
-                </div>
-        <div className="container mt-5">
+        <div className="row m-0">
+        <Sidebar/>
+        <div className="col-lg-6 col-md-6 d-flex flex-column align-items-center mt-5" >
             <h2>Forgot Password</h2>
             <p>Enter your email to receive a password reset link.</p>
 
             {message && <div className="alert alert-info">{message}</div>}
 
-            <form onSubmit={handleSubmit}>
+                <form className="w-100" onSubmit={handleSubmit} style={{ maxWidth:"400px" ,}}>
                 <div className="mb-3">
-                    <label className="form-label">Email</label>
                     <input
                         type="email"
                         className="form-control"
@@ -64,7 +59,7 @@ const ForgotPassword = () => {
                     />
                 </div>
 
-                    <button type="submit" className="btn btn-primary w-100" disabled={loading}>
+                    <button type="submit" className="btn btn-submit" disabled={loading}>
                         {loading ? (
                             <>
                             <span className="spinner-border spinner-border-sm"></span>Sending...
