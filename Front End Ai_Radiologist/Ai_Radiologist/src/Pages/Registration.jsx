@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , Link} from "react-router-dom";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -53,7 +53,7 @@ const Registration = () => {
 
         if (response.status === 201 || response.status === 200) {
             setMessage({
-                text: "✅ Registration successful! Please check your email to verify your account.",
+                text: " Registration successful! Please check your email to verify your account.",
                 type: "success"
             });
 
@@ -171,9 +171,9 @@ const Registration = () => {
                         </button>
                     </form>
                         <div className="mt-3">
-                    <a href="/Login" className="login-link fw-bold">
+                        <Link to={"/Login"} className="login-link fw-bold">
                         Already a Member? <strong>LOG IN NOW</strong>
-                    </a>
+                    </Link>
                 </div>
                 </div>
 

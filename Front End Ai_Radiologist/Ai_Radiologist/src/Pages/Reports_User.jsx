@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Link } from 'react-router-dom';
 
 // Define API URL
 const API_URL = "http://127.0.0.1:8000/api/v1/user/reports/";
@@ -34,7 +35,9 @@ const Reports_User = () => {
             <div className="bg-primary text-white p-3 rounded-top d-flex justify-content-between"
                 style={{ background: 'linear-gradient(90deg, rgba(2, 85, 89, 0.90) 0%, #80DFDF 66%)' }}>
                 <h6>Your Radiology Reports</h6>
-                <button className="btn btn-light btn-sm">Add New Radiology Report</button>
+                <button className="btn btn-light btn-sm">
+                <Link to={"/Upload"} style={{textDecoration:"none", color:'black'}} >Add New Radiology Report</Link> 
+                </button>
             </div>
 
             {/* Loading and Error States */}
