@@ -23,7 +23,7 @@ const Registration = () => {
 
     const [message, setMessage] = useState(""); // Store validation or success messages
     const [loading, setLoading] = useState(false);  // Loading state
-    const [isChecked, setIsChecked] = useState(false); // Track terms and conditions agreement
+    // const [isChecked, setIsChecked] = useState(false); // Track terms and conditions agreement
     const navigate = useNavigate(); // Navigation hook
 
     // Update values when user inputs data
@@ -36,10 +36,10 @@ const Registration = () => {
     e.preventDefault();
     setMessage("");
 
-    if (!isChecked) {
-        setMessage("You must agree to the terms and conditions to register.");
-        return;
-    }
+    // if (!isChecked) {
+    //     setMessage("You must agree to the terms and conditions to register.");
+    //     return;
+    // }
 
     setLoading(true);
 
@@ -157,29 +157,27 @@ const Registration = () => {
                         </div>
 
                         {/* Terms and Conditions */}
-                        <div className="form-check">
+                        {/* <div className="form-check">
                             <input type="checkbox" className="form-check-input" id="terms"
                                 checked={isChecked} onChange={(e) => setIsChecked(e.target.checked)} />
                             <label className="form-check-label" htmlFor="terms">
                                 I agree to the <a href="/terms">terms and conditions</a>.
                             </label>
-                        </div>
+                        </div> */}
 
                         {/* Submit button */}
                         <button type="submit" className="btn btn-submit">
                             Become a Member →
                         </button>
                     </form>
+                        {/* Login link */}
                         <div className="mt-3">
                         <Link to={"/Login"} className="login-link fw-bold">
                         Already a Member? <strong>LOG IN NOW</strong>
                     </Link>
                 </div>
                 </div>
-
-                {/* Login link */}
-                
-            </div>
+        </div>
         </div>
     );
 };

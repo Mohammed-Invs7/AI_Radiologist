@@ -2,7 +2,8 @@ import { useState, useEffect } from "react"; // Import React hooks for state and
 import axios from "axios"; // Import Axios for API requests
 import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 import { useAuth } from "../context/AuthContext"; // Import AuthContext to get user data and update function
-
+import NavBar from "../Components/NavBar"
+import "../assets/Styling/Setting_User.css"
 const API_URL = "http://127.0.0.1:8000/api/v1/auth/user/"; // API endpoint for fetching and updating user data
 
 const Settings_User = () => {
@@ -81,15 +82,36 @@ const Settings_User = () => {
     };
 
     return (
-        <div className="container mt-5">
-            <h2>User Settings</h2>
-
+        <div className="">
+            <NavBar/>
+            
             {message && <div className="alert alert-info">{message}</div>} {/* Display success/error message */}
 
             {loading ? (
                 <p>Loading user data...</p> // Show loading message while updating
             ) : (
-                <form onSubmit={handleSubmit}>
+                <form className="mt-5 container d-flex align-items-center flex-column" onSubmit={handleSubmit}>
+                <div className="d-flex align-items-center flex-column">
+                            {previewImage && (
+                            <div className="mb-3 text-center align-items-center rounded-circle border border-dark bg-white shadow"
+                                style={{ width: '120px', height: '120px' }}>
+                                    <img src={previewImage} alt="Profile Preview"
+                                    className="rounded-circle" style={{ width: '118px', height: '118px', objectFit: 'cover' }} />
+
+                            </div>
+                        )}
+                            <label className="custom-upload-button">
+                                Change your Image
+                            <input
+                                type="file"
+                                className="hidden-file-input"
+                                name="profile_image"
+                                accept="image/*"
+                                onChange={handleChange}
+                            />
+                        </label>
+
+                    </div>
                     {/* First Name Input */}
                     <div className="mb-3">
                         <label className="form-label">First Name</label>
@@ -128,25 +150,7 @@ const Settings_User = () => {
                             <option value="M">Male</option>
                             <option value="F">Female</option>
                         </select>
-                    </div>
-
-                    {/* Profile Image Upload */}
-                    <div className="mb-3">
-                        <label className="form-label">Profile Image</label>
-                        <input
-                            type="file"
-                            className="form-control"
-                            name="profile_image"
-                            accept="image/*"
-                            onChange={handleChange}
-                        />
-                        {previewImage && (
-                            <div className="mt-3">
-                                <img src={previewImage} alt="Profile Preview" className="img-thumbnail" width="150" />
-                            </div>
-                        )}
-                    </div>
-
+                </div>
                     {/* Save Button */}
                     <button type="submit" className="btn btn-success w-100" disabled={loading}>
                         {loading ? "Saving..." : "Save Changes"}
