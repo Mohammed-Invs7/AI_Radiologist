@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom"; // Import useNavigate for naviga
 import { useAuth } from "../context/AuthContext"; // Import AuthContext to get user data and update function
 import NavBar from "../Components/NavBar"
 import "../assets/Styling/Setting_User.css"
+import "../assets/Styling/Form_User.css"
 const API_URL = "http://127.0.0.1:8000/api/v1/auth/user/"; // API endpoint for fetching and updating user data
 
 const Settings_User = () => {
@@ -85,12 +86,12 @@ const Settings_User = () => {
         <div className="">
             <NavBar/>
             
-            {message && <div className="alert alert-info">{message}</div>} {/* Display success/error message */}
+            {message && <div  className=" text-center mt-3">{message}</div>} {/* Display success/error message */}
 
             {loading ? (
                 <p>Loading user data...</p> // Show loading message while updating
             ) : (
-                <form className="mt-5 container d-flex align-items-center flex-column" onSubmit={handleSubmit}>
+                <form className="w-50 mt-3 container d-flex align-items-center flex-column" onSubmit={handleSubmit}>
                 <div className="d-flex align-items-center flex-column">
                             {previewImage && (
                             <div className="mb-3 text-center align-items-center rounded-circle border border-dark bg-white shadow"
@@ -117,7 +118,7 @@ const Settings_User = () => {
                         <label className="form-label">First Name</label>
                         <input
                             type="text"
-                            className="form-control"
+                            className="form-control input-Name"
                             name="first_name"
                             value={user.first_name || ""}
                             onChange={handleChange}
@@ -130,7 +131,7 @@ const Settings_User = () => {
                         <label className="form-label">Last Name</label>
                         <input
                             type="text"
-                            className="form-control"
+                            className="form-control input-Name"
                             name="last_name"
                             value={user.last_name || ""}
                             onChange={handleChange}
@@ -152,7 +153,7 @@ const Settings_User = () => {
                         </select>
                 </div>
                     {/* Save Button */}
-                    <button type="submit" className="btn btn-success w-100" disabled={loading}>
+                    <button  type="submit" className="btn btn-submit Save-Button " disabled={loading}>
                         {loading ? "Saving..." : "Save Changes"}
                     </button>
                 </form>

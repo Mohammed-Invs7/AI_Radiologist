@@ -16,5 +16,12 @@
 }
 
 .custom-upload-button:hover {
-    background-color: #0056b3;
+    background-color: #dbdbdb;
+}
+
+.input-Name{
+    width: 340px;
+}
+.Save-Button{
+    width: 340px;
 }
