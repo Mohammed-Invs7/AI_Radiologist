@@ -60,21 +60,20 @@ const Login = () => {
     };
 
     return (
-        <div className="row m-0">
-        <Sidebar/>
-
+        <div className="page-form">
+            <div className="container-form">
             {/* Login Form Section */}
-            <div className="col-lg-6 col-md-6 d-flex flex-column align-items-center mt-5">
-                <h3 className="fw-bold">WELCOME BACK</h3>
-                <p>Log in to your account</p>
+                <div className="form-box login">
+                
 
                 {/* Display error message if exists */}
                 {message && <div className="alert alert-danger">{message}</div>}
 
-                <form className="w-100" style={{ maxWidth: "400px" }} onSubmit={handleSubmit}>
+                <form action={{}} onSubmit={handleSubmit}>
+                    <h3 className="fw-bold">WELCOME BACK</h3>
+                    <p>Log in to your account</p>
                     {/* Email Input */}
-                    <div className="input-group mb-3">
-                        <span className="input-group-text"><i className="bi bi-envelope"></i></span>
+                    <div className="input-box">
                         <input
                             type="email"
                             name="email"
@@ -84,11 +83,12 @@ const Login = () => {
                             onChange={handleChange}
                             required
                         />
+                        <i className="bx bx-envelope"></i>
+
                     </div>
 
                     {/* Password Input */}
-                    <div className="input-group mb-3">
-                        <span className="input-group-text"><i className="bi bi-lock"></i></span>
+                    <div className="input-box">
                         <input
                             type="password"
                             name="password"
@@ -98,7 +98,14 @@ const Login = () => {
                             onChange={handleChange}
                             required
                         />
+                        <i className="bx bx-lock-alt"></i>
+
                     </div>
+                    <Link to="/forgot-password" className="forget-link">
+                        <div className="forget-link">
+                            Forgot Password?
+                        </div>
+                    </Link>
 
                     {/* Login Button */}
                     <button type="submit" className="btn btn-submit">
@@ -107,10 +114,11 @@ const Login = () => {
                 </form>
 
                 {/* Additional Links */}
-                <div className="text-links mt-3 text-center w-100 fw-bold">
-                    <p > <Link to="/forgot-password" className="login-link">Forgot Password?</Link></p>
+                {/* <div className="text-links mt-3 text-center w-100 fw-bold">
                     <Link to="/Registration" className="login-link">Do not have an account? <strong>Register</strong></Link>
+                </div> */}
                 </div>
+                <Sidebar/>
             </div>
         </div>
     );

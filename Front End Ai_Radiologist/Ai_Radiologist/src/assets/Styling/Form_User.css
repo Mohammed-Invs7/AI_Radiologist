@@ -1,87 +1,91 @@
-/* General Styles */
-.input-group {
-    border: 1px solid rgb(141, 140, 140);
-    border-radius: 5px;
-    transition: all 0.3s ease-in-out;
-    /* Animation for smooth transition */
+.page-form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(90deg, #e2e2e2,#c9d6ff);
 }
 
-.input-group:focus-within {
-    box-shadow: 0px 0px 5px rgba(0, 150, 150, 0.8);
-    /* Highlighting input field when active */
-    border-color: #017276;
+.container-form{
+    position: relative;
+    width: 850px;
+    height: 550px;
+    background: #fff;
+    border-radius: 30px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, .2);
 }
 
-/* Buttons */
-.btn-submit {
-    background: linear-gradient(90deg, #017276 0%, #80DFDF 100%);
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    color: white;
+.form-box{
+    position: absolute;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    background: seagreen;
+    display: flex;
+    align-items: center;
+    color: #333;
+    text-align: center;
+    padding: 40px;
+}
+
+form{
     width: 100%;
-    padding: 10px;
-    transition: 0.3s ease-in-out;
-    animation: buttonEntrance 1s ease-out;
-    /* Adding animation */
 }
 
-.btn-submit:hover {
-    background: linear-gradient(90deg, #025559 0%, #60CACA 100%);
-    transform: scale(1.05);
-    /* Slightly increase the size when hovering */
+.container h1{
+    font-size: 36px;
+    margin: -10px 0;
 }
 
-@keyframes buttonEntrance {
-    0% {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.input-box{
+    position: relative;
+    margin: 10px 0;
 }
 
-
-/* Links */
-.login-link {
-    font-size: 12px;
-    color: #212121;
-    text-decoration: none;
-    transition: color 0.3s;
-    animation: linkAppearance 1s ease-out;
-    /* Animation for link appearance */
+.input-box input{
+    width: 100%;
+    padding: 13px 50px 13px 20px;
+    background: #eee;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    font-size: 13px;
+    color: 16px;
+    color: #333;
+    font-weight: 500;
 }
 
-.login-link:hover {
-    color: #017276;
+.input-box input::placeholder{
+    color: #888;
+    font-weight: 400;
 }
 
-@keyframes linkAppearance {
-    0% {
-        opacity: 0;
-        transform: translateX(-10px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateX(0);
-    }
+.input-box i{
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #888;
 }
 
-/* Radio Buttons */
-.radio {
-    border: 1px solid rgb(117, 112, 112);
-    border-radius: 5px;
-    padding: 5px;
-    transition: border-color 0.3s ease-in-out;
+.forget-link{
+    margin: 0 0 15px;
+    font-size: 14.5px;
+        color: #333;
+        text-decoration: none;
 }
 
-.radio:hover {
-    border-color: #017276;
-    /* Change border color on hover */
-    transform: scale(1.05);
-    /* Slightly increase size when hovered */
+.btn{
+    width: 100%;
+    height: 48px;
+    background: #7494ec;
+    border-radius: 8px;
+    box-shadow: 0 0 10 rgba(0, 0, 0, .1);
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #fff;
+    font-weight: 600px;    
 }
+

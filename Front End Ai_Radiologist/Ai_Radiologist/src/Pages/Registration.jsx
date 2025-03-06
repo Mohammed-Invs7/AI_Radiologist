@@ -78,106 +78,127 @@ const Registration = () => {
 
 
     return (
-        <div >
-            <div className="row m-0">
-                <Sidebar/>
+        <div className="page-form">
+            <div className="container-form" >
+                    
 
-                {/* Registration form */}
-                <div className="col-lg-6 col-md-6 col-sm-12 h-100 h-md-75 h-sm-50 
-                d-flex flex-column align-items-center mt-3">
-                    <div className="w-100 text-center m-3">
-                        <h3 className="fw-bold">WELCOME</h3>
-                    </div>
+                    {/* Registration form */}
+                    <div className="form-box registration">
+                        {/* Display success or error message */}
+                        {message.text && (
+                            <div className={`alert alert-${message.type} text-center fw-bold`} role="alert">
+                                {message.text}
+                            </div>
+                        )}
 
-                    {/* Display success or error message */}
-                    {message.text && (
-                        <div className={`alert alert-${message.type} text-center fw-bold`} role="alert">
-                            {message.text}
-                        </div>
-                    )}
+                        {/* Show loading spinner */}
+                        {loading && <div className="spinner-border text-primary" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>}
 
-                    {/* Show loading spinner */}
-                    {loading && <div className="spinner-border text-primary" role="status">
-                        <span className="visually-hidden">Loading...</span>
-                    </div>}
-
-                    <form className="w-100 " style={{ maxWidth: "400px" }} onSubmit={handleSubmit}>
+                    <form action={{}} onSubmit={handleSubmit}>
+                        <h1>Registration</h1>
                         {/* Input fields */}
-                        <div className="input-group mb-3">
-                            <span className="input-group-text"><i className="bi bi-person"></i></span>
-                            <input type="text" name="first_name" placeholder="First Name" className="form-control"
-                                value={formData.first_name} onChange={handleChange} required />
-                        </div>
+                            <div className="input-box" >
+                            <input
+                                type="text"
+                                name="first_name"
+                                placeholder="First Name"
+                                value={formData.first_name}
+                                onChange={handleChange}
+                                required
+                            />
+                                <i className="bx bx-user"></i>
 
-                        <div className="input-group mb-3">
-                            <span className="input-group-text"><i className="bi bi-person"></i></span>
-                            <input type="text" name="last_name" placeholder="Last Name" className="form-control"
-                                value={formData.last_name} onChange={handleChange} required />
-                        </div>
+                            </div>
 
-                        <div className="input-group mb-3">
-                            <span className="input-group-text"><i className="bi bi-envelope"></i></span>
-                            <input type="email" name="email" placeholder="Email" className="form-control"
-                                value={formData.email} onChange={handleChange} required />
-                        </div>
+                            <div className="input-box" >
+                            <input type="text"
+                                name="last_name"
+                                placeholder="Last Name"
+                                value={formData.last_name}
+                                onChange={handleChange}
+                                required
+                            />
+                                <i className="bx bx-user"></i>
+                            </div>
 
-                        <div className="input-group mb-3">
-                            <span className="input-group-text"><i className="bi bi-lock"></i></span>
-                            <input type="password" name="password" placeholder="Password" className="form-control"
-                                value={formData.password} onChange={handleChange} required />
-                        </div>
+                            <div className="input-box" >
+                            <input type="email"
+                                name="email"
+                                placeholder="Email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                required
+                            />
+                            <i className="bx bx-envelope"></i>
 
-                        <div className="input-group mb-3">
-                            <span className="input-group-text"><i className="bi bi-lock"></i></span>
-                            <input type="password" name="password_confirm" placeholder="Confirm Password" className="form-control"
-                                value={formData.password_confirm} onChange={handleChange} required />
-                        </div>
+                            </div>
 
-                        <div className="input-group mb-3">
-                            <span className="input-group-text"><i className="bi bi-calendar"></i></span>
-                            <input type="date" name="date_of_birth" className="form-control"
-                                value={formData.date_of_birth} onChange={handleChange} required />
-                        </div>
+                            <div className="input-box" >
+                            <input type="password"
+                                name="password"
+                                placeholder="Password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                required
+                            />
+                            <i className="bx bx-lock-alt"></i>
 
-                        {/* Gender selection */}
-                        <div className="mb-3">
-                            <label className="form-label d-block">Gender</label>
-                            <div className="d-flex">
-                                <div className="form-check form-check-inline">
-                                    <input type="radio" name="gender" value="M" className="form-check-input"
-                                        checked={formData.gender === "M"} onChange={handleChange} required />
-                                    <label className="form-check-label">Male</label>
-                                </div>
-                                <div className="form-check form-check-inline">
-                                    <input type="radio" name="gender" value="F" className="form-check-input"
-                                        checked={formData.gender === "F"} onChange={handleChange} required />
-                                    <label className="form-check-label">Female</label>
+                            </div>
+
+                            <div className="input-box" >
+                            <input type="password"
+                                name="password_confirm"
+                                placeholder="Confirm Password"
+                                value={formData.password_confirm}
+                                onChange={handleChange}
+                                required
+                            />
+                                <i className="bx bx-lock-alt"></i>
+
+                            </div>
+
+                            <div className="input-box" >
+                            <input
+                                type="date"
+                                name="date_of_birth"
+                                value={formData.date_of_birth}
+                                onChange={handleChange}
+                                required />
+                            </div>
+
+                            {/* Gender selection */}
+                            <div className="mb-3">
+                                <label className="form-label d-block">Gender</label>
+                                <div className="d-flex">
+                                    <div className="form-check form-check-inline">
+                                        <input type="radio" name="gender" value="M" className="form-check-input"
+                                            checked={formData.gender === "M"} onChange={handleChange} required />
+                                        <label className="form-check-label">Male</label>
+                                    </div>
+                                    <div className="form-check form-check-inline">
+                                        <input type="radio" name="gender" value="F" className="form-check-input"
+                                            checked={formData.gender === "F"} onChange={handleChange} required />
+                                        <label className="form-check-label">Female</label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                            
 
-                        {/* Terms and Conditions */}
-                        {/* <div className="form-check">
-                            <input type="checkbox" className="form-check-input" id="terms"
-                                checked={isChecked} onChange={(e) => setIsChecked(e.target.checked)} />
-                            <label className="form-check-label" htmlFor="terms">
-                                I agree to the <a href="/terms">terms and conditions</a>.
-                            </label>
-                        </div> */}
-
-                        {/* Submit button */}
-                        <button type="submit" className="btn btn-submit">
-                            Become a Member →
-                        </button>
-                    </form>
-                        {/* Login link */}
-                        <div className="mt-3">
-                        <Link to={"/Login"} className="login-link fw-bold">
-                        Already a Member? <strong>LOG IN NOW</strong>
-                    </Link>
+                            {/* Submit button */}
+                            <button type="submit" className="btn">
+                                Become a Member →
+                            </button>
+                        </form>
+                            {/* Login link */}
+                            {/* <div className="mt-3">
+                            <Link to={"/Login"} className="login-link fw-bold">
+                            Already a Member? <strong>LOG IN NOW</strong>
+                        </Link>
+                    </div> */}
                 </div>
-                </div>
-        </div>
+            </div>
         </div>
     );
 };
