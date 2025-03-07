@@ -12,6 +12,7 @@
     height: 610px;
     background: #fff;
     border-radius: 30px;
+    margin: 20px;
     box-shadow: 0 0 30px rgba(0, 0, 0, .2);
     overflow: hidden;
 }
@@ -82,13 +83,31 @@ form{
 .btn{
     width: 100%;
     height: 48px;
-    background: #7494ec;
+    background: linear-gradient(90deg, #017276 0%, #80DFDF 100%);
     border-radius: 8px;
     box-shadow: 0 0 10 rgba(0, 0, 0, .1);
     border: none;
     cursor: pointer;
     font-size: 16px;
     color: #fff;
-    font-weight: 600px;    
+    font-weight: bold;    
 }
 
+.btn :hover{
+    color: black;
+
+
+}
+
+@media screen and (max-width: 696px) {
+    .container-form{
+        height: calc(100vh - 40px);
+    }
+
+    .form-box{
+        bottom: 0;
+        width: 100%;
+        height: 70%;
+    }
+    
+}

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import axios from "axios";
-import Sidebar from "../Components/Sidebar";
 import "../assets/Styling/Form_User.css";
 //import { useNavigate } from "react-router-dom";
 
@@ -41,8 +40,8 @@ const ForgotPassword = () => {
 
     return (
         <div className="page-form">
-            <div className="container-form" >
-                <div>
+            <div className="container-form d-flex flex-column justify-content-center align-items-center" >
+                <div className="text-center">
                 <h2>Forgot Password</h2>
                 <p>Enter your email to receive a password reset link.</p>
 

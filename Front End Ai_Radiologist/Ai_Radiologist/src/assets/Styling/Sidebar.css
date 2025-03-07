@@ -1,40 +1,103 @@
-.sidebar-box{
+.sidebar-box {
     position: absolute;
     width: 100%;
     height: 100%;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.8s ease-in-out,
+        filter 0.8s ease-in-out;
+    opacity: 1;
 }
 
-.sidebar-box::before{
+.sidebar-box.slide-out {
+    transform: translateX(100%) scale(1.05);
+    z-index: 999;
+    filter: blur(5px);
+}
+
+.sidebar-box.slide-in {
+    transform: translateX(-100%) scale(1.05);
+    z-index: 999;
+    filter: blur(5px);
+}
+
+.sidebar-box::before {
     content: '';
     position: absolute;
     left: -250%;
     width: 300%;
     height: 100%;
-    background: #7494ec;
-    border-radius: 150px;
+    background: linear-gradient(180deg, #025559 0%, #017276 20%, #80DFDF 100%);
+    border-radius: 130px;
     z-index: 2;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.sidebar-panel{
+.sidebar-panel {
     position: absolute;
     width: 50%;
-    height: 100%;
-    /* background: seagreen; */
+    height: 90%;
     color: #fff;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     z-index: 2;
-}
-.sidebar-panel p{
-    margin-bottom: 20px;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.sidebar-panel .btn{
+.sidebar-panel h1 {
+    font-size: 40px;
+}
+
+.sidebar-panel p {
+    letter-spacing: 2.5px;
+    font-size: 23px;
+    font-weight: bold;
+    margin: 60px 0px;
+}
+
+.sidebar-panel .btn {
     width: 160px;
     height: 46px;
     background: transparent;
     border: 2px solid #fff;
-    box-sizing: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.sidebar-panel .btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+@media screen and (max-width: 696px) {
+    .sidebar-panel {
+        width: 100%;
+        height: 30%;
+    }
+
+    .sidebar-panel p {
+        font-size: 15px;
+        margin: 10px 0px;
+    }
+
+    img {
+        width: 200px;
+    }
+
+        .sidebar-panel .btn {
+            width: 90px;
+            height: 40px;
+
+        }
+    .sidebar-box.slide-out {
+        transform: translateY(100%) scale(1.05);
+    }
+
+    .sidebar-box.slide-in {
+        transform: translateY(-100%) scale(1.05);
+    }
+
+    .sidebar-box::before {
+        left: 0;
+        top: -270%;
+        width: 100%;
+        height: 300%;
+        background: linear-gradient(90deg, #025559 0%, #017276 50%, #80DFDF 100%);
+    }
 }

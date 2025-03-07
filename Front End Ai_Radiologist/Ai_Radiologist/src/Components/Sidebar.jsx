@@ -1,27 +1,38 @@
-import {  useNavigate , useLocation } from "react-router-dom";
-import "../assets/Styling/Sidebar.css"
-const Sidebar = () => {
-    const navigate  = useNavigate();
-    const location = useLocation();
-    
-    const isRegisterPage = location.pathname === "/Registration";
+import { useState } from "react";
+import { useNavigate, useLocation , Link } from "react-router-dom";
+import LogoSidebar from "../assets/Images/Logo.png"
+import "../assets/Styling/Sidebar.css";
 
+const Sidebar = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [slideOut, setSlideOut] = useState(false); // حالة للتحكم بالحركة
+
+    const isRegisterPage = location.pathname === "/Registration";
     const buttonText = isRegisterPage ? "Login" : "Register";
+    const welcomeText = isRegisterPage ? "Welcome" : "Welcome Back";
+
+    const handleClick = () => {
+        setSlideOut(true); 
+        setTimeout(() => {
+            navigate(isRegisterPage ? "/Login" : "/Registration");
+        }, 600); 
+    };
 
     return (
-        <div className="sidebar-box ">
-            <div className="sidebar-panel sidebar-lift">
-                <h1>Welcome</h1>
-                <h2>AI Radiologist</h2>
-                <p>At Your Service For Better Health</p>
-                    <button
-                        className="btn register-btn"
-                        onClick={()=> navigate(isRegisterPage ? "/Login" : "/Registration")}
-                    >
-                        {buttonText}
-                    </button>
+        <div className={`sidebar-box ${slideOut ? "slide-out" : ""}`}>
+            <div className="sidebar-panel d-flex flex-column justify-content-center align-items-center">
+                <h1>{welcomeText}</h1>
+                <Link to="/">
+                    <img width={250} src={LogoSidebar} alt="" />
+                </Link>
+                <p className="text-center">At Your Service For <br />Better Health</p>
+                <button className="btn register-btn" onClick={handleClick}>
+                    {buttonText}
+                </button>
             </div>
         </div>
     );
 };
-export default Sidebar; 
+
+export default Sidebar;

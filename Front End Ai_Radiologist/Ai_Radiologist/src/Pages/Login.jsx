@@ -110,7 +110,7 @@ const Login = () => {
                     {/* Login Button */}
                     <button type="submit" className="btn btn-submit">
                         Log In
-                    </button>0
+                    </button>
                 </form>
 
                 </div>
