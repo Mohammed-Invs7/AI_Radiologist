@@ -161,6 +161,7 @@ const Registration = () => {
 
                             <div className="input-box" >
                             <input
+                                style={{paddingRight:"20px",}}
                                 type="date"
                                 name="date_of_birth"
                                 value={formData.date_of_birth}
@@ -170,7 +171,7 @@ const Registration = () => {
 
                             {/* Gender selection */}
                             <div className="mb-3">
-                                <label className="form-label d-block">Gender</label>
+                                <label className="form-label d-block text-start">Gender</label>
                                 <div className="d-flex">
                                     <div className="form-check form-check-inline">
                                         <input type="radio" name="gender" value="M" className="form-check-input"
@@ -188,7 +189,7 @@ const Registration = () => {
 
                             {/* Submit button */}
                             <button type="submit" className="btn">
-                                Become a Member →
+                            Register
                             </button>
                         </form>
                             {/* Login link */}
@@ -198,6 +199,7 @@ const Registration = () => {
                         </Link>
                     </div> */}
                 </div>
+                <Sidebar/>
             </div>
         </div>
     );

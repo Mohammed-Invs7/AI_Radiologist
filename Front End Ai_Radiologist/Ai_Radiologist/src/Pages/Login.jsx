@@ -63,7 +63,7 @@ const Login = () => {
         <div className="page-form">
             <div className="container-form">
             {/* Login Form Section */}
-                <div className="form-box login">
+                <div className="form-box login flex-column ">
                 
 
                 {/* Display error message if exists */}

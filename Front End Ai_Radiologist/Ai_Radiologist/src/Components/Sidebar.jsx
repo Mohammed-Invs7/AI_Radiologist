@@ -1,10 +1,17 @@
+import { Link } from "react-router-dom";
 import "../assets/Styling/Sidebar.css"
 const Sidebar = () => {
     return (
-        <div className="sidebar col-lg-4 col-md-6 d-none d-md-block d-flex flex-column align-items-center">
-            <div>
+        <div className="sidebar-box ">
+            <div className="sidebar-panel sidebar-lift">
+                <h1>Welcome</h1>
                 <h2>AI Radiologist</h2>
-                <p className="fs-5 mt-3">At Your Service For <br /> Better Health</p>
+                <p>At Your Service For Better Health</p>
+                <Link>
+                    <button className="btn register-btn">
+                        Register
+                    </button>
+                </Link>
             </div>
         </div>
     );
