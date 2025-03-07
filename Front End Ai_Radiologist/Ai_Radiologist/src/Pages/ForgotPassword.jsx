@@ -40,35 +40,36 @@ const ForgotPassword = () => {
 
 
     return (
-        <div className="row m-0">
-        <Sidebar/>
-        <div className="col-lg-6 col-md-6 d-flex flex-column align-items-center mt-5" >
-            <h2>Forgot Password</h2>
-            <p>Enter your email to receive a password reset link.</p>
+        <div className="page-form">
+            <div className="container-form" >
+                <div>
+                <h2>Forgot Password</h2>
+                <p>Enter your email to receive a password reset link.</p>
 
-            {message && <div className="alert alert-info">{message}</div>}
+                {message && <div className="alert alert-info">{message}</div>}
 
-                <form className="w-100" onSubmit={handleSubmit} style={{ maxWidth:"400px" ,}}>
-                <div className="mb-3">
-                    <input
-                        type="email"
-                        className="form-control"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
+                    <form onSubmit={handleSubmit} style={{ maxWidth:"400px" ,}}>
+                    <div className="input-box">
+                        <input
+                            type="email"
+                            className="form-control"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                        <button type="submit" className="btn btn-submit" disabled={loading}>
+                            {loading ? (
+                                <>
+                                <span className="spinner-border spinner-border-sm"></span>Sending...
+                                </>
+                            ) : (
+                                "Send Reset Link"
+                            )}
+                    </button>
+                        </form>
                 </div>
-
-                    <button type="submit" className="btn btn-submit" disabled={loading}>
-                        {loading ? (
-                            <>
-                            <span className="spinner-border spinner-border-sm"></span>Sending...
-                            </>
-                        ) : (
-                            "Send Reset Link"
-                        )}
-                </button>
-            </form>
             </div>
     </div>
     );

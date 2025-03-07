@@ -83,10 +83,10 @@ const Registration = () => {
                     
 
                     {/* Registration form */}
-                    <div className="form-box registration">
+                    <div className="form-box flex-column registration">
                         {/* Display success or error message */}
                         {message.text && (
-                            <div className={`alert alert-${message.type} text-center fw-bold`} role="alert">
+                            <div style={{fontSize:"13px"}} className={`alert alert-${message.type} text-center fw-bold`} role="alert">
                                 {message.text}
                             </div>
                         )}
@@ -192,12 +192,7 @@ const Registration = () => {
                             Register
                             </button>
                         </form>
-                            {/* Login link */}
-                            {/* <div className="mt-3">
-                            <Link to={"/Login"} className="login-link fw-bold">
-                            Already a Member? <strong>LOG IN NOW</strong>
-                        </Link>
-                    </div> */}
+                            
                 </div>
                 <Sidebar/>
             </div>

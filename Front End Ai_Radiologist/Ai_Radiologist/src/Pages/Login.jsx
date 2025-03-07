@@ -70,7 +70,7 @@ const Login = () => {
                 {message && <div className="alert alert-danger">{message}</div>}
 
                 <form action={{}} onSubmit={handleSubmit}>
-                    <h3 className="fw-bold">WELCOME BACK</h3>
+                    <h3 className="fw-bold">Login</h3>
                     <p>Log in to your account</p>
                     {/* Email Input */}
                     <div className="input-box">
@@ -110,13 +110,9 @@ const Login = () => {
                     {/* Login Button */}
                     <button type="submit" className="btn btn-submit">
                         Log In
-                    </button>
+                    </button>0
                 </form>
 
-                {/* Additional Links */}
-                {/* <div className="text-links mt-3 text-center w-100 fw-bold">
-                    <Link to="/Registration" className="login-link">Do not have an account? <strong>Register</strong></Link>
-                </div> */}
                 </div>
                 <Sidebar/>
             </div>
