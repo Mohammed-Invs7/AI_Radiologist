@@ -70,7 +70,7 @@ const Login = () => {
                 {message && <div className="alert alert-danger">{message}</div>}
 
                 <form action={{}} onSubmit={handleSubmit}>
-                    <h3 className="fw-bold">Login</h3>
+                    <h3>Login</h3>
                     <p>Log in to your account</p>
                     {/* Email Input */}
                     <div className="input-box">
