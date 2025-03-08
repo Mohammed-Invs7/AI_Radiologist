@@ -109,5 +109,9 @@ form{
         width: 100%;
         height: 70%;
     }
+
+    .login{
+        height: 85%;
+    }
     
 }

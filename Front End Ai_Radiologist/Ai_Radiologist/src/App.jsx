@@ -12,6 +12,7 @@ import ProtectedRoute from './Components/ProtectedRoute'
 import VerifyEmail from './Pages/VerifyEmail'
 import ForgotPassword from './Pages/ForgotPassword'
 import ResetPassword from './Pages/ResetPassword'
+
 function App() {
 
   return (

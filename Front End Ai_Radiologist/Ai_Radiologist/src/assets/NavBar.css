@@ -65,3 +65,29 @@
 .Nav-link:hover::after {
     width: 100%;
 }
+
+@media screen and (max-width: 700px) {
+    .navbar-nav {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+
+    .navbar-nav .nav-item {
+        white-space: nowrap;
+    }
+
+    .dropdown button {
+        font-size: 14px;
+        padding: 5px 10px;
+    }
+
+    .rounded-circle {
+        width: 30px !important;
+        height: 30px !important;
+    }
+
+    .Btn-Go-Reg {
+        font-size: 14px;
+        padding: 5px 10px;
+    }
+}
