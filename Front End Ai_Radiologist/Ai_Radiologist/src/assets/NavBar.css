@@ -15,7 +15,7 @@ img {
 
 /*=============== HEADER & NAV ===============*/
 .header {
-    margin-top:10px ;
+    margin:10px 0px ;
     background-color:#f8f9fa;
     z-index: 100;
 }
@@ -52,8 +52,8 @@ img {
         position: fixed;
         top: -120%;
         left: 0;
-        background-color: hsl(216, 26%, 11%);
-        box-shadow: 0 8px 16px hsla(216, 24%, 8%, .2);
+        background-color: #f8f9fa;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, .2);
         width: 100%;
         padding-block: 4rem;
         z-index: 100;

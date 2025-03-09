@@ -4,7 +4,7 @@ import NavBar from '../Components/NavBar';
 import Reports_User from './Reports_User';
 
 const Profile_User = () => {
-    const [searchTerm, setSearchTerm] = useState('');
+    //const [searchTerm, setSearchTerm] = useState('');
     const [user, setUser] = useState({ username: null, profilePic: null });
 
     useEffect(() => {
@@ -18,24 +18,24 @@ const Profile_User = () => {
         <div>
             <NavBar />
             {/* Profile cover */}
-            <div style={{height:"155px"}} className="container mt-3 p-5 bg-light rounded shadow-sm">
-                <div className="row">
-                    <div className="col-md-12 position-relative">
+                    <div className='Container-user d-flex justify-content-center'>
                         {/* User profile picture and name */}
-                        <div className="d-flex align-items-center position-absolute" style={{transform: 'translateY(70%)'}}>
-                            <div className="d-flex justify-content-center align-items-center rounded-circle border border-dark bg-white shadow"
-                                style={{ width: '100px', height: '100px' }}>
+                        <div className='box-user d-flex align-items-center gap-5'>
+                            <div className='img-user'>
                                 <img src={user.profile_image} alt="User Profile"
-                                    className="rounded-circle" style={{ width: '88px', height: '88px', objectFit: 'cover' }} />
+                                className="rounded-circle" style={{ width: '140px', height: '140px'}} />
                             </div>
-                            <h5 className='ms-3 mt-2 text-dark'>{user.first_name} {user.last_name}</h5>
+                            <div>
+                                <h4>{user.first_name} {user.last_name}</h4>
+                                <p className='mb-1'>Email: {user.email}</p>
+                                <p className='mb-1'>Age: {user.age}</p>
+                                <p className='mb-1'>Gender: {user.gender}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
             {/* Search field */}
-            <div className="container mt-5">
+            {/* <div className="container mt-5">
                 <div className="row justify-content-center">
                     <div className="col-md-6 col-sm-8 col-12">
                         <div className="input-group">
@@ -49,7 +49,7 @@ const Profile_User = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
 
             {/* Radiology Reports */}
             <div className="container-fluid mt-4">
