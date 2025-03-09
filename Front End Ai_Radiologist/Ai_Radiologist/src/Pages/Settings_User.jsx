@@ -83,7 +83,7 @@ const Settings_User = () => {
     };
 
     return (
-        <div className="">
+        <div>
             <NavBar/>
             
             {message && <div  className=" text-center mt-3">{message}</div>} {/* Display success/error message */}

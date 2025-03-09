@@ -1,93 +1,227 @@
-/* Registration button */
-.Btn-Go-Reg {
-    font-weight: bold;
-    border-radius: 40px;
-    color: #000000;
-    height: 34px;
-    font-size: 15px;
-    padding: 2px;
+
+ul {
+    list-style: none;
+}
+
+a { 
     text-decoration: none;
-    width: 102px;
-    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.438);
-    border: none;
-    background-color: white;
-    transition: all 0.3s ease;
 }
 
-/* Button hover effect */
-.Btn-Go-Reg:hover {
-    background-color: transparent;
-    color: rgba(20, 168, 236, 0.603);
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
 }
 
-.Btn-Go-Reg .Btn-Go-Reg-span {
+/*=============== HEADER & NAV ===============*/
+.header {
+    margin-top:10px ;
+    background-color:#f8f9fa;
+    z-index: 100;
+}
+
+.nav {
+    position: relative;
+    height: 3.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: rgb(0, 0, 0);
+}
+
+.nav__logo {
+    color: white;
+    font-weight: 600;
+    transition: color .4s;
+}
+
+.nav__logo:hover {
+    color: hsl(216, 96%, 64%);
+}
+
+.nav__toggle,
+.nav__close {
+    display: flex;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Navigation for mobile devices */
+@media screen and (max-width: 1150px) {
+    .nav__menu {
+        position: fixed;
+        top: -120%;
+        left: 0;
+        background-color: hsl(216, 26%, 11%);
+        box-shadow: 0 8px 16px hsla(216, 24%, 8%, .2);
+        width: 100%;
+        padding-block: 4rem;
+        z-index: 100;
+        transition: top .4s;
+    }
+}
+
+.nav__list {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    row-gap: 2.5rem;
+}
+
+.nav__link {
+    color: rgb(0, 0, 0);
+    font-weight: 600;
+    transition: color .4s;
+}
+
+.nav__link:hover {
+    color: hsl(216, 96%, 64%);
+}
+
+.nav__close {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+}
+
+.nav__actions {
+    display: flex;
+    align-items: center;
+    column-gap: .75rem;
+}
+
+/* Show menu */
+.show-menu {
+    top: 0;
+}
+
+/*=============== DROPDOWN (User Menu) ===============*/
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* 🔹 صورة المستخدم */
+.dropdown__profile {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
-    width: 100%;
-    transition: background 0.3s ease;
+    column-gap: .25rem;
+    cursor: pointer;
 }
 
-/* Navigation links styling */
-.Nav-link {
-    color: rgb(0, 0, 0);
-    font-size: 16px;
-    font-weight: bold;
-    margin: 0px 10px;
-    transition: color 0.3s ease, transform 0.3s ease;
+.dropdown__image {
     position: relative;
-    text-decoration: none;
-    /* Removes default underline */
+    width: 40px;
+    height: 40px;
+    background-color: hsl(216, 96%, 64%);
+    border-radius: 50%;
+    overflow: hidden;
+    display: grid;
+    justify-items: center;
 }
 
-/* Hover effect on links */
-.Nav-link:hover {
-    color: rgba(20,168,236,0.603);
-    transform: scale(1.1);
-}
-
-/* Underline effect on hover */
-.Nav-link::after {
-    content: "";
+.dropdown__image img {
     position: absolute;
-    left: 0;
-    bottom: -2px;
-    /* Places the line under the text */
-    width: 0;
-    height: 2px;
-    background-color:rgba(20,168,236,0.603);
-    /* Line color */
-    transition: width 0.3s ease;
+    width: 38px;
+    bottom: -1px;
 }
 
-/* Expands the underline when hovering */
-.Nav-link:hover::after {
-    width: 100%;
+.dropdown__names h3 {
+    font-size: 0.938rem;
+    font-weight: 600;
 }
 
-@media screen and (max-width: 700px) {
-    .navbar-nav {
-        flex-wrap: nowrap;
-        overflow-x: auto;
+.dropdown__names span {
+    display: block;
+    font-size: 0.813rem;
+    font-weight: 500;
+    text-align: right;
+}
+
+/* 🔹 القائمة المنسدلة */
+.dropdown__list {
+    position: absolute;
+    top: 110%;
+    margin-top: 10px;
+    background-color:#FCFEFF;
+    box-shadow: 0 8px 16px hsla(216, 24%, 8%, .2);
+    display: none;
+    row-gap: .25rem;
+    padding: 1rem 1.25rem;
+    border-radius: .25rem;
+    z-index: 10;
+    transform: translateY(-10px);
+    opacity: 0;
+    transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+}
+
+/* 🔥 إظهار القائمة عند فتحها */
+.show-dropdown {
+    display: block !important;
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* 🔹 السهم فوق القائمة */
+.dropdown__list::after {
+    content: "";
+    width: 16px;
+    height: 16px;
+    background-color: #FCFEFF;
+    position: absolute;
+    top: -8px;
+    right: 80px;
+    rotate: -45deg;
+}
+
+/* 🔹 تنسيق روابط القائمة */
+.dropdown__link {
+    color: rgb(0, 0, 0);
+    display: flex;
+    align-items: center;
+    column-gap: 1rem;
+    padding: .5rem 1.5rem;
+    border-radius: .25rem;
+    transition: background-color .4s;
+}
+
+.dropdown__link i {
+    font-size: 1rem;
+}
+
+.dropdown__link:hover {
+    background-color: hsl(219, 58%, 66%);
+}
+
+/*=============== BREAKPOINTS ===============*/
+@media screen and (max-width: 320px) {
+    .container {
+        margin-inline: 1rem;
+    }
+}
+
+@media screen and (min-width: 1150px) {
+    .container {
+        margin-inline: auto;
     }
 
-    .navbar-nav .nav-item {
-        white-space: nowrap;
+    .nav {
+        height:60px;
+        column-gap: 4rem;
     }
 
-    .dropdown button {
-        font-size: 14px;
-        padding: 5px 10px;
+    .nav__toggle,
+    .nav__close {
+        display: none;
     }
 
-    .rounded-circle {
-        width: 30px !important;
-        height: 30px !important;
+    .nav__list {
+        flex-direction: row;
+        column-gap: 3rem;
     }
 
-    .Btn-Go-Reg {
-        font-size: 14px;
-        padding: 5px 10px;
+    .dropdown__profile {
+        column-gap: 1rem;
     }
 }
