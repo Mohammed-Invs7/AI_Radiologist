@@ -35,7 +35,7 @@ const Reports_User = () => {
             <div className="bg-primary text-white p-3 rounded-top d-flex justify-content-between"
                 style={{ background: 'linear-gradient(90deg, rgba(2, 85, 89, 0.90) 0%, #80DFDF 66%)' }}>
                 <h6>Your Radiology Reports</h6>
-                <button className="btn btn-light btn-sm">
+                <button className="">
                 <Link to={"/Upload"} style={{textDecoration:"none", color:'black'}} >Add New Radiology Report</Link> 
                 </button>
             </div>
@@ -57,8 +57,8 @@ const Reports_User = () => {
                             <small><strong>Region:</strong> {item.body_anatomical_region}</small>
                         </div>
                         <div>
-                            <button className="btn btn-success btn-sm me-2"> View</button>
-                            <button className="btn btn-danger btn-sm"> Delete</button>
+                            <button className="btn-success btn-sm me-2"> View</button>
+                            <button className="btn-danger btn-sm"> Delete</button>
                         </div>
                     </div>
                 ))
@@ -70,8 +70,8 @@ const Reports_User = () => {
             <div className="d-flex justify-content-between text-muted small mt-3">
                 <p>Showing {radiologyData.length} of {radiologyData.length} Reports</p>
                 <div>
-                    <button className="btn btn-outline-primary btn-sm me-2">⬅ Prev</button>
-                    <button className="btn btn-outline-primary btn-sm ms-2">Next ➡</button>
+                    <button className=" btn-outline-primary btn-sm me-2">⬅ Prev</button>
+                    <button className=" btn-outline-primary btn-sm ms-2">Next ➡</button>
                 </div>
             </div>
         </div>
