@@ -1,12 +1,11 @@
-import UploadButton from "../Components/UploadButton";
 import NavBar from "../Components/NavBar";
+import Section1 from "../Components/Home/section1";
 
 const Home = () => {
     return (
         <div>
-            <NavBar/>
-            <h1>Welcome to the Radiology AI Application</h1>  
-            <UploadButton />
+            <NavBar />
+            <Section1/>
         </div>
     );
 };
