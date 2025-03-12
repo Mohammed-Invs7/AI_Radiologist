@@ -83,10 +83,15 @@ const Settings_User = () => {
     };
 
     return (
-        <div>
+        <>
             <NavBar/>
+            <div className="page-form-Settings " >
             
-            {message && <div  className=" text-center mt-3">{message}</div>} {/* Display success/error message */}
+            <div className="container-form-Settings">
+                <div>
+
+                </div>
+            {message && <div className=" text-center mt-3">{message}</div>} {/* Display success/error message */}
 
             {loading ? (
                 <p>Loading user data...</p> // Show loading message while updating
@@ -157,8 +162,11 @@ const Settings_User = () => {
                         {loading ? "Saving..." : "Save Changes"}
                     </button>
                 </form>
-            )}
-        </div>
+                )}
+            </div>
+        </div></>
+        
+    
     );
 };
 

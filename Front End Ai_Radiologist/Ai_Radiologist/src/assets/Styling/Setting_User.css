@@ -1,3 +1,19 @@
+.page-form-Settings {
+    display: flex;
+    justify-content: center;
+    background: linear-gradient(90deg, #e2e2e2, #c9d6ff);
+}
+
+.container-form-Settings{
+    width: 500px;
+    height: 550px;
+    background: #fff;
+    border-radius: 30px;
+    margin: 15px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, .2);
+}
+
+
 .hidden-file-input {
     display: none;
 }

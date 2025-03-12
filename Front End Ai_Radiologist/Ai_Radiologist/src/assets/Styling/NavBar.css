@@ -1,4 +1,6 @@
-
+html{
+    background-color: #f8f9fa;
+}
 ul {
     list-style: none;
 }
@@ -15,7 +17,7 @@ img {
 
 /*=============== HEADER & NAV ===============*/
 .header {
-    margin:10px 0px ;
+    margin-top: 10px;
     background-color:#f8f9fa;
     z-index: 100;
 }
@@ -28,17 +30,6 @@ img {
     align-items: center;
     color: rgb(0, 0, 0);
 }
-
-.nav__logo {
-    color: white;
-    font-weight: 600;
-    transition: color .4s;
-}
-
-.nav__logo:hover {
-    color: hsl(216, 96%, 64%);
-}
-
 .nav__toggle,
 .nav__close {
     display: flex;
@@ -72,10 +63,6 @@ img {
     color: rgb(0, 0, 0);
     font-weight: 600;
     transition: color .4s;
-}
-
-.nav__link:hover {
-    color: hsl(216, 96%, 64%);
 }
 
 .nav__close {
@@ -224,4 +211,37 @@ img {
     .dropdown__profile {
         column-gap: 1rem;
     }
+}
+
+.nav__link {
+    position: relative;
+    color: rgb(0, 0, 0);
+    font-weight: 600;
+    text-decoration: none;
+    padding: 10px 15px;
+    transition: color 0.4s;
+}
+
+.nav__link::before,
+.nav__link::after {
+    content: "";
+    position: absolute;
+    background-color: hsl(216, 96%, 64%);
+    width: 0%;
+    height: 4px;
+    bottom: 0;
+    transition: width 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.nav__link::before {
+    left: 0;
+}
+
+.nav__link::after {
+    right: 0;
+}
+
+.nav__link:hover::before,
+.nav__link:hover::after {
+    width: 100%;
 }

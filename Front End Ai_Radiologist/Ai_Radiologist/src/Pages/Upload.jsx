@@ -3,11 +3,11 @@ import { useAuth } from "../context/AuthContext";
 import axios from "axios"; 
 import "bootstrap/dist/css/bootstrap.min.css"; 
 import "bootstrap-icons/font/bootstrap-icons.css"; 
-import Image1 from "/Front End Ai_Radiologist/Ai_Radiologist/src/assets/image-upload.png"; 
-import Image2 from "/Front End Ai_Radiologist/Ai_Radiologist/src/assets/spark, sparkle, 29.png"; 
-import Image3 from "/Front End Ai_Radiologist/Ai_Radiologist/src/assets/spark, sparkle, 28.png"; 
-import Image4 from "/Front End Ai_Radiologist/Ai_Radiologist/src/assets/arrow, hand drawn, scribble, doodle, 12.png"; 
-import "../assets/Upload.css"; 
+import Image1 from "../assets/Images/image-upload.png"
+import Image2 from "../assets/Images/spark, sparkle, 29.png"; 
+import Image3 from "../assets/Images/spark, sparkle, 28.png"; 
+import Image4 from "../assets/Images/arrow, hand drawn, scribble, doodle, 12.png"; 
+import "../assets//Styling/Upload.css"; 
 import NavBar from "../Components/NavBar"; 
 
 const API_URL = "http://localhost:5000/predict"; // Define the API URL

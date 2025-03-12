@@ -1,0 +1,31 @@
+.btn-Upload {
+    border-radius: 20px;
+    background-color: #017276;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    padding: 5px;
+    transition: .3s;    
+    cursor: pointer;
+    box-shadow: 0 10px 20px -8px rgba(0, 0, 0, .7);
+}
+
+.btn-Upload:hover {
+    animation: pulse 1s infinite;
+    transition: .3s;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    70% {
+        transform: scale(.9);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+

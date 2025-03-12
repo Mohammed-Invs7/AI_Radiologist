@@ -1,5 +1,6 @@
 import Image1 from "../assets/Images/arrow,background.png"
 import { useNavigate } from "react-router-dom"
+import "../assets/Styling/Upload_Button.css"
 
 const UploadButton = () => {
     const navigate = useNavigate();
@@ -18,7 +19,7 @@ const UploadButton = () => {
     return (
         <div className="mt-4" style={{position:"relative"}}>
             <img width={"100px"} style={{ position: " absolute" , bottom:"-66%", left:"107%"}} src={Image1} alt="" />
-            <button style={{background:"#017276" , color:"white" ,fontWeight:"400" , border:"none", padding:"5px", borderRadius:"20px"}} onClick={handleUploadClick}>Upload Your Radiology  Image</button>
+            { <button className="btn-Upload" /*style={{background:"#017276" , color:"white" ,fontWeight:"400" , border:"none", padding:"5px", borderRadius:"20px"}}*/ onClick={handleUploadClick}>Upload Your Radiology  Image</button> }
         </div>
     );
 };

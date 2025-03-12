@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../context/AuthContext"; 
 import "bootstrap/dist/css/bootstrap.min.css"; 
 import "bootstrap-icons/font/bootstrap-icons.css"; 
-import "../assets/NavBar.css";
+import "../assets/Styling/NavBar.css";
 import Logo from "../Components/Logo";
 
 const NavBar = () => {

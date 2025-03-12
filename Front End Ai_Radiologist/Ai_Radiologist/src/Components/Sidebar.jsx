@@ -24,7 +24,7 @@ const Sidebar = () => {
             <div className="sidebar-panel d-flex flex-column justify-content-center align-items-center">
                 <h1>{welcomeText}</h1>
                 <Link to="/">
-                    <img width={250} src={LogoSidebar} alt="" />
+                    <img className="img-logo" width={250} src={LogoSidebar} alt="" />
                 </Link>
                 <p className="text-center">At Your Service For <br />Better Health</p>
                 <button className="btn register-btn" onClick={handleClick}>
