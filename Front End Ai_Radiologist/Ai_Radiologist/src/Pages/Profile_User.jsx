@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NavBar from '../Components/NavBar';
-import Reports_User from './Reports_User';
+import Reports_User from '../Components/Reports_User';
 
 const Profile_User = () => {
     //const [searchTerm, setSearchTerm] = useState('');
