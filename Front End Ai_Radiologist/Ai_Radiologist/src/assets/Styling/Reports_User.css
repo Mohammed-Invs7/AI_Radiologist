@@ -1,6 +1,68 @@
 .btn-add-radiology{
-    width: 22% ;
+    width: 24% ;
+    background: #fff;
+    gap: 7px;
 }
 .btn-add-radiology a{
     color: black;
+}
+.btn-add-radiology:hover{
+    background: #fff;
+} 
+
+/* styles/buttons.css */
+
+.button {
+    display: flex;
+    align-items: center;
+    padding: 2px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.button i {
+    font-size: 18px;
+}
+
+.btn-view {
+    background-color: #017276;
+    color: white;
+}
+
+.btn-view:hover {
+    background-color: #017276;
+    transform: scale(1.05);
+}
+
+.btn-delete {
+    background-color: #ef4444;
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: #dc2626;
+    transform: scale(1.05);
+}
+
+.button-back {
+    color: #6b7280;
+    height: 20px;
+}
+
+.button-back:hover {
+    transform: scale(1.05);
+}
+
+.button-next {
+    color: #4b5563;
+    height: 20px;
+}
+
+.button-next:hover {
+    transform: scale(1.05);
 }
