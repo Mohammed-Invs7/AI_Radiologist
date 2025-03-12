@@ -21,7 +21,6 @@ const NavBar = () => {
         }
     };
 
-    // ✅ إغلاق القائمة عند النقر خارجها
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -73,7 +72,7 @@ const NavBar = () => {
                         <div className="dropdown" ref={dropdownRef}>
                             <div
                                 className="dropdown__profile"
-                                onClick={() => setDropdownOpen((prev) => !prev)} // 🔹 تبديل القائمة عند النقر
+                                onClick={() => setDropdownOpen((prev) => !prev)}
                                 aria-expanded={dropdownOpen}
                             >
                                 <div className="dropdown__image">
@@ -110,16 +109,16 @@ const NavBar = () => {
                                     </Link>
                                 </li>
                                 <li>
-                                    <button className="dropdown__link text-danger" onClick={handleLogout}>
-                                        <i className="bx bx-log-out me-2"></i> Logout
+                                    <button style={{background:"#fff", border:"none"}} className="dropdown__link text-danger" onClick={handleLogout}>
+                                        <i className="bx bx-log-out me-2  text-danger"></i> Logout
                                     </button>
                                 </li>
                             </ul>
                         </div>
                     ) : (
-                        <button className="Btn-Go-Reg" onClick={() => navigate("/Registration")}>
-                            <span className="Btn-Go-Reg-span">Registration</span>
-                        </button>
+                                <button className="btn-go-reg" onClick={() => navigate("/Registration")}>
+                                    <span className="btn-go-reg-span">Registration</span>
+                                </button>
                     )}
 
                     {/* Toggle button */}

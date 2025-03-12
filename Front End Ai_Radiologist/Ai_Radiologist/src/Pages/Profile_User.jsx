@@ -18,7 +18,7 @@ const Profile_User = () => {
         <div>
             <NavBar />
             {/* Profile cover */}
-                    <div className='Container-user d-flex justify-content-center'>
+                    <div className='Container-user d-flex justify-content-center mt-3'>
                         {/* User profile picture and name */}
                         <div className='box-user d-flex align-items-center gap-5'>
                             <div className='img-user'>

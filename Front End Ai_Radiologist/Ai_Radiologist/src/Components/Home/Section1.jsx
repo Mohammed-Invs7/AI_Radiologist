@@ -6,7 +6,7 @@ import UploadButton from "../UploadButton"
 
 const Section1 = () => {
     return (
-        <div className="Section1-page">
+        <div className="Section1-page mt-1">
             <div style={{background:"#82E0E0"}} className="container-page d-flex justify-content-between ">
                 <div style={{marginLeft:"120px"}} className="align-items-center d-flex flex-column text-center justify-content-center">
                     <h1 className="mb-2" style={{fontWeight:"bold"}} >Use AI To Instantly Analyze

@@ -81,6 +81,25 @@ img {
 .show-menu {
     top: 0;
 }
+.btn-go-reg{
+    border-radius: 20px;
+    background: #FFFFFF;
+    padding: 4px 20px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #017276;   
+    transition: all 0.4s;
+    }  
+.btn-go-reg:hover {
+    border: 2px solid #111;
+    background-color: #017276;
+    transition: all 0.4s;
+    }
+    
+.btn-go-reg:hover span {
+    color:#fff;
+}
+
 
 /*=============== DROPDOWN (User Menu) ===============*/
 .dropdown {
@@ -88,7 +107,6 @@ img {
     display: inline-block;
 }
 
-/* 🔹 صورة المستخدم */
 .dropdown__profile {
     display: flex;
     align-items: center;
@@ -108,12 +126,6 @@ img {
     justify-items: center;
 }
 
-.dropdown__image img {
-    position: absolute;
-    width: 38px;
-    bottom: -1px;
-}
-
 .dropdown__names h3 {
     font-size: 0.938rem;
     font-weight: 600;
@@ -126,7 +138,6 @@ img {
     text-align: right;
 }
 
-/* 🔹 القائمة المنسدلة */
 .dropdown__list {
     position: absolute;
     top: 110%;
@@ -143,14 +154,15 @@ img {
     transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
 }
 
-/* 🔥 إظهار القائمة عند فتحها */
 .show-dropdown {
     display: block !important;
     transform: translateY(0);
     opacity: 1;
+    border-radius: 30px;
 }
-
-/* 🔹 السهم فوق القائمة */
+.show-dropdown img{
+    border-radius: 30px;
+}
 .dropdown__list::after {
     content: "";
     width: 16px;
@@ -162,9 +174,9 @@ img {
     rotate: -45deg;
 }
 
-/* 🔹 تنسيق روابط القائمة */
 .dropdown__link {
     color: rgb(0, 0, 0);
+    font-weight:600;
     display: flex;
     align-items: center;
     column-gap: 1rem;
@@ -174,11 +186,9 @@ img {
 }
 
 .dropdown__link i {
-    font-size: 1rem;
-}
-
-.dropdown__link:hover {
-    background-color: hsl(219, 58%, 66%);
+    color: #49B0B1;
+    font-size: 20px;
+    font-weight: 400;
 }
 
 /*=============== BREAKPOINTS ===============*/
@@ -226,7 +236,7 @@ img {
 .nav__link::after {
     content: "";
     position: absolute;
-    background-color: hsl(216, 96%, 64%);
+    background-color:#017276;
     width: 0%;
     height: 4px;
     bottom: 0;
