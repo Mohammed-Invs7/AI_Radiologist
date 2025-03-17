@@ -1,5 +1,6 @@
 import Image1 from "../../assets/Images/background.png"
 import Image2 from "../../assets/Images/spark,background.png"
+import "../../assets/Styling/Section_1.css"
 
 
 import UploadButton from "../UploadButton"
@@ -7,9 +8,9 @@ import UploadButton from "../UploadButton"
 const Section1 = () => {
     return (
         <div className="Section1-page mt-1">
-            <div style={{background:"#82E0E0"}} className="container-page d-flex justify-content-between ">
-                <div style={{marginLeft:"120px"}} className="align-items-center d-flex flex-column text-center justify-content-center">
-                    <h1 className="mb-2" style={{fontWeight:"bold"}} >Use AI To Instantly Analyze
+            <div className="container-page d-flex justify-content-between ">
+                <div className="title align-items-center d-flex flex-column text-center justify-content-center">
+                    <h1 className="mb-2">Use AI To Instantly Analyze
                         <br />
                         X-rays
                         <br />
@@ -21,9 +22,9 @@ const Section1 = () => {
                     <UploadButton />
                     </div>
                 </div>
-                <div style={{position:"relative"}}>
-                <img style={{position:" absolute" , right:"83%", top:"6%"}} src={Image2} alt="" />
-                <img width={"500px"} src={Image1} alt="" />
+                <div className="container-img">
+                <img id="Image2" src={Image2} alt="" />
+                <img id="Image1" src={Image1} alt="" />
                 </div> 
 
             </div>

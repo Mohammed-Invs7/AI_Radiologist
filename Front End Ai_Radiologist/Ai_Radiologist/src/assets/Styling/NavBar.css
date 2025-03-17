@@ -161,6 +161,8 @@ img {
     border-radius: 30px;
 }
 .show-dropdown img{
+    width: 40px;
+    height: 40px;
     border-radius: 30px;
 }
 .dropdown__list::after {

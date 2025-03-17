@@ -1,0 +1,30 @@
+.container-page{
+    background: #82E0E0;
+
+}
+.title{
+    margin-left:120px;
+
+}
+.title h1{
+    font-weight: bold;
+}
+
+.container-img{
+    position: relative;
+}
+#Image2 {
+    position: absolute;
+    right: 83%;
+    top: 6% ;
+}
+
+#Image1{
+    width: 500px;
+}
+
+@media screen and (max-width: 865px){
+    #Image1 {
+            width: 700px;
+        }
+}
