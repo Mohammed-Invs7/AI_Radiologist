@@ -29,3 +29,30 @@
     }
 }
 
+#arrow{
+    width: 46%;
+    position: absolute;
+    bottom:-66%;
+    left:107%;
+    z-index: 999;
+}
+
+@media (min-width: 484px) and (max-width: 1024px) {
+    #arrow {
+            width: 35%;
+            bottom: -35%;
+            left: 102%;
+        }
+
+                .btn-Upload {
+                    font-size: 14px;
+                    padding: 5px;
+                }
+}
+
+@media screen and (max-width: 482px) {
+    .btn-Upload {
+            font-size: 12px;
+            padding: 6px;
+        }
+}

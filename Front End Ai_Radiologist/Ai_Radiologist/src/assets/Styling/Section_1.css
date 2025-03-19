@@ -1,6 +1,6 @@
 .container-page{
     background: #82E0E0;
-
+    height: 500px;
 }
 .title{
     margin-left:120px;
@@ -20,11 +20,34 @@
 }
 
 #Image1{
-    width: 500px;
+    height: 100%;
 }
 
-@media screen and (max-width: 865px){
-    #Image1 {
-            width: 700px;
+@media (max-width: 483px) {
+    .container-page img {
+        display: none;
+    }
+
+        .title {
+            margin-left: 0px;
+    
+        }
+}
+
+@media  (min-width: 484px) and (max-width: 1024px){
+
+    .container-page {
+            height: 350px;
+        }
+                .title {
+                    margin-left: 60px;
+        
+                }
+    .title h1 {
+            font-size: 25px;
+        }
+
+    #Image2 {
+            width: 25%;
         }
 }
