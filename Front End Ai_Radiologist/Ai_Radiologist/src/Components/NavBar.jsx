@@ -11,14 +11,19 @@ const NavBar = () => {
     const { user, logout } = useAuth();
     const [menuOpen, setMenuOpen] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const dropdownRef = useRef(null); // 🔹 مرجع للقائمة المنسدلة
+    const [confirmLogout, setConfirmLogout] = useState(false);
+    const dropdownRef = useRef(null);
 
-    // Logout function
-    const handleLogout = async () => {
-        if (window.confirm("Are you sure you want to log out?")) {
-            logout();
-            navigate("/");
-        }
+    // عند فتح نافذة التأكيد، تأكد من إغلاق القائمة المنسدلة
+    const handleLogoutClick = () => {
+        setDropdownOpen(false); 
+        setConfirmLogout(true);
+    };
+
+    const handleLogoutConfirm = async () => {
+        logout();
+        navigate("/");
+        setConfirmLogout(false);
     };
 
     useEffect(() => {
@@ -39,27 +44,24 @@ const NavBar = () => {
             <nav className="nav container">
                 {/* Logo */}
                 <Link to="/" className="nav__logo">
-                <Logo/>
+                    <Logo />
                 </Link>
 
                 {/* Navigation Menu */}
                 <div className={`nav__menu ${menuOpen ? "show-menu" : ""}`}>
                     <ul className="nav__list">
-                        {["Home", "Oue Goals", "How Use It", "Our Team"].map(
-                            (item, index) => (
-                                <li key={index}>
-                                    <Link 
-                                        to="/" 
-                                        className="nav__link" 
-                                        onClick={(e) => { e.preventDefault(); setMenuOpen(false); }}
-                                    >
-                                        {item}
-                                    </Link>
-                                </li>
-                            )
-                        )}
+                        {["Home", "Our Goals", "How Use It", "Our Team"].map((item, index) => (
+                            <li key={index}>
+                                <Link 
+                                    to="/" 
+                                    className="nav__link" 
+                                    onClick={() => setMenuOpen(false)}
+                                >
+                                    {item}
+                                </Link>
+                            </li>
+                        ))}
                     </ul>
-
                     {/* Close button */}
                     <div className="nav__close" onClick={() => setMenuOpen(false)}>
                         <i className="bx bx-x"></i>
@@ -72,7 +74,7 @@ const NavBar = () => {
                         <div className="dropdown" ref={dropdownRef}>
                             <div
                                 className="dropdown__profile"
-                                onClick={() => setDropdownOpen((prev) => !prev)}
+                                onClick={() => setDropdownOpen(prev => !prev)}
                                 aria-expanded={dropdownOpen}
                             >
                                 <div className="dropdown__image">
@@ -109,16 +111,20 @@ const NavBar = () => {
                                     </Link>
                                 </li>
                                 <li>
-                                    <button style={{background:"#fff", border:"none"}} className="dropdown__link text-danger" onClick={handleLogout}>
-                                        <i className="bx bx-log-out me-2  text-danger"></i> Logout
+                                    <button 
+                                        style={{ background: "none", border: "none", cursor: "pointer" }} 
+                                        className="dropdown__link text-danger" 
+                                        onClick={handleLogoutClick} // ✅ زر تسجيل الخروج الآن يعمل
+                                    >
+                                        <i className="bx bx-log-out me-2 text-danger"></i> Logout
                                     </button>
                                 </li>
                             </ul>
                         </div>
                     ) : (
-                                <button className="btn-go-reg" onClick={() => navigate("/Registration")}>
-                                    <span className="btn-go-reg-span">Registration</span>
-                                </button>
+                        <button className="btn-go-reg" onClick={() => navigate("/Registration")}>
+                            <span className="btn-go-reg-span">Registration</span>
+                        </button>
                     )}
 
                     {/* Toggle button */}
@@ -127,6 +133,20 @@ const NavBar = () => {
                     </div>
                 </div>
             </nav>
+
+            {/* Logout Confirmation Modal */}
+            {confirmLogout && (
+                <div className="logout-confirm-overlay">
+                    <div className="logout-confirm-box">
+                        <h3>Logout</h3>
+                        <p>Are you sure you want to log out?</p>
+                        <div className="logout-buttons">
+                            <button onClick={() => setConfirmLogout(false)} className="btn btn-secondary">No</button>
+                            <button onClick={handleLogoutConfirm} className="btn btn-danger">Logout</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </header>
     );
 };
