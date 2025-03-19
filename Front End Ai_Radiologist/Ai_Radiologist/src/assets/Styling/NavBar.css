@@ -272,16 +272,31 @@ img {
 }
 
 .logout-confirm-box {
-    background: #000;
+    background: #ffffff;
     padding: 20px;
     border-radius: 10px;
     text-align: center;
-    color: white;
+    color: rgb(0, 0, 0);
 }
 
 .logout-buttons {
     display: flex;
     justify-content: space-around;
     margin-top: 10px;
-    
+}
+
+.logout-buttons button{
+    border: none;
+    border-radius:10px ;
+    padding: 4px;
+    width: 30%;
+    font-weight: 500;
+}
+
+.logout-no{
+    background-color: rgb(161, 160, 160);
+}
+
+.logout-yes{
+    background-color: rgb(250, 53, 69);
 }

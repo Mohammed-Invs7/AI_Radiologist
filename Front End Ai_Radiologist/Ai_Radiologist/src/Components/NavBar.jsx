@@ -141,8 +141,8 @@ const NavBar = () => {
                         <h3>Logout</h3>
                         <p>Are you sure you want to log out?</p>
                         <div className="logout-buttons">
-                            <button onClick={() => setConfirmLogout(false)} className="btn btn-secondary">No</button>
-                            <button onClick={handleLogoutConfirm} className="btn btn-danger">Logout</button>
+                            <button onClick={() => setConfirmLogout(false)} className="logout-no">No</button>
+                            <button onClick={handleLogoutConfirm} className="logout-yes">Logout</button>
                         </div>
                     </div>
                 </div>
