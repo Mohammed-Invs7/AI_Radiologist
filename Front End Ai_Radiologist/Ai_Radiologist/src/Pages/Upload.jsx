@@ -1,145 +1,153 @@
-import { useState } from "react"; 
-import { useAuth } from "../context/AuthContext"; 
-import axios from "axios"; 
-import "bootstrap/dist/css/bootstrap.min.css"; 
-import "bootstrap-icons/font/bootstrap-icons.css"; 
-import Image1 from "../assets/Images/image-upload.png"
-import Image2 from "../assets/Images/spark, sparkle, 29.png"; 
-import Image3 from "../assets/Images/spark, sparkle, 28.png"; 
-import Image4 from "../assets/Images/arrow, hand drawn, scribble, doodle, 12.png"; 
-import "../assets//Styling/Upload.css"; 
-import NavBar from "../Components/NavBar"; 
+import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import axios from "axios";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import Image1 from "../assets/Images/image-upload.png";
+import "../assets/Styling/Upload.css";
+import NavBar from "../Components/NavBar";
 
-const API_URL = "http://localhost:5000/predict"; // Define the API URL
+const API_URL = "http://localhost:5000/predict";
 
-const Upload = () => { 
-  // eslint-disable-next-line no-unused-vars
-  const { user } = useAuth(); // Retrieve user authentication state
+const Upload = () => {
+  const { user } = useAuth();
 
-  const [formData, setFormData] = useState({ 
-    file: null, // Stores the selected file
-    fileName: "No file chosen", // Default text for file input
-    imagePreview: null, // Stores the image preview URL
-    type: "", // Stores the selected image type
-    bodyPart: "", // Stores the selected body part
-    loading: false, // Indicates if the upload is in progress
-    predictionResult: null, // Stores the AI prediction result
-  }); 
+  const [formData, setFormData] = useState({
+    file1: null,
+    file2: null,
+    imagePreview1: null,
+    imagePreview2: null,
+    type: "",
+    bodyPart: "",
+    loading: false,
+    predictionResult: null,
+    errorMessage: null,
+  });
 
-  const handleFileChange = (event) => { 
-    const selectedFile = event.target.files[0]; // Get the selected file
-    if (selectedFile) { 
-      setFormData({ 
-        ...formData, 
-        file: selectedFile, // Update the file state
-        fileName: selectedFile.name, // Update file name
-        imagePreview: URL.createObjectURL(selectedFile), // Generate a preview URL
-        predictionResult: null, // Reset previous prediction result
-      }); 
-    } 
-  }; 
+  const handleFileChange = (event, fileNumber) => {
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      setFormData((prev) => ({
+        ...prev,
+        [`file${fileNumber}`]: selectedFile,
+        [`imagePreview${fileNumber}`]: URL.createObjectURL(selectedFile),
+        predictionResult: null,
+        errorMessage: null,
+      }));
+    }
+  };
 
-  const handleChange = (event) => { 
-    setFormData({ ...formData, [event.target.name]: event.target.value }); // Update input fields in the state
-  }; 
+  const handleChange = (event) => {
+    setFormData({ ...formData, [event.target.name]: event.target.value });
+  };
 
-  const handleSubmit = async (event) => { 
-    event.preventDefault(); // Prevent the default form submission behavior
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-    if (!formData.file || !formData.type || !formData.bodyPart) { 
-      alert("Please select all required fields."); // Display an alert if required fields are missing
-      return; 
-    } 
+    if (!formData.file1 && !formData.file2) {
+      setFormData((prev) => ({ ...prev, errorMessage: "Please upload at least one image" }));
+      return;
+    }
 
-    try { 
-      setFormData((prev) => ({ ...prev, loading: true, predictionResult: null })); // Set loading state to true
+    try {
+      setFormData((prev) => ({ ...prev, loading: true, predictionResult: null, errorMessage: null }));
 
-      const uploadData = new FormData(); // Create a FormData object for file upload
-      uploadData.append("image", formData.file); // Append the image file
-      uploadData.append("type", formData.type); // Append the image type
-      uploadData.append("body_part", formData.bodyPart); // Append the body part
+      const uploadData = new FormData();
 
-      const response = await axios.post(API_URL, uploadData, { 
-        headers: { "Accept": "application/json" } // Set the request headers
-      }); 
+      if (formData.file1 && !formData.file2) {
+        uploadData.append("image1", formData.file1);
+        uploadData.append("image2", formData.file1);
+      } else if (!formData.file1 && formData.file2) {
+        uploadData.append("image1", formData.file2);
+        uploadData.append("image2", formData.file2);
+      } else {
+        uploadData.append("image1", formData.file1);
+        uploadData.append("image2", formData.file2);
+      }
 
-      if (response.status === 200) { 
-        setFormData((prev) => ({ 
-          ...prev, 
-          predictionResult: response.data.prediction, // Store the AI prediction result
-          loading: false, // Reset loading state
-        })); 
-      } else { 
-        throw new Error(response.statusText || "Prediction failed"); // Handle unsuccessful requests
-      } 
-    } catch (error) { 
-      setFormData((prev) => ({ 
-        ...prev, 
-        predictionResult: `Error: ${error.response?.data?.error || error.message}`, // Store the error message
-        loading: false, // Reset loading state
-      })); 
-    } 
-  }; 
+      uploadData.append("type", formData.type);
+      uploadData.append("body_part", formData.bodyPart);
 
-  return ( 
-    <div> 
-      <NavBar /> {/* Display the navigation bar */}
-      <img src={Image2} alt="Upload" className="upload-icon2" /> 
-      <img src={Image3} alt="Upload" className="upload-icon3" /> 
+      const response = await axios.post(API_URL, uploadData, {
+        headers: { Accept: "application/json" },
+      });
 
-      <div className="upload-container d-flex flex-column align-items-center"> 
-        <div className="upload-box d-flex flex-column align-items-center mt-5"> 
-          <h3 className="upload-header">Upload Your Image</h3> 
+      if (response.status === 200) {
+        setFormData((prev) => ({
+          ...prev,
+          predictionResult: response.data.prediction,
+          loading: false,
+        }));
+      } else {
+        throw new Error(response.statusText || "Prediction failed, please try again");
+      }
+    } catch (error) {
+      setFormData((prev) => ({
+        ...prev,
+        errorMessage: error.response?.data?.error || "An error occurred while uploading the images",
+        loading: false,
+      }));
+    }
+  };
 
-          <form onSubmit={handleSubmit} className="d-flex flex-column align-items-center"> 
-            <img src={formData.imagePreview || Image1} alt="Preview" className={formData.imagePreview ? "upload-preview" : "upload-icon1"} /> {/* Display selected image preview */}
+  return (
+    <div>
+      <NavBar />
+      <div className="upload-container d-flex flex-column align-items-center">
+        <div className="upload-box d-flex flex-column align-items-center mt-5">
+          <h3 className="upload-header">Upload Images</h3>
 
-            <input type="file" id="file-input" hidden onChange={handleFileChange} accept="image/*" /> {/* File input */}
-            <label htmlFor="file-input" className="upload-label">Choose File</label> 
-            <span className="file-name">{formData.fileName}</span> {/* Display selected file name */}
+          <form onSubmit={handleSubmit} className="d-flex flex-column align-items-center">
+            <div className="image-preview-container">
+              <img src={formData.imagePreview1 || Image1} alt="Preview 1" className="upload-preview" />
+              <img src={formData.imagePreview2 || Image1} alt="Preview 2" className="upload-preview" />
+            </div>
 
-            <select name="type" value={formData.type} onChange={handleChange} className="upload-select"> {/* Select image type */}
-              <option value="">Choose the type</option> 
-              <option value="X-ray">X-ray</option> 
-              <option value="MRI">MRI</option> 
-              <option value="CT Scan">CT Scan</option> 
-            </select> 
+            <input type="file" id="file-input-1" hidden onChange={(e) => handleFileChange(e, 1)} accept="image/*" />
+            <label htmlFor="file-input-1" className="upload-label">Choose the first image</label>
 
-            <select name="bodyPart" value={formData.bodyPart} onChange={handleChange} className="upload-select"> {/* Select body part */}
-              <option value="">Choose Body Part</option> 
-              <option value="Head">Head</option> 
-              <option value="Chest">Chest</option> 
-              <option value="Abdomen">Abdomen</option> 
-              <option value="Spine">Spine</option> 
-              <option value="Arm">Arm</option> 
-              <option value="Leg">Leg</option> 
-            </select> 
+            <input type="file" id="file-input-2" hidden onChange={(e) => handleFileChange(e, 2)} accept="image/*" />
+            <label htmlFor="file-input-2" className="upload-label">Choose the second image (optional)</label>
 
-            <img src={Image4} alt="Upload" className={`upload-icon4 ${formData.imagePreview ? "image-uploaded" : ""}`} /> {/* Display arrow icon */}
+            <select name="type" value={formData.type} onChange={handleChange} className="upload-select">
+              <option value="">Select Type</option>
+              <option value="X-ray">X-ray</option>
 
-            <button type="submit" className="upload-button" disabled={formData.loading}> {/* Upload button */}
-              {formData.loading ? "Processing..." : "Upload"} 
-            </button> 
+            </select>
 
-            {formData.loading && ( 
-              <div className="text-center mt-3"> 
-                <div className="spinner-border text-primary" role="status"> 
-                  <span className="visually-hidden">Uploading...</span> {/* Loading spinner */}
-                </div> 
-              </div> 
-            )} 
+            <select name="bodyPart" value={formData.bodyPart} onChange={handleChange} className="upload-select">
+              <option value="">Select Body Part</option>
+              <option value="Chest">Chest</option>
+            </select>
 
-            {formData.predictionResult && ( 
-              <div className="result-box mt-3"> 
-                <h5>AI Prediction:</h5> 
-                <p>{formData.predictionResult}</p> {/* Display AI prediction result */}
-              </div> 
-            )} 
-          </form> 
-        </div> 
-      </div> 
-    </div> 
-  ); 
-}; 
+            <button 
+  type="submit" 
+  className={`upload-button ${formData.loading || !formData.file1 && !formData.file2 || !formData.type || !formData.bodyPart ? "disabled-button" : "enabled"}`}
+  disabled={formData.loading || !formData.file1 && !formData.file2 || !formData.type || !formData.bodyPart}
+>
+  {formData.loading ? (
+    <>
+      <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+      Processing...
+    </>
+  ) : (
+    "Upload"
+  )}
+            </button>
 
-export default Upload; 
+            {formData.errorMessage && <div className="alert alert-danger mt-3">{formData.errorMessage}</div>}
+
+            {formData.predictionResult && (
+              <div className="result-box mt-3">
+                <h5>AI Prediction Result:</h5>
+                <p>{formData.predictionResult}</p>
+              </div>
+            )}
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Upload;

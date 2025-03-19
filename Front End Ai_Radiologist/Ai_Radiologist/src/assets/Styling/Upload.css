@@ -72,7 +72,6 @@
     top: 65%;
 }
 
-/* زر اختيار الملف */
 .upload-label {
     background: #80808038;
     color: black;
@@ -83,12 +82,7 @@
     margin-top: 1rem;
 }
 
-/* اسم الملف */
-.file-name {
-    margin-left: 0.3rem;
-}
 
-/* القائمة المنسدلة */
 .upload-select {
     padding: 1.5px;
     border-radius: 4px;
@@ -96,16 +90,30 @@
     margin-top: 10px;
 }
 
-/* زر الفحص */
 .upload-button {
-    margin-bottom: 1rem;
-    margin-top: 1rem;
-    background:linear-gradient(90deg, #017276 0%, #80DFDF 100%);
-    border-radius: 20px;
+    margin: 10px 0px;
     color: white;
-    padding: 5px 35px;
-    border: 1px solid black;
+    border: none;
+    padding: 5px 30px;
+    font-size: 16px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 17px;
+    background: #9e9c9c;
+}
+
+.upload-button:hover {
+    background-color: #000000;
+}
+
+.upload-button:disabled,
+.disabled-button {
+    background-color: #9e9c9c !important;
+    cursor: not-allowed;
+}
+
+.upload-button.enabled {
+    background: linear-gradient(90deg, #017276 0%, #80DFDF 100%) !important;
 }
 
 .box-upload{
@@ -114,4 +122,18 @@
     border: 2px dashed #785a5a6b;
     box-shadow: none;
     margin-bottom: 20px;
+}
+
+
+.image-preview-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.upload-preview {
+    width: 150px;
+    height: auto;
+    border-radius: 10px;
 }
