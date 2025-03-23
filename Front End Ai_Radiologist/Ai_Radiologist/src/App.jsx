@@ -19,12 +19,12 @@ function App() {
     <>
       <AuthProvider>
         <Routes>
-          <Route  path="/" element={<Home />} />
+          <Route path="/" element={<Home />} />
           <Route path="/Registration" element={<Registration />} />
           <Route path="/verify-email/:token" element={<VerifyEmail />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password/:token" element={<ResetPassword />} />
+          <Route path="/reset-password/:uidb64/:token" element={<ResetPassword />} />
           <Route path="/Upload" element={<ProtectedRoute><Upload/></ProtectedRoute>} />
           <Route path="NavBar" element={<NavBar />} />
           <Route path='Profile_User' element={<ProtectedRoute><Profile_User /></ProtectedRoute>} /> 
