@@ -23,7 +23,7 @@ from django.urls import path, include, re_path
 from rest_framework.routers import DefaultRouter
 
 from allauth.account.views import ConfirmEmailView
-from users.views import GoogleLogin, GoogleLoginCallback, LoginPage
+from users.views import GoogleLogin, GoogleLoginCallback, LoginPage, password_reset_confirm_redirect
 
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
@@ -43,6 +43,11 @@ urlpatterns = [
     # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
+path(
+        "api/v1/auth/password/reset/confirm/<str:uidb64>/<str:token>/",
+        password_reset_confirm_redirect,
+        name="password_reset_confirm",
+    ),
     path('api/v1/auth/password/reset/confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path("api/v1/auth/", include("dj_rest_auth.urls")),
     re_path(

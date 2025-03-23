@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 
+
 from django.core.files.uploadedfile import UploadedFile
 from dotenv import load_dotenv
 
@@ -100,10 +101,14 @@ REST_AUTH = {
 }
 
 AUTH_USER_MODEL = 'users.User'
+# <EMAIL_CONFIRM_REDIRECT_BASE_URL>/<key>
 
+# <PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL>/<uidb64>/<token>/
+PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL = FRONT_END_HOST + "/reset-password/"
 # django-allauth settings
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = FRONT_END_HOST + '/verify-email/'
-PASSWORD_RESET_CONFIRM_URL = FRONT_END_HOST + "/reset-password/{uid}/{token}/"
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL
+PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL = FRONT_END_HOST + "/reset-password/{uid}/{token}/"
 
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_AUTHENTICATION_METHOD = "email"  # Use Email / Password authentication
@@ -112,20 +117,11 @@ ACCOUNT_EMAIL_REQUIRED = True
 # ACCOUNT_EMAIL_VERIFICATION = "none" # Do not require email confirmation
 ACCOUNT_EMAIL_VERIFICATION = "mandatory" # Require email confirmation
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True  # No need to sent POST request to confirmation link
-LOGIN_URL = "/api/v1/auth/login/"  # Path, users will be redirected to after email verification
+LOGIN_URL = FRONT_END_HOST + '/verify-email/' # "/api/v1/auth/login/"  # Path, users will be redirected to after email verification
 
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = False
 
 
-
-# # The URL to redirect to after a successful email confirmation, in case no user is logged in.
-# ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = os.environ.get(
-#     "EMAIL_CONFIRM_REDIRECT_URL", "https://myapp.com/login"
-# )
-# # The URL to redirect to after a successful email confirmation, in case of an authenticated user.
-# ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = os.environ.get(
-#     "EMAIL_CONFIRM_REDIRECT_URL", "https://myapp.com/login"
-# )
 
 
 
