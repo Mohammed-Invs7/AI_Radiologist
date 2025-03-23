@@ -33,7 +33,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['172.29.103.150','localhost', '127.0.0.1', '::1', '172.16.10.80','172.19.174.80' ,'192.168.1.80', '*']
 DOMAIN_NAME = "http://172.19.174.80:8000"#"http://localhost:8000"
 
-
+FRONT_END_HOST = 'http://localhost:5173'
 CORS_ALLOW_ALL_ORIGINS = True
 
 # Auth details
@@ -102,6 +102,8 @@ REST_AUTH = {
 AUTH_USER_MODEL = 'users.User'
 
 # django-allauth settings
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = FRONT_END_HOST + '/verify-email/'
+PASSWORD_RESET_CONFIRM_URL = FRONT_END_HOST + "/reset-password/{uid}/{token}/"
 
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_AUTHENTICATION_METHOD = "email"  # Use Email / Password authentication
