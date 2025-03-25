@@ -1,3 +1,5 @@
+import "@fontsource/inter";
+import "@fontsource/inter/700.css";
 import Home from './Pages/Home'
 import Registration from './Pages/Registration'
 import Login from './Pages/Login'
@@ -12,6 +14,7 @@ import ProtectedRoute from './Components/ProtectedRoute'
 import VerifyEmail from './Pages/VerifyEmail'
 import ForgotPassword from './Pages/ForgotPassword'
 import ResetPassword from './Pages/ResetPassword'
+import Admin_Home from './Components/Admin/Admin_Home'
 
 function App() {
 
@@ -26,9 +29,10 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:uid/:token" element={<ResetPassword />} />
           <Route path="/Upload" element={<ProtectedRoute><Upload/></ProtectedRoute>} />
-          <Route path="NavBar" element={<NavBar />} />
-          <Route path='Profile_User' element={<ProtectedRoute><Profile_User /></ProtectedRoute>} /> 
-          <Route path='Settings_User' element={<ProtectedRoute><Settings_User/></ProtectedRoute>} />        
+          <Route path="/NavBar" element={<NavBar />} />
+          <Route path='/Profile_User' element={<ProtectedRoute><Profile_User /></ProtectedRoute>} /> 
+          <Route path='/Settings_User' element={<ProtectedRoute><Settings_User /></ProtectedRoute>} /> 
+          <Route path='/AdminDashboard'element={<Admin_Home/>}/>
 
         </Routes>
         </AuthProvider>

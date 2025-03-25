@@ -1,15 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
-import { useAuth } from "../context/AuthContext"; 
-import "bootstrap/dist/css/bootstrap.min.css"; 
-import "bootstrap-icons/font/bootstrap-icons.css"; 
-import "../assets/Styling/NavBar.css";
-import Logo from "../Components/Logo";
+import { useAuth } from "../../context/AuthContext"; 
 
-const NavBar = () => {
+const AdminNavbar = () => {
     const navigate = useNavigate();
     const { user, logout } = useAuth();
-    const [menuOpen, setMenuOpen] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [confirmLogout, setConfirmLogout] = useState(false);
     const dropdownRef = useRef(null);
@@ -40,33 +35,11 @@ const NavBar = () => {
 
     return (
         <header className="header">
-            <nav className="nav container">
-                {/* Logo */}
-                <Link to="/" className="nav__logo">
-                    <Logo />
-                </Link>
-
+            <nav style={{width:"90%"}} className="nav container">
                 {/* Navigation Menu */}
-                <div className={`nav__menu ${menuOpen ? "show-menu" : ""}`}>
-                    <ul className="nav__list">
-                        {["Home", "Our Goals", "How Use It", "Our Team"].map((item, index) => (
-                            <li key={index}>
-                                <Link 
-                                    to="/" 
-                                    className="nav__link" 
-                                    onClick={() => setMenuOpen(false)}
-                                >
-                                    {item}
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                    {/* Close button */}
-                    <div className="nav__close" onClick={() => setMenuOpen(false)}>
-                        <i className="bx bx-x"></i>
-                    </div>
+                <div>   
+                    <h3>Dashboard</h3>
                 </div>
-
                 <div className="nav__actions">
                     {/* User Profile Section */}
                     {user ? (
@@ -113,7 +86,7 @@ const NavBar = () => {
                                     <button 
                                         style={{ background: "none", border: "none", cursor: "pointer" }} 
                                         className="dropdown__link text-danger" 
-                                        onClick={handleLogoutClick} // ✅ زر تسجيل الخروج الآن يعمل
+                                        onClick={handleLogoutClick}
                                     >
                                         <i className="bx bx-log-out me-2 text-danger"></i> Logout
                                     </button>
@@ -127,9 +100,7 @@ const NavBar = () => {
                     )}
 
                     {/* Toggle button */}
-                    <div className="nav__toggle" onClick={() => setMenuOpen(true)}>
-                        <i className="bx bx-menu"></i>
-                    </div>
+                    
                 </div>
             </nav>
 
@@ -149,5 +120,4 @@ const NavBar = () => {
         </header>
     );
 };
-
-export default NavBar;
+export default AdminNavbar;
