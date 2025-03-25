@@ -11,53 +11,32 @@ const ResetPassword = () => {
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [message, setMessage] = useState("");
-    const [validToken, setValidToken] = useState(null); // null = not verified yet
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true);   
 
     // API URL
     const API_URL_CONFIRM = "http://127.0.0.1:8000/api/v1/auth/password/reset/confirm/";
 
-    // Verify token when the page loads
+    // Verify token when the page loads (removed as it is not necessary now)
     useEffect(() => {
-        const verifyToken = async () => {
-            try {
-                await axios.get(`http://127.0.0.1:8000/api/v1/auth/password/reset/verify/${uid}/${token}/`);
-                setValidToken(true); 
-            } catch (error) {
-                console.error("Token verification failed:", error.response?.data || error.message);
-                setValidToken(false);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        verifyToken();
-
-        if (validToken === true) {
-            navigate(`/reset-password/${uid}/${token}`);
-        }
-    }, [uid, token, validToken, navigate]);
+        console.log("Received UID:", uid);
+        console.log("Received Token:", token);
+        setLoading(false);  // set loading to false directly since we are not verifying the token here
+    }, [uid, token]);
 
     if (loading) {
         return <div className="container mt-5"><h2>Verifying...</h2></div>;
     }
 
-    if (validToken === false) {
-        return (
-            <div className="container mt-5 text-center">
-                <h2>Invalid Link</h2>
-                <p>This link may be expired or invalid.</p>
-                <button className="btn btn-primary" onClick={() => navigate("/forgot-password")}>
-                    Request a New Link
-                </button>
-            </div>
-        );
-    }
-
-    // Handle form submission
+  // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
         setMessage("");
+
+        console.log("Submitting new password...");
+        console.log("UID:", uid);
+        console.log("Token:", token);
+        console.log("New Password:", newPassword);
+        console.log("Confirm Password:", confirmPassword);
 
         if (newPassword !== confirmPassword) {
             setMessage("The passwords do not match!");
@@ -66,16 +45,20 @@ const ResetPassword = () => {
 
         try {
             const response = await axios.post(API_URL_CONFIRM, {
-                uid,
-                token,
-                new_password: newPassword
+                uid: uid,  
+                token: token,
+                new_password1: newPassword,
+                new_password2: confirmPassword,
             }, {
                 headers: { "Content-Type": "application/json" }
             });
 
-            if (response.data.success) {
+            console.log("Password reset response:", response.data);
+
+            // Check if the response contains the 'detail' field indicating success
+            if (response.data.detail) {
                 setMessage("Password reset successfully! Redirecting to login...");
-                setTimeout(() => navigate("/login"), 3000);
+                setTimeout(() => navigate("/login"), 4000);
             } else {
                 setMessage("Failed to reset. Please try again.");
             }
@@ -86,8 +69,9 @@ const ResetPassword = () => {
     };
 
     return (
-        <div className="row m-0">
-            <div className="col-lg-6 col-md-6 d-flex flex-column align-items-center mt-5">
+        <div className="page-form">
+            <div className="container-form d-flex flex-column justify-content-center align-items-center" >
+                <div className="w-50">
                 <h2>Reset Password</h2>
                 <p>Please enter your new password</p>
 
@@ -95,26 +79,30 @@ const ResetPassword = () => {
 
                 <form className="w-100" onSubmit={handleSubmit} style={{ maxWidth: "400px" }}>
                     <div className="mb-3">
-                        <label className="form-label">New Password</label>
-                        <input
-                            type="password"
-                            className="form-control"
-                            value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
-                            required
-                        />
-                    </div>
+                            <label className="form-label">New Password</label>
+                            <div className="input-box">
+                            <input
+                                type="password"
+                                className="form-control"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                required
+                                />
+                            <div className=" mt-3 ">
+                            <label className="form-label">Confirm Password</label>
+                            <input
+                                type="password"
+                                className="form-control"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                required
+                            />
+                            </div>
+                        </div>
 
-                    <div className="mb-3">
-                        <label className="form-label">Confirm Password</label>
-                        <input
-                            type="password"
-                            className="form-control"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            required
-                        />
-                    </div>
+                    
+                        </div>
+                        
 
                     <button type="submit" className="btn btn-submit">
                         Reset Password
@@ -122,12 +110,13 @@ const ResetPassword = () => {
                 </form>
 
                 {message.includes("Password reset successfully") && (
-                    <button className="btn btn-success mt-3" onClick={() => navigate("/login")}>
+                    <button style={{display:"none"}} className="btn btn-success mt-3" onClick={() => navigate("/login")}>
                         Go to Login
                     </button>
                 )}
             </div>
-        </div>
+            </div>
+            </div>
     );
 };
 

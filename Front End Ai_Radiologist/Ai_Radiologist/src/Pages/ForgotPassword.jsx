@@ -45,7 +45,7 @@ const ForgotPassword = () => {
                 <h2>Forgot Password</h2>
                 <p>Enter your email to receive a password reset link.</p>
 
-                {message && <div className="alert alert-info">{message}</div>}
+                {message && <div style={{ width:"90%"}} className="alert alert-info">{message}</div>}
 
                     <form onSubmit={handleSubmit} style={{ maxWidth:"400px" ,}}>
                     <div className="input-box">
