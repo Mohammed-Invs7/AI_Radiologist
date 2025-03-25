@@ -30,7 +30,7 @@ const ForgotPassword = () => {
         }
     } catch (error) {
         console.error("API Error:", error);
-        setMessage("❌ Error occurred. Please try again later.");
+        setMessage("Error occurred. Please try again later.");
         }
     finally {
         setLoading(false);

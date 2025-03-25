@@ -4,38 +4,40 @@ import { useParams, useNavigate } from "react-router-dom";
 import "../assets/Styling/Form_User.css";
 
 const ResetPassword = () => {
-    const { uidb64, token } = useParams();
+    const { uid, token } = useParams(); 
     const navigate = useNavigate();
 
-    // ✅ State management
+    // State management
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [message, setMessage] = useState("");
     const [validToken, setValidToken] = useState(null); // null = not verified yet
-    const [loading, setLoading] = useState(true); // ✅ Loading state
+    const [loading, setLoading] = useState(true);
 
-    // ✅ API URLs
-    const API_URL_TOKEN = `http://127.0.0.1:8000/api/v1/auth/password/reset/confirm/${uidb64}/${token}/`;
+    // API URL
     const API_URL_CONFIRM = "http://127.0.0.1:8000/api/v1/auth/password/reset/confirm/";
 
-    // ✅ Verify token when the page loads
+    // Verify token when the page loads
     useEffect(() => {
         const verifyToken = async () => {
             try {
-                const response = await axios.post(API_URL_TOKEN, { uidb64, token });
-                setValidToken(response.data.valid); // ✅ Confirm token validity
+                await axios.get(`http://127.0.0.1:8000/api/v1/auth/password/reset/verify/${uid}/${token}/`);
+                setValidToken(true); 
             } catch (error) {
                 console.error("Token verification failed:", error.response?.data || error.message);
-                setValidToken(false); // ❌ Invalid token
+                setValidToken(false);
             } finally {
-                setLoading(false); // ⏳ End loading
+                setLoading(false);
             }
         };
 
         verifyToken();
-    }, [uidb64, token]);
 
-    // ✅ If the token is not valid
+        if (validToken === true) {
+            navigate(`/reset-password/${uid}/${token}`);
+        }
+    }, [uid, token, validToken, navigate]);
+
     if (loading) {
         return <div className="container mt-5"><h2>Verifying...</h2></div>;
     }
@@ -52,19 +54,19 @@ const ResetPassword = () => {
         );
     }
 
-    // ✅ Handle form submission
+    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
         setMessage("");
 
         if (newPassword !== confirmPassword) {
-            setMessage("❌ The passwords do not match!");
+            setMessage("The passwords do not match!");
             return;
         }
 
         try {
             const response = await axios.post(API_URL_CONFIRM, {
-                uidb64,
+                uid,
                 token,
                 new_password: newPassword
             }, {
@@ -72,13 +74,14 @@ const ResetPassword = () => {
             });
 
             if (response.data.success) {
-                setMessage("✅ Password reset successfully! You can now log in.");
+                setMessage("Password reset successfully! Redirecting to login...");
+                setTimeout(() => navigate("/login"), 3000);
             } else {
-                setMessage("❌ Failed to reset. Please try again.");
+                setMessage("Failed to reset. Please try again.");
             }
         } catch (error) {
             console.error("Error:", error.response?.data || error.message);
-            setMessage(error.response?.data?.detail || "❌ An error occurred while resetting. Please try again.");
+            setMessage(error.response?.data?.detail || "An error occurred while resetting. Please try again.");
         }
     };
 
@@ -88,7 +91,7 @@ const ResetPassword = () => {
                 <h2>Reset Password</h2>
                 <p>Please enter your new password</p>
 
-                {message && <div className="alert alert-info">{message}</div>}
+                {message && <div className={`alert ${message.includes("successfully") ? "alert-success" : "alert-danger"}`}>{message}</div>}
 
                 <form className="w-100" onSubmit={handleSubmit} style={{ maxWidth: "400px" }}>
                     <div className="mb-3">

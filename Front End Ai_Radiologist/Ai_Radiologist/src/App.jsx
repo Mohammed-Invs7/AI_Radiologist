@@ -24,7 +24,7 @@ function App() {
           <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password/:uidb64/:token" element={<ResetPassword />} />
+          <Route path="/reset-password/:uid/:token" element={<ResetPassword />} />
           <Route path="/Upload" element={<ProtectedRoute><Upload/></ProtectedRoute>} />
           <Route path="NavBar" element={<NavBar />} />
           <Route path='Profile_User' element={<ProtectedRoute><Profile_User /></ProtectedRoute>} /> 
