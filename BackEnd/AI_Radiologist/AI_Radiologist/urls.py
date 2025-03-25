@@ -23,10 +23,14 @@ from django.urls import path, include, re_path
 from rest_framework.routers import DefaultRouter
 
 from allauth.account.views import ConfirmEmailView
-from users.views import GoogleLogin, GoogleLoginCallback, LoginPage, password_reset_confirm_redirect
+from users.views import GoogleLogin, GoogleLoginCallback, LoginPage, password_reset_confirm_redirect, email_confirm_redirect
 
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
-
+from dj_rest_auth.registration.views import (
+    ResendEmailVerificationView,
+    VerifyEmailView,
+    RegisterView,
+)
 from dj_rest_auth.views import PasswordResetConfirmView
 
 urlpatterns = [
@@ -42,20 +46,26 @@ urlpatterns = [
     #path('admin/', admin.site.urls),
     # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path("api/v1/auth/registration/", RegisterView.as_view(), name='rest_register'),
+    path("api/v1/auth/registration/verify-email/", VerifyEmailView.as_view(), name="rest_verify_email"),
+    path("api/v1/auth/registration/resend-email/", ResendEmailVerificationView.as_view(), name="rest_resend_email"),
+    path("api/v1/auth/registration/account-confirm-email/<str:key>/", email_confirm_redirect, name="account_confirm_email"),
+    path("api/v1/auth/registration/account-confirm-email/", VerifyEmailView.as_view(), name="account_email_verification_sent"),
 
-path(
+
+    path(
         "api/v1/auth/password/reset/confirm/<str:uidb64>/<str:token>/",
         password_reset_confirm_redirect,
         name="password_reset_confirm",
     ),
-    path('api/v1/auth/password/reset/confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    # path('api/v1/auth/password/reset/confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path("api/v1/auth/", include("dj_rest_auth.urls")),
-    re_path(
-        r"^api/v1/auth/registration/account-confirm-email/(?P<key>[-:\w]+)/$",
-        ConfirmEmailView.as_view(),
-        name="account_confirm_email",
-    ),
-    path('api/v1/auth/registration/', include('dj_rest_auth.registration.urls')),
+    # re_path(
+    #     r"^api/v1/auth/registration/account-confirm-email/(?P<key>[-:\w]+)/$",
+    #     ConfirmEmailView.as_view(),
+    #     name="account_confirm_email",
+    # ),
+    # path('api/v1/auth/registration/', include('dj_rest_auth.registration.urls')),
     #path('api-auth/', include('rest_framework.urls')),
     re_path(r"^api/v1/auth/accounts/", include("allauth.urls")),
     path("api/v1/auth/google/", GoogleLogin.as_view(), name="google_login"),
