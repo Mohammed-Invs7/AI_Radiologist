@@ -10,8 +10,10 @@ import requests
 from django.urls import reverse
 from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from .serializers import AdminUserDetailsSerializer
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, RetrieveAPIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import NotFound
+from users.serializers import AdminUserDetailsSerializer, UserTypeIdSerializer
 from users.permissions import IsAdminUser
 
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
@@ -44,7 +46,18 @@ class AdminUserDetailView(RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = AdminUserDetailsSerializer
 
+class CurrentUserTypeView(RetrieveAPIView):
+    """
+    View to retrieve the current user's type.
+    """
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserTypeIdSerializer
 
+    def get_object(self):
+        user = self.request.user
+        if not user.user_type:
+            raise NotFound("User type not found.")
+        return user.user_type
 
 ###########
 

@@ -93,6 +93,11 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
         )
 
 
+class UserTypeIdSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserType
+        fields = ['id']
+
 # Admin Serializers
 
 class AdminUserDetailsSerializer(serializers.ModelSerializer):
