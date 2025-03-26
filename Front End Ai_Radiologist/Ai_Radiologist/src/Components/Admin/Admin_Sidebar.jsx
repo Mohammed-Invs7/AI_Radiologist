@@ -6,7 +6,7 @@ import Image1 from '../../assets/Images/Adminlogo.png';
 
 const Admin_Sidebar = () => {
     const navigate = useNavigate();
-    const { logout } = useAuth();  // تأكد من أن useAuth() يعمل
+    const { logout } = useAuth();
     const [confirmLogout, setConfirmLogout] = useState(false);
 
     const handleLogoutClick = () => {

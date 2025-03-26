@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate , Link} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -58,8 +58,10 @@ const Registration = () => {
             });
 
             // Store token in local storage
-            localStorage.setItem("username", response.data.first_name);
+            localStorage.setItem("username", `${response.data.first_name} ${response.data.last_name}`);
+            //localStorage.setItem("username", response.data.first_name);
             localStorage.setItem("token", response.data.token);
+
 
             setTimeout(() => navigate("/login"), 5000);
         } else {

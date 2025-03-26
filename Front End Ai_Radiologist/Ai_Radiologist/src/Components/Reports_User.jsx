@@ -57,7 +57,8 @@ const Reports_User = () => {
                             <h6 className="m-0 text-primary">{item.title}</h6>
                             <small className="text-muted"> {new Date(item.report_date).toLocaleDateString()}</small>
                             <br />
-                            <small><strong>Modality:</strong> {item.radiology_modality}</small><br />
+                            <small><strong>Modality:</strong> {item.radiology_modality}</small>
+                            <br />
                             <small><strong>Region:</strong> {item.body_anatomical_region}</small>
                         </div>
                         <div className='d-flex gap-1'>

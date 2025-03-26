@@ -6,7 +6,7 @@ import "../assets/Styling/Sidebar.css";
 const Sidebar = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const [slideOut, setSlideOut] = useState(false); // حالة للتحكم بالحركة
+    const [slideOut, setSlideOut] = useState(false);
 
     const isRegisterPage = location.pathname === "/Registration";
     const buttonText = isRegisterPage ? "Login" : "Register";
