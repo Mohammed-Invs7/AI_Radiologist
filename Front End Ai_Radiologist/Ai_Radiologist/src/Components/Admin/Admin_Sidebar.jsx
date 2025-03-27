@@ -22,7 +22,10 @@ const Admin_Sidebar = () => {
     return (
         <div className="bg-white Admin-Sidebar py-2">
             <div className="m-2">
-                <span><img src={Image1} alt="Admin Logo" /></span>
+                <Link to={"/"}>
+                    <span><img src={Image1} alt="Admin Logo" /></span>
+                </Link>
+                
             </div>
             <hr className="text-dark mb-4" />
             <div className="list-group list-group-flush fw-semibold">

@@ -102,6 +102,16 @@ const NavBar = () => {
                                         <i className="bx bx-cog me-2"></i> Settings
                                     </Link>
                                 </li>
+
+                                {/* Check if the user is admin, show Dashboard link */}
+                                {user.user_type === "admin" && (
+                                    <li>
+                                        <Link className="dropdown__link" to="/AdminDashboard">
+                                            <i className="bx bx-grid-alt me-2"></i> Dashboard
+                                        </Link>
+                                    </li>
+                                )}
+
                                 <li>
                                     <button 
                                         style={{ background: "none", border: "none", cursor: "pointer" }} 

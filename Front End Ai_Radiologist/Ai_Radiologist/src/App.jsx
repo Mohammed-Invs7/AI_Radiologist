@@ -2,27 +2,26 @@ import "@fontsource/inter";
 import "@fontsource/inter/700.css";
 import "bootstrap/dist/css/bootstrap.min.css"; 
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { Routes, Route } from 'react-router-dom'
-import { AuthProvider } from './context/AuthContext'
-import Home from './Pages/Home'
-import Registration from './Pages/Registration'
-import Login from './Pages/Login'
-import Upload from './Pages/Upload'
-import NavBar from './Components/NavBar'
-import Profile_User from './Pages/Profile_User'
-import Settings_User from './Pages/Settings_User'
-import ProtectedRoute from './Components/ProtectedRoute'
-import VerifyEmail from './Pages/VerifyEmail'
-import ForgotPassword from './Pages/ForgotPassword'
-import ResetPassword from './Pages/ResetPassword'
-import Admin_Home from './Components/Admin/Admin_Home'
+import { Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import Home from './Pages/Home';
+import Registration from './Pages/Registration';
+import Login from './Pages/Login';
+import Upload from './Pages/Upload';
+import NavBar from './Components/NavBar';
+import Profile_User from './Pages/Profile_User';
+import Settings_User from './Pages/Settings_User';
+import ProtectedRoute from './Components/ProtectedRoute';
+import AdminRoute from './context/AdminRoute'; 
+import VerifyEmail from './Pages/VerifyEmail';
+import ForgotPassword from './Pages/ForgotPassword';
+import ResetPassword from './Pages/ResetPassword';
+import Admin_Home from './Components/Admin/Admin_Home';
 
 //Css//
-import './App.css'
-
+import './App.css';
 
 function App() {
-
   return (
     <>
       <AuthProvider>
@@ -37,12 +36,13 @@ function App() {
           <Route path="/NavBar" element={<NavBar />} />
           <Route path='/Profile_User' element={<ProtectedRoute><Profile_User /></ProtectedRoute>} /> 
           <Route path='/Settings_User' element={<ProtectedRoute><Settings_User /></ProtectedRoute>} /> 
-          <Route path='/AdminDashboard'element={<Admin_Home/>}/>
-
+          <Route element={<AdminRoute />}>
+          <Route path="/AdminDashboard" element={<Admin_Home />} />
+          </Route>
         </Routes>
-        </AuthProvider>
+      </AuthProvider>
     </>
   )
 }
 
-export default App
+export default App;

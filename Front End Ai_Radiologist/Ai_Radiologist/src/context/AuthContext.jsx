@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
         const token = localStorage.getItem("token"); 
         const userData = localStorage.getItem("user");
 
-        console.log("Token from localStorage on page load:", token); // Log the token when the page loads
+        console.log("Token from localStorage on page load:", token); // Log token
 
         if (token && userData) { 
             setUser(JSON.parse(userData)); 
@@ -21,18 +21,16 @@ export const AuthProvider = ({ children }) => {
     }, []); 
 
     const login = async (token, userData) => { 
-    console.log("Storing Token:", token); // Log the token in the console
-    
-    localStorage.setItem("token", token);
-    localStorage.setItem("user", JSON.stringify(userData));
+        console.log("Storing Token:", token);
+        
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(userData));
 
-    setUser(userData);
-}; 
-
+        setUser(userData);
+    }; 
 
     const logout = () => { 
-        const token = localStorage.getItem("token");
-        console.log("Logging out with Token:", token); // Log the token before removing it
+        console.log("Logging out with Token:", localStorage.getItem("token"));
 
         localStorage.removeItem("token");
         localStorage.removeItem("user"); 
@@ -40,14 +38,13 @@ export const AuthProvider = ({ children }) => {
     }; 
 
     const updateUser = (updatedUserData) => {
-    console.log("Updating User Data:", updatedUserData);
-    localStorage.setItem("user", JSON.stringify(updatedUserData));
-    setUser(updatedUserData);
-};
-
+        console.log("Updating User Data:", updatedUserData);
+        localStorage.setItem("user", JSON.stringify(updatedUserData));
+        setUser(updatedUserData);
+    };
 
     return ( 
-        <AuthContext.Provider value={{ user, login, logout, loading , updateUser }}> 
+        <AuthContext.Provider value={{ user, login, logout, loading, updateUser }}> 
             {children} 
         </AuthContext.Provider> 
     ); 
