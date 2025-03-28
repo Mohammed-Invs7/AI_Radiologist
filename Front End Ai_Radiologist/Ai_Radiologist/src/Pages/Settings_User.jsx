@@ -5,6 +5,8 @@ import { useAuth } from "../context/AuthContext"; // Import AuthContext to get u
 import NavBar from "../Components/NavBar"
 import "../assets/Styling/Setting_User.css"
 import "../assets/Styling/Form_User.css"
+
+
 const API_URL = "http://127.0.0.1:8000/api/v1/auth/user/"; // API endpoint for fetching and updating user data
 
 const Settings_User = () => {
@@ -55,9 +57,10 @@ const Settings_User = () => {
         formData.append("last_name", user.last_name);
         formData.append("gender", user.gender);
 
-        if (user.profile_image instanceof File) {
+        if (user.profile_image && user.profile_image.name) {
             formData.append("profile_image", user.profile_image);
         }
+
 
         try {
             const response = await axios.patch(API_URL, formData, {

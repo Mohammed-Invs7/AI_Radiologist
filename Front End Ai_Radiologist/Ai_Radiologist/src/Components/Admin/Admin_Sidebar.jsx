@@ -6,7 +6,7 @@ import Image1 from '../../assets/Images/Adminlogo.png';
 
 const Admin_Sidebar = () => {
     const navigate = useNavigate();
-    const { logout } = useAuth();  // تأكد من أن useAuth() يعمل
+    const { logout } = useAuth();
     const [confirmLogout, setConfirmLogout] = useState(false);
 
     const handleLogoutClick = () => {
@@ -22,7 +22,10 @@ const Admin_Sidebar = () => {
     return (
         <div className="bg-white Admin-Sidebar py-2">
             <div className="m-2">
-                <span><img src={Image1} alt="Admin Logo" /></span>
+                <Link to={"/"}>
+                    <span><img src={Image1} alt="Admin Logo" /></span>
+                </Link>
+                
             </div>
             <hr className="text-dark mb-4" />
             <div className="list-group list-group-flush fw-semibold">

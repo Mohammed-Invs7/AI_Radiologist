@@ -83,6 +83,11 @@ const AdminNavbar = () => {
                                     </Link>
                                 </li>
                                 <li>
+                                        <Link className="dropdown__link" to="/AdminDashboard">
+                                            <i className="bx bx-grid-alt me-2"></i> Dashboard
+                                        </Link>
+                                    </li>
+                                <li>
                                     <button 
                                         style={{ background: "none", border: "none", cursor: "pointer" }} 
                                         className="dropdown__link text-danger" 

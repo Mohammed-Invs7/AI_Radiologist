@@ -1,8 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
-import { useAuth } from "../context/AuthContext"; 
-import "bootstrap/dist/css/bootstrap.min.css"; 
-import "bootstrap-icons/font/bootstrap-icons.css"; 
+import { useAuth } from "../context/AuthContext";  
 import "../assets/Styling/NavBar.css";
 import Logo from "../Components/Logo";
 
@@ -26,17 +24,14 @@ const NavBar = () => {
     };
 
     useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setDropdownOpen(false);
-            }
-        };
+    const handleClickOutside = (event) => {
+        if (!dropdownRef.current?.contains(event.target)) setDropdownOpen(false);
+    };
 
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+}, []);
+
 
     return (
         <header className="header">
@@ -74,7 +69,6 @@ const NavBar = () => {
                             <div
                                 className="dropdown__profile"
                                 onClick={() => setDropdownOpen(prev => !prev)}
-                                aria-expanded={dropdownOpen}
                             >
                                 <div className="dropdown__image">
                                     <img
@@ -90,7 +84,6 @@ const NavBar = () => {
                             {/* Dropdown List */}
                             <ul 
                                 className={`dropdown__list ${dropdownOpen ? "show-dropdown" : ""}`} 
-                                aria-labelledby="userMenu"
                             >
                                 <div className="d-flex align-items-center mb-2">
                                     <img width={"40px"}
@@ -109,11 +102,21 @@ const NavBar = () => {
                                         <i className="bx bx-cog me-2"></i> Settings
                                     </Link>
                                 </li>
+
+                                {/* Check if the user is admin, show Dashboard link */}
+                                {user.user_type === "admin" && (
+                                    <li>
+                                        <Link className="dropdown__link" to="/AdminDashboard">
+                                            <i className="bx bx-grid-alt me-2"></i> Dashboard
+                                        </Link>
+                                    </li>
+                                )}
+
                                 <li>
                                     <button 
                                         style={{ background: "none", border: "none", cursor: "pointer" }} 
                                         className="dropdown__link text-danger" 
-                                        onClick={handleLogoutClick} // ✅ زر تسجيل الخروج الآن يعمل
+                                        onClick={handleLogoutClick}
                                     >
                                         <i className="bx bx-log-out me-2 text-danger"></i> Logout
                                     </button>
