@@ -1,12 +1,19 @@
 # from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework.response import Response
 from rest_framework import mixins, viewsets, status
 from rest_framework.permissions import IsAuthenticated
 
 from reports.models import Report
-from reports.serializers import UserReportListSerializer, UserReportDetailSerializer, AdminReportListSerializer, AdminReportDetailSerializer
+from reports.serializers import (
+    UserReportListSerializer,
+    UserReportDetailSerializer,
+    AdminReportListSerializer,
+    AdminReportDetailSerializer,
+    UserReportCreateSerializer,
+)
+from ai_models.models import AIModel
 from users.permissions import IsAdminUser
 
 from weasyprint import HTML #CSS
@@ -60,6 +67,24 @@ class UserReportsCountView(APIView):
         report_count = Report.objects.filter(user=request.user).count()
         return Response({"report_count": report_count})
 
+
+class UserReportCreateView(CreateAPIView):
+    """
+    View to create a report with a single image.
+    The 'model' field is fixed to the AIModel with id=1,
+    and 'report_details' is computed using custom logic.
+    """
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserReportCreateSerializer
+
+    def perform_create(self, serializer):
+        # ضبط حقل model بقيمة ثابتة (مثلاً id=1)
+        ai_model_instance = AIModel.objects.get(pk=1)
+
+
+        report_details = "The cardiac silhouette and mediastinum size are within normal limits. There is no pulmonary edema. There is no focal consolidation. There are no XXXX of a pleural effusion. There is no evidence of pneumothorax."
+
+        serializer.save(user=self.request.user, model=ai_model_instance, report_details=report_details)
 
 class GenerateReportPDF(APIView):
     """

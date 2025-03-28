@@ -28,6 +28,12 @@ class UserReportDetailSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+
+class UserReportCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Report
+        fields = ['image_path']
+        read_only_fields = ['id']
 # Admin
 
 class AdminReportListSerializer(serializers.ModelSerializer):
