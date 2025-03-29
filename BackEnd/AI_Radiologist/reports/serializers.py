@@ -32,8 +32,8 @@ class UserReportDetailSerializer(serializers.ModelSerializer):
 class UserReportCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Report
-        fields = ['image_path']
-        read_only_fields = ['id']
+        fields = ['image_path', 'report_details']
+        read_only_fields = ['report_details']
 # Admin
 
 class AdminReportListSerializer(serializers.ModelSerializer):
