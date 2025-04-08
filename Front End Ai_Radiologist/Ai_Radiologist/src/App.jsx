@@ -16,7 +16,8 @@ import AdminRoute from './context/AdminRoute';
 import VerifyEmail from './Pages/VerifyEmail';
 import ForgotPassword from './Pages/ForgotPassword';
 import ResetPassword from './Pages/ResetPassword';
-import Admin_Home from './Components/Admin/Admin_Home';
+import Admin_Home from './Pages/pages-Admin/Admin_Home';
+import UsersAdmin from "./Pages/pages-Admin/UsersAdmin";
 
 //Css//
 import './App.css';
@@ -37,7 +38,9 @@ function App() {
           <Route path='/Profile_User' element={<ProtectedRoute><Profile_User /></ProtectedRoute>} /> 
           <Route path='/Settings_User' element={<ProtectedRoute><Settings_User /></ProtectedRoute>} /> 
           <Route element={<AdminRoute />}>
-          <Route path="/AdminDashboard" element={<Admin_Home />} />
+            <Route path="/AdminDashboard" element={<Admin_Home />} />
+            <Route path="/UsersAdmin" element={<UsersAdmin />} />
+
           </Route>
         </Routes>
       </AuthProvider>

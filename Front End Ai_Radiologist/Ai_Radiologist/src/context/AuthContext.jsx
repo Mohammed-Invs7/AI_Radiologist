@@ -11,11 +11,15 @@ export const AuthProvider = ({ children }) => {
         const token = localStorage.getItem("token"); 
         const userData = localStorage.getItem("user");
 
-        console.log("Token from localStorage on page load:", token); // Log token
+        console.log("Token from localStorage on page load:", token); // طباعة التوكن
 
         if (token && userData) { 
-            setUser(JSON.parse(userData)); 
-        } 
+            try {
+                setUser(JSON.parse(userData));
+            } catch (error) {
+                console.error("خطأ في تحليل بيانات المستخدم:", error);
+            }
+        }
 
         setLoading(false); 
     }, []); 

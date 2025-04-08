@@ -1,5 +1,5 @@
-import AdminNavbar from "./AdminNavbar";
-import Admin_Sidebar from "./Admin_Sidebar";
+import AdminNavbar from "../../Components/Admin/AdminNavbar";
+import Admin_Sidebar from "../../Components/Admin/Admin_Sidebar";
 
 const Admin_Home = () => {
     return (

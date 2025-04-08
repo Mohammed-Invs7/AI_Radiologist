@@ -33,7 +33,7 @@ const Admin_Sidebar = () => {
                     <i className="bx bx-grid-alt fs-5 me-2"></i>
                     <span className="fs-5">Dashboard</span>
                 </Link>
-                <Link to="/users" className="list-group-item d-flex align-items-center text-center">
+                <Link to="/UsersAdmin" className="list-group-item d-flex align-items-center text-center">
                     <i className="bx bx-user fs-4 me-2"></i>
                     <span>Users</span>
                 </Link>
