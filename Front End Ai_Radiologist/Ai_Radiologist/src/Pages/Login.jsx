@@ -53,6 +53,7 @@ const Login = () => {
                 login(token, userData);
                 localStorage.setItem("refreshToken", refreshToken);
                 
+                // Redirect based on user type
                 if (userData.user_type === "admin") {
                     navigate('/AdminDashboard'); // Redirect admins to the admin panel
                 } else {
