@@ -1,58 +1,55 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 
-const AuthContext = createContext(); 
+const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => { 
-    const [user, setUser] = useState(null); 
-    const [loading, setLoading] = useState(true); 
+export const AuthProvider = ({ children }) => {
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    useEffect(() => { 
-        const token = localStorage.getItem("token"); 
+    useEffect(() => {
+        const token = localStorage.getItem("token");
         const userData = localStorage.getItem("user");
 
-        console.log("Token from localStorage on page load:", token); // طباعة التوكن
-
-        if (token && userData) { 
+        if (token && userData) {
             try {
-                setUser(JSON.parse(userData));
+                const parsedUserData = JSON.parse(userData);
+                setUser(parsedUserData);
             } catch (error) {
-                console.error("خطأ في تحليل بيانات المستخدم:", error);
+                console.error("Error parsing user data:", error);
             }
         }
 
-        setLoading(false); 
-    }, []); 
+        setLoading(false);
+    }, []);
 
-    const login = async (token, userData) => { 
-        console.log("Storing Token:", token);
-        
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(userData));
+    const login = async (token, userData) => {
+        try {
+            localStorage.setItem("token", token);
+            localStorage.setItem("user", JSON.stringify(userData));
+            setUser(userData);
+        } catch (error) {
+            console.error("Error storing token or user data:", error);
+        }
+    };
 
-        setUser(userData);
-    }; 
-
-    const logout = () => { 
-        console.log("Logging out with Token:", localStorage.getItem("token"));
-
+    const logout = () => {
         localStorage.removeItem("token");
-        localStorage.removeItem("user"); 
-        setUser(null); 
-    }; 
+        localStorage.removeItem("user");
+        setUser(null);
+    };
 
     const updateUser = (updatedUserData) => {
-        console.log("Updating User Data:", updatedUserData);
         localStorage.setItem("user", JSON.stringify(updatedUserData));
         setUser(updatedUserData);
     };
 
-    return ( 
-        <AuthContext.Provider value={{ user, login, logout, loading, updateUser }}> 
-            {children} 
-        </AuthContext.Provider> 
-    ); 
-}; 
+    return (
+        <AuthContext.Provider value={{ user, login, logout, loading, updateUser }}>
+            {children}
+        </AuthContext.Provider>
+    );
+};
 
 AuthProvider.propTypes = {
     children: PropTypes.node.isRequired,

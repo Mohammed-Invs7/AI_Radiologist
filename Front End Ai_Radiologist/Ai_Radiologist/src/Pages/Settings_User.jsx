@@ -48,42 +48,61 @@ const Settings_User = () => {
 
     // Handle form submission to update user profile
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        setMessage("");
+    e.preventDefault();
+    setLoading(true);
+    setMessage("");
 
-        const formData = new FormData();
-        formData.append("first_name", user.first_name);
-        formData.append("last_name", user.last_name);
-        formData.append("gender", user.gender);
+    const formData = new FormData();
+    formData.append("first_name", user.first_name);
+    formData.append("last_name", user.last_name);
+    formData.append("gender", user.gender);
 
-        if (user.profile_image && user.profile_image.name) {
-            formData.append("profile_image", user.profile_image);
-        }
+    if (user.profile_image && user.profile_image.name) {
+        formData.append("profile_image", user.profile_image);
+    }
 
+    try {
+        const response = await axios.patch(API_URL, formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+        });
 
-        try {
-            const response = await axios.patch(API_URL, formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`
-                }
+        if (response.status === 200) {
+            setMessage("✔ Profile updated successfully!");
+            
+            const userTypeResponse = await axios.get("http://127.0.0.1:8000/api/v1/user/user-type/", {
+                headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
             });
 
-            if (response.status === 200) {
-                setMessage("✔ Profile updated successfully!");
-                updateUser(response.data); // Update user data in AuthContext
-                setPreviewImage(response.data.profile_image || null); // Update profile image preview
+            let userType = "";
+            if (userTypeResponse.data.id === 1) {
+                userType = "admin";
+            } else if (userTypeResponse.data.id === 2) {
+                userType = "user";
             } else {
-                setMessage("❌ Update failed. Please try again.");
+                userType = "unknown";
             }
-        } catch (error) {
-            console.error("Error updating profile:", error.response?.data || error);
-            setMessage(error.response?.data?.detail || "An unexpected error occurred. Please try again.");
-        } finally {
-            setLoading(false);
+
+            const updatedUserData = {
+                ...response.data,
+                user_type: userType, 
+            };
+
+            updateUser(updatedUserData); 
+            setPreviewImage(updatedUserData.profile_image || null);
+        } else {
+            setMessage("❌ Update failed. Please try again.");
         }
-    };
+    } catch (error) {
+        console.error("Error updating profile:", error.response?.data || error);
+        setMessage(error.response?.data?.detail || "An unexpected error occurred. Please try again.");
+    } finally {
+        setLoading(false);
+    }
+};
+
 
     return (
         <>
