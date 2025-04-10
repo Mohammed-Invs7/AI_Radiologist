@@ -17,7 +17,7 @@ const UsersAdmin = () => {
     age: "",
     date_of_birth: "",
     phone_number: "",
-    user_type: "",
+    user_type: "user",
   });
   const [editId, setEditId] = useState(null);
 
@@ -38,6 +38,7 @@ const UsersAdmin = () => {
       });
 
       setUsers(res.data);
+      console.log("المستخدمين:", res.data); // ✅ طباعة البيانات في الكونسول
     } catch (error) {
       console.error("Error fetching users:", error);
     }
@@ -61,7 +62,16 @@ const UsersAdmin = () => {
   };
 
   const handleEdit = (user, id) => {
-    setCurrentUser(user);
+    setCurrentUser({
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      gender: user.gender,
+      age: user.age,
+      date_of_birth: user.date_of_birth,
+      phone_number: user.phone_number || "",
+      user_type: user.user_type,
+    });
     setEditId(id);
     setEditMode(true);
     setShowModal(true);
@@ -76,7 +86,7 @@ const UsersAdmin = () => {
       age: "",
       date_of_birth: "",
       phone_number: "",
-      user_type: "",
+      user_type: "user",
     });
     setEditMode(false);
     setShowModal(true);
@@ -107,117 +117,167 @@ const UsersAdmin = () => {
 
   return (
     <div className="container-fluid p-0">
-      <div style={{ background:"#f8f9fa"}} className="container-fluid min-vh-100">
-            <div className="row">
-                <div style={{width:"20%"}} className="bg-white vh-100">
-                    <Admin_Sidebar/>
-                </div>
-                <div className="col">
+      <div style={{ background: "#f8f9fa" }} className="container-fluid min-vh-100">
+        <div className="row">
+          <div style={{ width: "20%" }} className="bg-white vh-100">
+            <Admin_Sidebar />
+          </div>
+          <div className="col">
             <AdminNavbar />
             <div className="flex-grow-1 p-4">
-          <div className="d-flex justify-content-between align-items-center mb-4">
-            <button className="btn btn-primary" onClick={handleAdd}>
-              + Add User
-            </button>
-          </div>
+              <div className="d-flex justify-content-between align-items-center mb-4">
+                <button className="btn btn-primary" onClick={handleAdd}>
+                  + Add User
+                </button>
+              </div>
 
-          <div className="table-responsive">
-            <table className="table table-bordered table-hover">
-              <thead className="table-dark text-center align-middle">
-                <tr>
-                  <th>#</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Email</th>
-                  <th>Gender</th>
-                  <th>Age</th>
-                  <th>Date of Birth</th>
-                  <th>Phone Number</th>
-                  <th>User Type</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody className="text-center align-middle">
-                {users.map((user, idx) => (
-                  <tr key={user.id}>
-                    <td>{idx + 1}</td>
-                    <td>{user.first_name}</td>
-                    <td>{user.last_name}</td>
-                    <td>{user.email}</td>
-                    <td>{user.gender}</td>
-                    <td>{user.age}</td>
-                    <td>{user.date_of_birth}</td>
-                    <td>{user.phone_number || "N/A"}</td>
-                    <td>{user.user_type}</td>
-                    <td>
-                      <button className="btn btn-warning btn-sm me-2" onClick={() => handleEdit(user, user.id)}>
-                        Edit
-                      </button>
-                      <button className="btn btn-danger btn-sm" onClick={() => handleDelete(user.id)}>
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              <div className="table-responsive">
+                <table className="table table-bordered table-hover">
+                  <thead className="table-dark text-center align-middle">
+                    <tr>
+                      <th>#</th>
+                      <th>First Name</th>
+                      <th>Last Name</th>
+                      <th>Email</th>
+                      <th>Gender</th>
+                      <th>Age</th>
+                      <th>Date of Birth</th>
+                      <th>Phone Number</th>
+                      <th>User Type</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-center align-middle">
+                    {users.map((user, idx) => (
+                      <tr key={user.id || user.pk}>
+                        <td>{idx + 1}</td>
+                        <td>{user.first_name}</td>
+                        <td>{user.last_name}</td>
+                        <td>{user.email}</td>
+                        <td>{user.gender}</td>
+                        <td>{user.age}</td>
+                        <td>{user.date_of_birth}</td>
+                        <td>{user.phone_number || "N/A"}</td>
+                        <td>{user.user_type}</td>
+                        <td>
+                          <button className="btn btn-warning btn-sm me-2" onClick={() => handleEdit(user, user.id || user.pk)}>
+                            Edit
+                          </button>
+                          <button className="btn btn-danger btn-sm" onClick={() => handleDelete(user.id || user.pk)}>
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
 
-          {/* Modal */}
-          {showModal && (
-            <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
-              <div className="modal-dialog modal-lg">
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <h5 className="modal-title">{editMode ? "Edit User" : "Add User"}</h5>
-                    <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
-                  </div>
-                  <div className="modal-body">
-                    <div className="row">
-                      {[
-                        { label: "First Name", name: "first_name" },
-                        { label: "Last Name", name: "last_name" },
-                        { label: "Email", name: "email" },
-                        { label: "Gender", name: "gender" },
-                        { label: "Age", name: "age" },
-                        { label: "Date of Birth", name: "date_of_birth", type: "date" },
-                        { label: "Phone Number", name: "phone_number" },
-                        { label: "User Type", name: "user_type" },
-                      ].map((field, i) => (
-                        <div className="col-md-6 mb-3" key={i}>
-                          <label className="form-label">{field.label}</label>
-                          <input
-                            type={field.type || "text"}
-                            className="form-control"
-                            name={field.name}
-                            value={currentUser[field.name]}
-                            onChange={handleChange}
-                          />
+              {/* Modal */}
+              {showModal && (
+                <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
+                  <div className="modal-dialog modal-lg">
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <h5 className="modal-title">{editMode ? "Edit User" : "Add User"}</h5>
+                        <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
+                      </div>
+                      <div className="modal-body">
+                        <div className="row">
+                          <div className="col-md-6 mb-3">
+                            <label className="form-label">First Name</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="first_name"
+                              value={currentUser.first_name}
+                              onChange={handleChange}
+                            />
+                          </div>
+                          <div className="col-md-6 mb-3">
+                            <label className="form-label">Last Name</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="last_name"
+                              value={currentUser.last_name}
+                              onChange={handleChange}
+                            />
+                          </div>
+                          <div className="col-md-6 mb-3">
+                            <label className="form-label">Email</label>
+                            <input
+                              type="email"
+                              className="form-control"
+                              name="email"
+                              value={currentUser.email}
+                              onChange={handleChange}
+                            />
+                          </div>
+                          <div className="col-md-6 mb-3">
+                            <label className="form-label">Gender</label>
+                            <select
+                              className="form-select"
+                              name="gender"
+                              value={currentUser.gender}
+                              onChange={handleChange}
+                            >
+                              <option value="M">Male</option>
+                              <option value="F">Female</option>
+                            </select>
+                          </div>
+                          <div className="col-md-6 mb-3">
+                            <label className="form-label">Date of Birth</label>
+                            <input
+                              type="date"
+                              className="form-control"
+                              name="date_of_birth"
+                              value={currentUser.date_of_birth}
+                              onChange={handleChange}
+                            />
+                          </div>
+                          <div className="col-md-6 mb-3">
+                            <label className="form-label">Phone Number</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="phone_number"
+                              value={currentUser.phone_number}
+                              onChange={handleChange}
+                            />
+                          </div>
+                          <div className="col-md-6 mb-3">
+                            <label className="form-label">User Type</label>
+                            <select
+                              className="form-select"
+                              name="user_type"
+                              value={currentUser.user_type}
+                              onChange={handleChange}
+                            >
+                              <option value="user">User</option>
+                              <option value="admin">Admin</option>
+                            </select>
+                          </div>
                         </div>
-                      ))}
+                      </div>
+                      <div className="modal-footer">
+                        <button className="btn btn-secondary" onClick={() => setShowModal(false)}>
+                          Cancel
+                        </button>
+                        <button className="btn btn-success" onClick={handleSubmit}>
+                          {editMode ? "Update" : "Add"}
+                        </button>
+                      </div>
                     </div>
                   </div>
-                  <div className="modal-footer">
-                    <button className="btn btn-secondary" onClick={() => setShowModal(false)}>
-                      Cancel
-                    </button>
-                    <button className="btn btn-success" onClick={handleSubmit}>
-                      {editMode ? "Update" : "Add"}
-                    </button>
-                  </div>
                 </div>
-              </div>
-            </div>
-          )}
+              )}
 
-        </div>
-                </div>
             </div>
+          </div>
         </div>
-
-        {/* Main content */}
-        
       </div>
+    </div>
   );
 };
 

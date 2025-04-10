@@ -29,7 +29,7 @@ const Admin_Sidebar = () => {
             </div>
             <hr className="text-dark mb-4" />
             <div className="list-group list-group-flush fw-semibold">
-                <Link to="/dashboard" className="list-group-item d-flex align-items-center text-center">
+                <Link to="/AdminDashboard" className="list-group-item d-flex align-items-center text-center">
                     <i className="bx bx-grid-alt fs-5 me-2"></i>
                     <span className="fs-5">Dashboard</span>
                 </Link>

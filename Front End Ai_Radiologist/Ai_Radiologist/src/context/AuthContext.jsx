@@ -7,31 +7,52 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null); 
     const [loading, setLoading] = useState(true); 
 
-    useEffect(() => { 
-        const token = localStorage.getItem("token"); 
-        const userData = localStorage.getItem("user");
+    useEffect(() => {
+    const token = localStorage.getItem("token");
+    const userData = localStorage.getItem("user");
 
-        console.log("Token from localStorage on page load:", token); // طباعة التوكن
+    console.log("Token from localStorage on page load:", token);
+    console.log("User data from localStorage:", userData);
 
-        if (token && userData) { 
-            try {
-                setUser(JSON.parse(userData));
-            } catch (error) {
-                console.error("خطأ في تحليل بيانات المستخدم:", error);
+    if (token && userData) {
+        try {
+            const parsedUserData = JSON.parse(userData);
+            setUser(parsedUserData);
+
+            // التحقق من user_type عند تحميل الصفحة
+            if (parsedUserData.user_type !== 'admin') {
+                console.warn("User type is not admin, current type is:", parsedUserData.user_type);
             }
+
+        } catch (error) {
+            console.error("Error parsing user data:", error);
+        }
+    }
+
+    setLoading(false);
+}, []);
+
+
+    const login = async (token, userData) => {
+    console.log("Storing Token:", token);
+    console.log("User Data from API:", userData); // طباعة بيانات المستخدم هنا
+    
+    try {
+        if (userData.user_type !== 'admin') {
+            console.warn("User type is not admin. Check your database or response from API.");
         }
 
-        setLoading(false); 
-    }, []); 
-
-    const login = async (token, userData) => { 
-        console.log("Storing Token:", token);
-        
+        // تخزين التوكن وبيانات المستخدم في localStorage
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(userData));
 
-        setUser(userData);
-    }; 
+        setUser(userData);  // تحديث الحالة
+    } catch (error) {
+        console.error("Error storing token or user data:", error);
+    }
+};
+
+
 
     const logout = () => { 
         console.log("Logging out with Token:", localStorage.getItem("token"));

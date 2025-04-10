@@ -42,10 +42,9 @@ const Login = () => {
                 let userData = userResponse.data;
                 console.log("User Data Fetched:", userData);
 
-                if (userData.pk === 1) {
-                    userData.user_type = "admin";
-                } else if (userData.pk === 2) {
-                    userData.user_type = "user";
+                // ✅ Ensure user_type is set
+                if (!userData.user_type) {
+                    userData.user_type = userData.pk === 1 ? "admin" : "user";
                 }
 
                 console.log("User Type:", userData.user_type);
@@ -55,7 +54,7 @@ const Login = () => {
                 
                 // Redirect based on user type
                 if (userData.user_type === "admin") {
-                    navigate('/AdminDashboard'); // Redirect admins to the admin panel
+                    navigate('/AdminDashboard'); // Redirect admins to admin dashboard
                 } else {
                     navigate('/Upload'); // Redirect normal users
                 }
