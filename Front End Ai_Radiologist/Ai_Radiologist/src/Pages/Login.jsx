@@ -12,7 +12,7 @@ const Login = () => {
     const { login } = useAuth();
     const navigate = useNavigate();
 
-    const [formData, setFormData] = useState({ email: "", password: "" }); 
+    const [formData, setFormData] = useState({ email: "", password: "" });
     const [message, setMessage] = useState("");
 
     const handleChange = (e) => {
@@ -34,7 +34,6 @@ const Login = () => {
 
                 console.log("Received Token:", token);
 
-                // Fetch user data after login
                 const userResponse = await axios.get("http://127.0.0.1:8000/api/v1/auth/user/", {
                     headers: { "Authorization": `Bearer ${token}` }
                 });
@@ -42,21 +41,32 @@ const Login = () => {
                 let userData = userResponse.data;
                 console.log("User Data Fetched:", userData);
 
-                // ✅ Ensure user_type is set
-                if (!userData.user_type) {
-                    userData.user_type = userData.pk === 1 ? "admin" : "user";
+                const userTypeResponse = await axios.get("http://127.0.0.1:8000/api/v1/user/user-type/", {
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+
+                let userType = "";
+                if (userTypeResponse.data.id === 1) {
+                    userType = "admin";
+                } else if (userTypeResponse.data.id === 2) {
+                    userType = "user";
+                } else {
+                    userType = "unknown";
                 }
 
+                userData.user_type = userType;
                 console.log("User Type:", userData.user_type);
 
                 login(token, userData);
                 localStorage.setItem("refreshToken", refreshToken);
-                
-                // Redirect based on user type
+                localStorage.setItem("user", JSON.stringify(userData));
+
                 if (userData.user_type === "admin") {
-                    navigate('/AdminDashboard'); // Redirect admins to admin dashboard
+                    navigate('/AdminDashboard');
+                } else if (userData.user_type === "user") {
+                    navigate('/Upload');
                 } else {
-                    navigate('/Upload'); // Redirect normal users
+                    setMessage("Unknown user type!");
                 }
             } else {
                 setMessage("Token is missing in the response!");
