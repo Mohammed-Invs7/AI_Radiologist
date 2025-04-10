@@ -10,14 +10,16 @@ import requests
 from django.urls import reverse
 from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import NotFound
-from users.serializers import AdminUserDetailsSerializer, UserTypeIdSerializer
+from users.serializers import AdminUserDetailsSerializer, UserTypeIdSerializer, AdminUserDetailsSerializer, \
+    AdminUserCreateSerializer
 from users.permissions import IsAdminUser
 
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+from allauth.account.models import EmailAddress
 from dj_rest_auth.registration.views import SocialLoginView
 from django.conf import settings
 
@@ -28,7 +30,29 @@ from django.conf import settings
 
 User = get_user_model()
 
-class AdminUserListCreateView(ListCreateAPIView):
+
+class AdminUserCreateView(CreateAPIView):
+    """
+    Admin API endpoint to create a new user.
+    It expects password1 and password2 for confirmation,
+    and automatically creates an email address record with verified=True.
+    """
+    serializer_class = AdminUserCreateSerializer
+    permission_classes = [IsAdminUser]
+
+    def perform_create(self, serializer):
+        user = serializer.save()
+        # إنشاء سجل في جدول EmailAddress لتوثيق البريد الإلكتروني تلقائيًا
+        # تأكد من أن allauth مضاف في INSTALLED_APPS وأن SITE_ID مضبوط
+        EmailAddress.objects.create(
+            user=user,
+            email=user.email,
+            verified=True,
+            primary=True
+        )
+
+
+class AdminUserListView(ListAPIView):
     """
     View to list all users and allow creating a new user.
     """

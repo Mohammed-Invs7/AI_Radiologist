@@ -69,7 +69,7 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
     # Mark these fields as read-only (they will be available in the output but not editable)
     date_of_birth = serializers.DateField(read_only=True)
     # phone_number = serializers.CharField(max_length=15, read_only=True)
-    # user_type = serializers.PrimaryKeyRelatedField(queryset=UserType.objects.all(), read_only=True)
+    user_type = serializers.PrimaryKeyRelatedField(read_only=True)
     profile_image = serializers.ImageField(validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png'])],allow_empty_file=True)
     join_date = serializers.DateTimeField(read_only=True)
 
@@ -87,9 +87,9 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
             'age',
             'date_of_birth',
             'join_date',
-            'profile_image'
+            'profile_image',
+            'user_type',
             # 'phone_number',
-            # 'user_type',
         )
 
 
@@ -111,10 +111,34 @@ class AdminUserDetailsSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             'id','email', 'first_name', 'last_name', 'gender', 'age',
-            'date_of_birth', 'phone_number', 'join_date', 'user_type'
-        ]
+            'date_of_birth', 'join_date', 'user_type'
+        ] #'phone_number'
         read_only_fields = ['join_date', 'age']
 
+
+class AdminUserCreateSerializer(serializers.ModelSerializer):
+    password1 = serializers.CharField(write_only=True)
+    password2 = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = User
+        fields = (
+            'email', 'first_name', 'last_name', 'gender',
+            'date_of_birth', 'phone_number', 'password1', 'password2', 'user_type'
+        )
+
+    def validate(self, attrs):
+        if attrs['password1'] != attrs['password2']:
+            raise serializers.ValidationError({"password": "Passwords must match."})
+        return attrs
+
+    def create(self, validated_data):
+        password = validated_data.pop('password1')
+        validated_data.pop('password2')
+        user = User.objects.create_user(**validated_data)
+        user.set_password(password)
+        user.save()
+        return user
 
 
 # class CustomRegisterSerializer(serializers.Serializer):
