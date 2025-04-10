@@ -3,6 +3,7 @@ import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import Admin_Sidebar from "../../Components/Admin/Admin_Sidebar";
 import AdminNavbar from "../../Components/Admin/AdminNavbar";
+import ReactPaginate from "react-paginate";
 
 const UsersAdmin = () => {
   const { user } = useAuth();
@@ -16,14 +17,16 @@ const UsersAdmin = () => {
     gender: "M",
     age: "",
     date_of_birth: "",
-    phone_number: "",
     user_type: "user",
   });
   const [editId, setEditId] = useState(null);
 
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 10;
+
   useEffect(() => {
     if (!user) {
-      console.log("لا يوجد مستخدم مسجل الدخول");
+      console.log("No Users");
       return;
     }
 
@@ -38,10 +41,14 @@ const UsersAdmin = () => {
       });
 
       setUsers(res.data);
-      console.log("المستخدمين:", res.data); // ✅ طباعة البيانات في الكونسول
+      console.log("Users:", res.data);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
+  };
+
+  const handlePageClick = (event) => {
+    setCurrentPage(event.selected);
   };
 
   const handleDelete = async (id) => {
@@ -69,7 +76,6 @@ const UsersAdmin = () => {
       gender: user.gender,
       age: user.age,
       date_of_birth: user.date_of_birth,
-      phone_number: user.phone_number || "",
       user_type: user.user_type,
     });
     setEditId(id);
@@ -77,20 +83,19 @@ const UsersAdmin = () => {
     setShowModal(true);
   };
 
-  const handleAdd = () => {
-    setCurrentUser({
-      first_name: "",
-      last_name: "",
-      email: "",
-      gender: "M",
-      age: "",
-      date_of_birth: "",
-      phone_number: "",
-      user_type: "user",
-    });
-    setEditMode(false);
-    setShowModal(true);
-  };
+  // const handleAdd = () => {
+  //   setCurrentUser({
+  //     first_name: "",
+  //     last_name: "",
+  //     email: "",
+  //     gender: "M",
+  //     age: "",
+  //     date_of_birth: "",
+  //     user_type: "user",
+  //   });
+  //   setEditMode(false);
+  //   setShowModal(true);
+  // };
 
   const handleChange = (e) => {
     setCurrentUser({ ...currentUser, [e.target.name]: e.target.value });
@@ -115,6 +120,9 @@ const UsersAdmin = () => {
     }
   };
 
+  // Pagination: Paginate users list
+  const usersToDisplay = users.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+
   return (
     <div className="container-fluid p-0">
       <div style={{ background: "#f8f9fa" }} className="container-fluid min-vh-100">
@@ -125,14 +133,10 @@ const UsersAdmin = () => {
           <div className="col">
             <AdminNavbar />
             <div className="flex-grow-1 p-4">
-              <div className="d-flex justify-content-between align-items-center mb-4">
-                <button className="btn btn-primary" onClick={handleAdd}>
-                  + Add User
-                </button>
-              </div>
+              
 
               <div className="table-responsive">
-                <table className="table table-bordered table-hover">
+                <table className="table table-bordered table-hover table-sm">
                   <thead className="table-dark text-center align-middle">
                     <tr>
                       <th>#</th>
@@ -142,36 +146,64 @@ const UsersAdmin = () => {
                       <th>Gender</th>
                       <th>Age</th>
                       <th>Date of Birth</th>
-                      <th>Phone Number</th>
                       <th>User Type</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody className="text-center align-middle">
-                    {users.map((user, idx) => (
-                      <tr key={user.id || user.pk}>
-                        <td>{idx + 1}</td>
+                    {usersToDisplay.map((user, idx) => (
+                      <tr key={user.id}>
+                        <td>
+                          {idx + 1 + currentPage * itemsPerPage}
+                        </td>
                         <td>{user.first_name}</td>
                         <td>{user.last_name}</td>
                         <td>{user.email}</td>
                         <td>{user.gender}</td>
                         <td>{user.age}</td>
                         <td>{user.date_of_birth}</td>
-                        <td>{user.phone_number || "N/A"}</td>
                         <td>{user.user_type}</td>
                         <td>
-                          <button className="btn btn-warning btn-sm me-2" onClick={() => handleEdit(user, user.id || user.pk)}>
-                            Edit
-                          </button>
-                          <button className="btn btn-danger btn-sm" onClick={() => handleDelete(user.id || user.pk)}>
-                            Delete
-                          </button>
+                          <div className="d-flex justify-content-center gap-2">
+                            <i
+                              className="bx bx-edit text-warning"
+                              style={{ cursor: "pointer"}}
+                              onClick={() => handleEdit(user, user.id)}
+                              title="Edit"
+                            ></i>
+                            <i
+                              className="bx bx-trash text-danger"
+                              style={{ cursor: "pointer"}}
+                              onClick={() => handleDelete(user.id)}
+                              title="Delete"
+                            ></i>
+                          </div>
                         </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
+
+              {/* Pagination */}
+              <ReactPaginate
+                pageCount={Math.ceil(users.length / itemsPerPage)}
+                onPageChange={handlePageClick}
+                containerClassName="pagination justify-content-center mt-4"
+                pageClassName="page-item"
+                pageLinkClassName="page-link"
+                previousClassName="page-item"
+                previousLinkClassName="page-link"
+                nextClassName="page-item"
+                nextLinkClassName="page-link"
+                activeClassName="active"
+              />
+
+              {/* <div className="d-flex justify-content-between align-items-center mb-4">
+                <button className="btn btn-primary" onClick={handleAdd}>
+                  + Add User
+                </button>
+              </div> */}
 
               {/* Modal */}
               {showModal && (
@@ -237,16 +269,6 @@ const UsersAdmin = () => {
                             />
                           </div>
                           <div className="col-md-6 mb-3">
-                            <label className="form-label">Phone Number</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              name="phone_number"
-                              value={currentUser.phone_number}
-                              onChange={handleChange}
-                            />
-                          </div>
-                          <div className="col-md-6 mb-3">
                             <label className="form-label">User Type</label>
                             <select
                               className="form-select"
@@ -272,7 +294,6 @@ const UsersAdmin = () => {
                   </div>
                 </div>
               )}
-
             </div>
           </div>
         </div>
