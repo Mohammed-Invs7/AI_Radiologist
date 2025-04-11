@@ -4,12 +4,30 @@ import { useAuth } from "../../context/AuthContext";
 import Admin_Sidebar from "../../Components/Admin/Admin_Sidebar";
 import AdminNavbar from "../../Components/Admin/AdminNavbar";
 import ReactPaginate from "react-paginate";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
+
 
 const UsersAdmin = () => {
   const { user } = useAuth();
   const [users, setUsers] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [editMode, setEditMode] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editId, setEditId] = useState(null);
+
+  const [newUser, setNewUser] = useState({
+    email: "",
+    first_name: "",
+    last_name: "",
+    gender: "M",
+    date_of_birth: "",
+    phone_number: "",
+    password1: "",
+    password2: "",
+    user_type: 2,
+  });
+
   const [currentUser, setCurrentUser] = useState({
     first_name: "",
     last_name: "",
@@ -19,17 +37,12 @@ const UsersAdmin = () => {
     date_of_birth: "",
     user_type: "user",
   });
-  const [editId, setEditId] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 10;
 
   useEffect(() => {
-    if (!user) {
-      console.log("No Users");
-      return;
-    }
-
+    if (!user) return;
     fetchUsers();
   }, [user]);
 
@@ -41,7 +54,6 @@ const UsersAdmin = () => {
       });
 
       setUsers(res.data);
-      console.log("Users:", res.data);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
@@ -52,21 +64,33 @@ const UsersAdmin = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!id || !window.confirm("Are you sure you want to delete this user?")) return;
+  if (!id) return;
 
+  const result = await Swal.fire({
+    title: "Are you sure?",
+    text: "Do you really want to delete this user? This action cannot be undone.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Yes, delete it!",
+  });
+
+  if (result.isConfirmed) {
     try {
       const token = localStorage.getItem("token");
       await axios.delete(`http://127.0.0.1:8000/api/v1/admin/users/${id}/`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      alert("User deleted successfully.");
+      toast.success("User deleted successfully.");
       fetchUsers();
     } catch (error) {
       console.error("Error deleting user:", error);
-      alert("An error occurred while deleting the user.");
+      toast.error("An error occurred while deleting the user.");
     }
-  };
+  }
+};
 
   const handleEdit = (user, id) => {
     setCurrentUser({
@@ -79,52 +103,52 @@ const UsersAdmin = () => {
       user_type: user.user_type,
     });
     setEditId(id);
-    setEditMode(true);
-    setShowModal(true);
+    setShowEditModal(true);
   };
 
-  // const handleAdd = () => {
-  //   setCurrentUser({
-  //     first_name: "",
-  //     last_name: "",
-  //     email: "",
-  //     gender: "M",
-  //     age: "",
-  //     date_of_birth: "",
-  //     user_type: "user",
-  //   });
-  //   setEditMode(false);
-  //   setShowModal(true);
-  // };
-
-  const handleChange = (e) => {
+  const handleChangeEdit = (e) => {
     setCurrentUser({ ...currentUser, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async () => {
+  const handleChangeAdd = (e) => {
+    setNewUser({ ...newUser, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmitEdit = async () => {
     try {
       const token = localStorage.getItem("token");
-      if (editMode) {
-        await axios.put(`http://127.0.0.1:8000/api/v1/admin/users/${editId}/`, currentUser, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-      } else {
-        await axios.post("http://127.0.0.1:8000/api/v1/admin/users/", currentUser, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-      }
-      setShowModal(false);
+      await axios.put(`http://127.0.0.1:8000/api/v1/admin/users/${editId}/`, currentUser, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setShowEditModal(false);
+      toast.success("User updated successfully.");
       fetchUsers();
     } catch (error) {
-      console.error("Error saving data:", error);
+      console.error("Error updating user:", error);
+      toast.error("Failed to update user.");
     }
   };
 
-  // Pagination: Paginate users list
+  const handleSubmitAdd = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.post("http://127.0.0.1:8000/api/v1/admin/users/create/", newUser, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setShowAddModal(false);
+      toast.success("User added successfully.");
+      fetchUsers();
+    } catch (error) {
+      console.error("Error adding user:", error);
+      toast.error("Failed to add user.");
+    }
+  };
+
   const usersToDisplay = users.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
   return (
     <div className="container-fluid p-0">
+      <ToastContainer />
       <div style={{ background: "#f8f9fa" }} className="container-fluid min-vh-100">
         <div className="row">
           <div style={{ width: "20%" }} className="bg-white vh-100">
@@ -133,8 +157,13 @@ const UsersAdmin = () => {
           <div className="col">
             <AdminNavbar />
             <div className="flex-grow-1 p-4">
-              
+              <div className="d-flex justify-content-end mb-3">
+                <button className="btn btn-primary" onClick={() => setShowAddModal(true)}>
+                  + Add User
+                </button>
+              </div>
 
+              {/* Table */}
               <div className="table-responsive">
                 <table className="table table-bordered table-hover table-sm">
                   <thead className="table-dark text-center align-middle">
@@ -153,9 +182,7 @@ const UsersAdmin = () => {
                   <tbody className="text-center align-middle">
                     {usersToDisplay.map((user, idx) => (
                       <tr key={user.id}>
-                        <td>
-                          {idx + 1 + currentPage * itemsPerPage}
-                        </td>
+                        <td>{idx + 1 + currentPage * itemsPerPage}</td>
                         <td>{user.first_name}</td>
                         <td>{user.last_name}</td>
                         <td>{user.email}</td>
@@ -167,13 +194,13 @@ const UsersAdmin = () => {
                           <div className="d-flex justify-content-center gap-2">
                             <i
                               className="bx bx-edit text-warning"
-                              style={{ cursor: "pointer"}}
+                              style={{ cursor: "pointer" }}
                               onClick={() => handleEdit(user, user.id)}
                               title="Edit"
                             ></i>
                             <i
                               className="bx bx-trash text-danger"
-                              style={{ cursor: "pointer"}}
+                              style={{ cursor: "pointer" }}
                               onClick={() => handleDelete(user.id)}
                               title="Delete"
                             ></i>
@@ -185,7 +212,6 @@ const UsersAdmin = () => {
                 </table>
               </div>
 
-              {/* Pagination */}
               <ReactPaginate
                 pageCount={Math.ceil(users.length / itemsPerPage)}
                 onPageChange={handlePageClick}
@@ -199,101 +225,94 @@ const UsersAdmin = () => {
                 activeClassName="active"
               />
 
-              {/* <div className="d-flex justify-content-between align-items-center mb-4">
-                <button className="btn btn-primary" onClick={handleAdd}>
-                  + Add User
-                </button>
-              </div> */}
-
-              {/* Modal */}
-              {showModal && (
+              {/* مودال الإضافة */}
+              {showAddModal && (
                 <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
-                  <div className="modal-dialog modal-lg">
+                  <div className="modal-dialog">
                     <div className="modal-content">
                       <div className="modal-header">
-                        <h5 className="modal-title">{editMode ? "Edit User" : "Add User"}</h5>
-                        <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
+                        <h5 className="modal-title">Add User</h5>
+                        <button type="button" className="btn-close" onClick={() => setShowAddModal(false)}></button>
                       </div>
                       <div className="modal-body">
-                        <div className="row">
-                          <div className="col-md-6 mb-3">
-                            <label className="form-label">First Name</label>
-                            <input
-                              type="text"
+                        {["first_name", "last_name", "email", "phone_number", "password1", "password2", "date_of_birth"].map(field => (
+                          <div className="mb-3" key={field}>
+                            <label className="form-label">{field.replace("_", " ")}</label>
+                            <input type={field.includes("password") ? "password" : field === "date_of_birth" ? "date" : "text"}
                               className="form-control"
-                              name="first_name"
-                              value={currentUser.first_name}
-                              onChange={handleChange}
-                            />
+                              name={field}
+                              value={newUser[field]}
+                              onChange={handleChangeAdd} />
                           </div>
-                          <div className="col-md-6 mb-3">
-                            <label className="form-label">Last Name</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              name="last_name"
-                              value={currentUser.last_name}
-                              onChange={handleChange}
-                            />
-                          </div>
-                          <div className="col-md-6 mb-3">
-                            <label className="form-label">Email</label>
-                            <input
-                              type="email"
-                              className="form-control"
-                              name="email"
-                              value={currentUser.email}
-                              onChange={handleChange}
-                            />
-                          </div>
-                          <div className="col-md-6 mb-3">
-                            <label className="form-label">Gender</label>
-                            <select
-                              className="form-select"
-                              name="gender"
-                              value={currentUser.gender}
-                              onChange={handleChange}
-                            >
-                              <option value="M">Male</option>
-                              <option value="F">Female</option>
-                            </select>
-                          </div>
-                          <div className="col-md-6 mb-3">
-                            <label className="form-label">Date of Birth</label>
-                            <input
-                              type="date"
-                              className="form-control"
-                              name="date_of_birth"
-                              value={currentUser.date_of_birth}
-                              onChange={handleChange}
-                            />
-                          </div>
-                          <div className="col-md-6 mb-3">
-                            <label className="form-label">User Type</label>
-                            <select
-                              className="form-select"
-                              name="user_type"
-                              value={currentUser.user_type}
-                              onChange={handleChange}
-                            >
-                              <option value="user">User</option>
-                              <option value="admin">Admin</option>
-                            </select>
-                          </div>
+                        ))}
+                        <div className="mb-3">
+                          <label className="form-label">Gender</label>
+                          <select className="form-select" name="gender" value={newUser.gender} onChange={handleChangeAdd}>
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                          </select>
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">User Type</label>
+                          <select className="form-select" name="user_type" value={newUser.user_type} onChange={handleChangeAdd}>
+                            <option value={2}>User</option>
+                            <option value={1}>Admin</option>
+                          </select>
                         </div>
                       </div>
                       <div className="modal-footer">
-                        <button className="btn btn-secondary" onClick={() => setShowModal(false)}>
-                          Cancel
-                        </button>
-                        <button className="btn btn-success" onClick={handleSubmit}>
-                          {editMode ? "Update" : "Add"}
-                        </button>
+                        <button className="btn btn-secondary" onClick={() => setShowAddModal(false)}>Cancel</button>
+                        <button className="btn btn-success" onClick={handleSubmitAdd}>Add</button>
                       </div>
                     </div>
                   </div>
                 </div>
               )}
+
+              {/* مودال التعديل */}
+              {showEditModal && (
+                <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
+                  <div className="modal-dialog modal-lg">
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <h5 className="modal-title">Edit User</h5>
+                        <button type="button" className="btn-close" onClick={() => setShowEditModal(false)}></button>
+                      </div>
+                      <div className="modal-body">
+                        {["first_name", "last_name", "email", "date_of_birth", "age"].map(field => (
+                          <div className="mb-3" key={field}>
+                            <label className="form-label">{field.replace("_", " ")}</label>
+                            <input type={field === "date_of_birth" ? "date" : "text"}
+                              className="form-control"
+                              name={field}
+                              value={currentUser[field]}
+                              onChange={handleChangeEdit} />
+                          </div>
+                        ))}
+                        <div className="mb-3">
+                          <label className="form-label">Gender</label>
+                          <select className="form-select" name="gender" value={currentUser.gender} onChange={handleChangeEdit}>
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                          </select>
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">User Type</label>
+                          <select className="form-select" name="user_type" value={currentUser.user_type} onChange={handleChangeEdit}>
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="modal-footer">
+                        <button className="btn btn-secondary" onClick={() => setShowEditModal(false)}>Cancel</button>
+                        <button className="btn btn-success" onClick={handleSubmitEdit}>Update</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
             </div>
           </div>
         </div>

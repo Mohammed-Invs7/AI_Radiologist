@@ -61,46 +61,43 @@ const Settings_User = () => {
         formData.append("profile_image", user.profile_image);
     }
 
-    try {
-        const response = await axios.patch(API_URL, formData, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-        });
+try {
+    const response = await axios.patch(API_URL, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+    });
 
-        if (response.status === 200) {
-            setMessage("✔ Profile updated successfully!");
-            
-            const userTypeResponse = await axios.get("http://127.0.0.1:8000/api/v1/user/user-type/", {
-                headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
-            });
+    if (response.status === 200) {
+        setMessage("✔ Profile updated successfully!");
 
-            let userType = "";
-            if (userTypeResponse.data.id === 1) {
-                userType = "admin";
-            } else if (userTypeResponse.data.id === 2) {
-                userType = "user";
-            } else {
-                userType = "unknown";
-            }
-
-            const updatedUserData = {
-                ...response.data,
-                user_type: userType, 
-            };
-
-            updateUser(updatedUserData); 
-            setPreviewImage(updatedUserData.profile_image || null);
+        let userType = "";
+        if (response.data.user_type === 1) {
+            userType = "admin";
+        } else if (response.data.user_type === 2) {
+            userType = "user";
         } else {
-            setMessage("❌ Update failed. Please try again.");
+            userType = "unknown";
         }
-    } catch (error) {
-        console.error("Error updating profile:", error.response?.data || error);
-        setMessage(error.response?.data?.detail || "An unexpected error occurred. Please try again.");
-    } finally {
-        setLoading(false);
+
+        const updatedUserData = {
+            ...response.data,
+            user_type: userType,
+        };
+
+        updateUser(updatedUserData);
+        setPreviewImage(updatedUserData.profile_image || null);
+    } else {
+        setMessage("❌ Update failed. Please try again.");
     }
+} catch (error) {
+    console.error("Error updating profile:", error.response?.data || error);
+    setMessage(error.response?.data?.detail || "An unexpected error occurred. Please try again.");
+} finally {
+    setLoading(false);
+}
+
 };
 
 

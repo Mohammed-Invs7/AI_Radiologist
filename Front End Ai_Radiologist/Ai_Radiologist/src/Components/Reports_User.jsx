@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
-import"../assets/Styling/Reports_User.css"
+import "../assets/Styling/Reports_User.css"
 
 // Define API URL
 const API_URL = "http://127.0.0.1:8000/api/v1/user/reports/";
@@ -12,8 +12,7 @@ const Reports_User = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-
-
+    // Fetch data on component mount
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -33,14 +32,34 @@ const Reports_User = () => {
         fetchData();
     }, []);
 
+    // Handle delete action
+    const handleDelete = async (id) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this report?");
+        if (confirmDelete) {
+            try {
+                await axios.delete(`${API_URL}${id}/`, {
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    }
+                });
+
+                // Remove deleted report from the state
+                setRadiologyData(radiologyData.filter(item => item.id !== id));
+                alert("Report deleted successfully.");
+            } catch (err) {
+                setError("Error deleting report: " + err.message);
+            }
+        }
+    };
+
     return (
         <div className="container mt-3">
             <div className="bg-primary text-white p-3 rounded-top d-flex justify-content-between align-items-center"
                 style={{ background: 'linear-gradient(90deg, rgba(2, 85, 89, 0.90) 0%, #80DFDF 66%)' }}>
                 <h6>Your Radiology Reports</h6>
                 <button className="btn btn-add-radiology d-flex align-items-center">
-                    <Link to={"/Upload"}>Add New Radiology Image</Link> 
-                    <i style={{color:"black", fontSize:"20px"}} className="bx bx-plus "></i>
+                    <Link to={"/Upload"}>Add New Radiology Image</Link>
+                    <i style={{ color: "black", fontSize: "20px" }} className="bx bx-plus"></i>
                 </button>
             </div>
 
@@ -63,7 +82,7 @@ const Reports_User = () => {
                         </div>
                         <div className='d-flex gap-1'>
                             <button className="button btn-view"> View</button>
-                            <button className="button btn-delete"> Delete</button>
+                            <button className="button btn-delete" onClick={() => handleDelete(item.id)}> Delete</button>
                         </div>
                     </div>
                 ))
@@ -74,7 +93,7 @@ const Reports_User = () => {
             {/* Pagination */}
             <div className="d-flex justify-content-between text-muted small mt-3">
                 <p>Showing {radiologyData.length} of {radiologyData.length} Reports</p>
-                <div className='d-flex gap-3' >
+                <div className='d-flex gap-3'>
                     <button className="button button-back">Prev</button>
                     <button className="button button-next">Next</button>
                 </div>

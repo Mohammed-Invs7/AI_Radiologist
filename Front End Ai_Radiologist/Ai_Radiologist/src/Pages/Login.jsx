@@ -6,7 +6,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Sidebar from "../Components/Sidebar";
 import "../assets/Styling/Form_User.css";
 
-const API_URL = "http://127.0.0.1:8000/api/v1/auth/login/";
+const API_LOGIN = "http://127.0.0.1:8000/api/v1/auth/login/";
+const API_USERS = "http://127.0.0.1:8000/api/v1/auth/user/";
 
 const Login = () => {
     const { login } = useAuth();
@@ -20,62 +21,57 @@ const Login = () => {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        setMessage("");
+    e.preventDefault();
+    setMessage("");
 
-        try {
-            const response = await axios.post(API_URL, formData, {
-                headers: { "Content-Type": "application/json" }
+    try {
+        const response = await axios.post(API_LOGIN, formData, {
+            headers: { "Content-Type": "application/json" }
+        });
+
+        if (response.data.access) {
+            const token = response.data.access;
+            const refreshToken = response.data.refresh;
+
+            const userResponse = await axios.get(API_USERS, {
+                headers: { "Authorization": `Bearer ${token}` }
             });
 
-            if (response.data.access) {
-                const token = response.data.access;
-                const refreshToken = response.data.refresh;
+            console.log(userResponse.data)
 
-                console.log("Received Token:", token);
+            let userData = userResponse.data;
 
-                const userResponse = await axios.get("http://127.0.0.1:8000/api/v1/auth/user/", {
-                    headers: { "Authorization": `Bearer ${token}` }
-                });
-
-                let userData = userResponse.data;
-                console.log("User Data Fetched:", userData);
-
-                const userTypeResponse = await axios.get("http://127.0.0.1:8000/api/v1/user/user-type/", {
-                    headers: { "Authorization": `Bearer ${token}` }
-                });
-
-                let userType = "";
-                if (userTypeResponse.data.id === 1) {
-                    userType = "admin";
-                } else if (userTypeResponse.data.id === 2) {
-                    userType = "user";
-                } else {
-                    userType = "unknown";
-                }
-
-                userData.user_type = userType;
-                console.log("User Type:", userData.user_type);
-
-                login(token, userData);
-                localStorage.setItem("refreshToken", refreshToken);
-                localStorage.setItem("user", JSON.stringify(userData));
-
-                if (userData.user_type === "admin") {
-                    navigate('/AdminDashboard');
-                } else if (userData.user_type === "user") {
-                    navigate('/Upload');
-                } else {
-                    setMessage("Unknown user type!");
-                }
+            let userType = "";
+            if (userData.user_type === 1) {
+                userType = "admin";
+            } else if (userData.user_type === 2) {
+                userType = "user";
             } else {
-                setMessage("Token is missing in the response!");
+                userType = "unknown";
             }
-        } catch (error) {
-            console.error("Login Failed:", error.response?.data || error.message);
-            setMessage("Login failed! Please check your credentials.");
+
+            userData.user_type = userType;
+
+            login(token, userData);
+            localStorage.setItem("refreshToken", refreshToken);
+            localStorage.setItem("user", JSON.stringify(userData));
+
+            if (userType === "admin") {
+                navigate('/AdminDashboard');
+            } else if (userType === "user") {
+                navigate('/Upload');
+            } else {
+                setMessage("Unknown user type!");
+            }
+        } else {
+            setMessage("Token is missing in the response!");
         }
-    };
+    } catch (error) {
+        console.error("Login Failed:", error.response?.data || error.message);
+        setMessage("Login failed! Please check your credentials.");
+    }
+};
+
 
     return (
         <div className="page-form">
