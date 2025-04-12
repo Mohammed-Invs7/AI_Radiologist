@@ -49,7 +49,7 @@ const Admin_Sidebar = () => {
                     <i className="bx bx-detail fs-4 me-2"></i>
                     <span>RadiologyDetails</span>
                 </Link>
-                <Link to="/report" className="list-group-item d-flex align-items-center text-center">
+                <Link to="/ReportsAdmin" className="list-group-item d-flex align-items-center text-center">
                     <i className="bx bx-file fs-4 me-2"></i>
                     <span>Report</span>
                 </Link>

@@ -24,7 +24,7 @@ const AdminNavbar = () => {
     const getPageTitle = () => {
         const path = location.pathname;
         if (path.includes("/UsersAdmin")) return "Users Management";
-        if (path.includes("/admin/reports")) return "Reports";
+        if (path.includes("/ReportsAdmin")) return "Reports Management ";
         if (path.includes("/admin/settings")) return "Settings";
         if (path.includes("/AdminDashboard")) return "Dashboard";
     };

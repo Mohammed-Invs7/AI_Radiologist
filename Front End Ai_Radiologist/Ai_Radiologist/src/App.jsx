@@ -18,6 +18,7 @@ import ForgotPassword from './Pages/ForgotPassword';
 import ResetPassword from './Pages/ResetPassword';
 import Admin_Home from './Pages/pages-Admin/Admin_Home';
 import UsersAdmin from "./Pages/pages-Admin/UsersAdmin";
+import ReportsAdmin from "./Pages/pages-Admin/ReportsAdmin"
 
 //Css//
 import './App.css';
@@ -40,6 +41,7 @@ function App() {
           <Route element={<AdminRoute />}>
             <Route path="/AdminDashboard" element={<Admin_Home />} />
             <Route path="/UsersAdmin" element={<UsersAdmin />} />
+            <Route path="/ReportsAdmin" element={<ReportsAdmin/>}/>
 
           </Route>
         </Routes>
