@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useAuth } from '../../context/AuthContext';  // تأكد من استيراد useAuth
+import { useAuth } from '../../context/AuthContext'; 
 import '../../assets/Styling/Admin_Sidebar.css';
 import Image1 from '../../assets/Images/Adminlogo.png';
 

@@ -1,25 +1,41 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../../context/AuthContext";
+import Swal from "sweetalert2";
 
 const AdminNavbar = () => {
     const navigate = useNavigate();
     const location = useLocation(); 
     const { user, logout } = useAuth();
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const [confirmLogout, setConfirmLogout] = useState(false);
     const dropdownRef = useRef(null);
 
-    const handleLogoutClick = () => {
-        setDropdownOpen(false);
-        setConfirmLogout(true);
-    };
-
-    const handleLogoutConfirm = async () => {
-        logout();
-        navigate("/");
-        setConfirmLogout(false);
-    };
+const handleLogoutClick = () => {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You will be logged out from your account.",
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',     
+    confirmButtonText: 'Logout',
+    cancelButtonText: 'Cancel',
+    reverseButtons: true,
+    backdrop: true, 
+  }).then((result) => {
+    if (result.isConfirmed) {
+      logout();         
+      navigate("/");  
+      Swal.fire({
+        title: 'Logged out!',
+        text: 'You have been logged out successfully.',
+        icon: 'success',
+        timer: 2000,
+        showConfirmButton: false,
+      });
+    }
+  });
+};
 
     const getPageTitle = () => {
         const path = location.pathname;
@@ -44,8 +60,7 @@ const AdminNavbar = () => {
 
     return (
         <header className="header">
-            <nav style={{ width: "90%" }} className="nav container justify-content-between">
-                {/* ✅ العنوان المتغير */}
+            <nav style={{ width: "87%" }} className="nav container justify-content-between">
                 <div>
                     <h3>{getPageTitle()}</h3>
                 </div>
@@ -115,19 +130,6 @@ const AdminNavbar = () => {
                 </div>
             </nav>
 
-            {/* Logout Confirmation Modal */}
-            {confirmLogout && (
-                <div className="logout-confirm-overlay">
-                    <div className="logout-confirm-box">
-                        <h3>Logout</h3>
-                        <p>Are you sure you want to log out?</p>
-                        <div className="logout-buttons">
-                            <button onClick={() => setConfirmLogout(false)} className="logout-no">No</button>
-                            <button onClick={handleLogoutConfirm} className="logout-yes">Logout</button>
-                        </div>
-                    </div>
-                </div>
-            )}
         </header>
     );
 };
