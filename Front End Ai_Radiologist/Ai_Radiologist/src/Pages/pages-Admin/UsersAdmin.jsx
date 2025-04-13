@@ -269,7 +269,6 @@ const UsersAdmin = () => {
                 </div>
               )}
 
-              {/* مودال التعديل */}
               {showEditModal && (
                 <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
                   <div className="modal-dialog modal-lg">

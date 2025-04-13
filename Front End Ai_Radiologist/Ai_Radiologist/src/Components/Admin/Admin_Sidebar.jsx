@@ -1,24 +1,39 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
 import { useAuth } from '../../context/AuthContext'; 
 import '../../assets/Styling/Admin_Sidebar.css';
 import Image1 from '../../assets/Images/Adminlogo.png';
+import Swal from "sweetalert2";
 
 const Admin_Sidebar = () => {
     const navigate = useNavigate();
     const { logout } = useAuth();
-    const [confirmLogout, setConfirmLogout] = useState(false);
 
     const handleLogoutClick = () => {
-        setConfirmLogout(true);
+        Swal.fire({
+        title: 'Are you sure?',
+        text: "You will be logged out from your account.",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',   
+        cancelButtonColor: '#d33',       
+        confirmButtonText: 'Logout',
+        cancelButtonText: 'Cancel',
+        reverseButtons: true,
+        backdrop: true, 
+        }).then((result) => {
+        if (result.isConfirmed) {
+            logout();         
+            navigate("/");    
+            Swal.fire({
+            title: 'Logged out!',
+            text: 'You have been logged out successfully.',
+            icon: 'success',
+            timer: 2000,
+            showConfirmButton: false,
+            });
+        }
+        });
     };
-
-    const handleLogoutConfirm = async () => {
-        logout();
-        navigate("/");
-        setConfirmLogout(false);
-    };
-
     return (
         <div className="bg-white Admin-Sidebar py-2">
             <div className="m-2">
@@ -68,18 +83,7 @@ const Admin_Sidebar = () => {
 
                 </button>
 
-                {confirmLogout && (
-                    <div className="logout-confirm-overlay">
-                        <div className="logout-confirm-box">
-                            <h3>Logout</h3>
-                            <p>Are you sure you want to log out?</p>
-                            <div className="logout-buttons">
-                                <button onClick={() => setConfirmLogout(false)} className="logout-no">No</button>
-                                <button onClick={handleLogoutConfirm} className="logout-yes">Logout</button>
-                            </div>
-                        </div>
-                    </div>
-                )}
+                
             </div>
         </div>
     );

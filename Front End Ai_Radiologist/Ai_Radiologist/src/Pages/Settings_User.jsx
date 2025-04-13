@@ -3,7 +3,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import NavBar from "../Components/NavBar";
-import Swal from "sweetalert2";  // استيراد مكتبة SweetAlert2
+import Swal from "sweetalert2";  
+import InfoModal from "../modals/InfoModal";
+import PasswordModal from "../modals/PasswordModal";
 import { motion } from 'framer-motion';
 import "../assets/Styling/Setting_User.css";
 import "../assets/Styling/Form_User.css";
@@ -18,8 +20,8 @@ const Settings_User = () => {
         first_name: authUser?.first_name || "",
         last_name: authUser?.last_name || "",
         gender: authUser?.gender || "",
-        email: authUser?.email ||"",
-        age:authUser?.age||"",
+        email: authUser?.email || "",
+        age: authUser?.age || "",
         profile_image: authUser?.profile_image || null,
     });
 
@@ -89,7 +91,7 @@ const Settings_User = () => {
                     icon: "success",
                     confirmButtonText: "OK",
                 }).then(() => {
-                    window.location.reload(); // 🚀 Reload after confirmation
+                    window.location.reload(); 
                 });
             }
         } catch (error) {
@@ -121,7 +123,7 @@ const Settings_User = () => {
             );
 
             if (response.status === 200) {
-                setPasswordMessage("✅ Password changed successfully!");
+                setPasswordMessage("Password changed successfully!");
                 setNewPassword1("");
                 setNewPassword2("");
                 setTimeout(() => setShowPasswordModal(false), 1500);
@@ -180,7 +182,7 @@ const Settings_User = () => {
                         <h4>{user.first_name} {user.last_name}</h4>
                         <p className='mb-1'>Email: {user.email}</p>
                         <p className='mb-1'>Age: {user.age}</p>
-                        <p className='mb-1'>Gender: {user.gender}</p>
+                        <p className='mb-1'>Gender: {user.gender==='M'?'Male': user.gender==='F'?'Female':user.gender}</p>
                     </motion.div>
                 </motion.div>
 
@@ -216,154 +218,25 @@ const Settings_User = () => {
                 </motion.div>
             </div>
 
-            {/* Personal Info Modal */}
-            {showInfoModal && (
-                <motion.div 
-                    className="modal fade show d-block"
-                    tabIndex="-1"
-                    style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                >
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <form onSubmit={handleUpdateInfo}>
-                                <div className="modal-header">
-                                    <h5 className="modal-title">Edit Personal Info</h5>
-                                    <button type="button" className="btn-close" onClick={() => setShowInfoModal(false)}></button>
-                                </div>
-                                <div className="modal-body">
-                                    <div className="d-flex align-items-center flex-column">
-                                        {previewImage && (
-                                            <div className="mb-3 text-center align-items-center rounded-circle border border-dark bg-white shadow" style={{ width: '120px', height: '120px' }}>
-                                                <img src={previewImage} alt="Profile Preview" className="rounded-circle" style={{ width: '118px', height: '118px', objectFit: 'cover' }} />
-                                            </div>
-                                        )}
-                                        <label className="custom-upload-button">
-                                            Change your Image
-                                            <input
-                                                type="file"
-                                                className="hidden-file-input"
-                                                name="profile_image"
-                                                accept="image/*"
-                                                onChange={handleChange}
-                                            />
-                                        </label>
-                                    </div>
-
-                                    <div className="mb-3">
-                                        <label>First Name</label>
-                                        <motion.input
-                                            type="text"
-                                            className="form-control"
-                                            name="first_name"
-                                            value={user.first_name}
-                                            onChange={handleChange}
-                                            required
-                                            whileFocus={{ scale: 1.05 }}
-                                            transition={{ duration: 0.2 }}
-                                        />
-                                    </div>
-                                    <div className="mb-3">
-                                        <label>Last Name</label>
-                                        <motion.input
-                                            type="text"
-                                            className="form-control"
-                                            name="last_name"
-                                            value={user.last_name}
-                                            onChange={handleChange}
-                                            required
-                                            whileFocus={{ scale: 1.05 }}
-                                            transition={{ duration: 0.2 }}
-                                        />
-                                    </div>
-                                    <div className="mb-3">
-                                        <label>Gender</label>
-                                        <select
-                                            className="form-control"
-                                            name="gender"
-                                            value={user.gender}
-                                            onChange={handleChange}
-                                        >
-                                            <option value="M">Male</option>
-                                            <option value="F">Female</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className="modal-footer">
-                                    <motion.button 
-                                        type="button" 
-                                        className="btn btn-secondary" 
-                                        onClick={() => setShowInfoModal(false)}
-                                        whileHover={{ scale: 1.1 }}
-                                    >
-                                        Close
-                                    </motion.button>
-                                    <motion.button
-                                        type="submit"
-                                        className="btn btn-primary"
-                                        disabled={loading}
-                                        whileHover={{ scale: 1.1 }}
-                                    >
-                                        {loading ? "Saving..." : "Save Changes"}
-                                    </motion.button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </motion.div>
-            )}
-
-            {/* Change Password Modal */}
-            {showPasswordModal && (
-                <motion.div 
-                    className="modal fade show d-block"
-                    tabIndex="-1"
-                    style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                >
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title">Change Password</h5>
-                                <button type="button" className="btn-close" onClick={() => setShowPasswordModal(false)}></button>
-                            </div>
-                            <div className="modal-body">
-                                <div className="mb-3">
-                                    <label>New Password</label>
-                                    <input
-                                        type="password"
-                                        className="form-control"
-                                        value={new_password1}
-                                        onChange={(e) => setNewPassword1(e.target.value)}
-                                    />
-                                </div>
-                                <div className="mb-3">
-                                    <label>Confirm Password</label>
-                                    <input
-                                        type="password"
-                                        className="form-control"
-                                        value={new_password2}
-                                        onChange={(e) => setNewPassword2(e.target.value)}
-                                    />
-                                </div>
-                                {passwordMessage && <div className="alert alert-info">{passwordMessage}</div>}
-                            </div>
-                            <div className="modal-footer">
-                                <button className="btn btn-secondary" onClick={() => setShowPasswordModal(false)}>Close</button>
-                                <motion.button className="btn btn-danger" onClick={handleChangePassword} whileHover={{ scale: 1.1 }}>
-                                    Save Changes
-                                </motion.button>
-                            </div>
-                        </div>
-                    </div>
-                </motion.div>
-            )}
+            {/* Use Modal Components */}
+            <InfoModal
+                show={showInfoModal}
+                user={user}
+                onClose={() => setShowInfoModal(false)}
+                onSave={handleUpdateInfo}
+                loading={loading}
+                onChange={handleChange}
+                previewImage={previewImage}
+            />
+            <PasswordModal
+                show={showPasswordModal}
+                new_password1={new_password1}
+                new_password2={new_password2}
+                onClose={() => setShowPasswordModal(false)}
+                onSave={handleChangePassword}
+                setNewPassword1={setNewPassword1}  
+                setNewPassword2={setNewPassword2}  
+            />
         </>
     );
 };
