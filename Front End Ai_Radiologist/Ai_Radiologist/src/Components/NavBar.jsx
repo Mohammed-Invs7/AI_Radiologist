@@ -98,7 +98,7 @@ const NavBar = () => {
                                 </li>
                                 {user.user_type === "admin" && (
                                     <li>
-                                        <Link className="dropdown__link" to="/AdminDashboard">
+                                        <Link className="dropdown__link" to="/AdminPanel">
                                             <i className="bx bx-grid-alt me-2"></i> Dashboard
                                         </Link>
                                     </li>

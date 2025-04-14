@@ -57,7 +57,7 @@ const Login = () => {
             localStorage.setItem("user", JSON.stringify(userData));
 
             if (userType === "admin") {
-                navigate('/AdminDashboard');
+                navigate('/AdminPanel');
             } else if (userType === "user") {
                 navigate('/Upload');
             } else {

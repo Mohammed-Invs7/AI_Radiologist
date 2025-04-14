@@ -4,6 +4,7 @@ const InfoModal = ({ show, user, onClose, onSave, loading, onChange, previewImag
     if (!show) return null;
 
     return (
+        
         <motion.div 
             className="modal fade show d-block"
             tabIndex="-1"

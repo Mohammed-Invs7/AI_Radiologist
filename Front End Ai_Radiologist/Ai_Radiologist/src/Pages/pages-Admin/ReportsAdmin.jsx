@@ -57,13 +57,7 @@ const AdminReports = () => {
     return (
         <div className="container-fluid p-0">
         <ToastContainer />
-        <div className="container-fluid min-vh-100" style={{ background: "#f8f9fa" }}>
-            <div className="row">
-            <div style={{ width: "20%" }} className="bg-white vh-100">
-                <Admin_Sidebar />
-            </div>
-            <div className="col">
-                <AdminNavbar />
+        <div className="container-fluid">
                 <div className="flex-grow-1 p-4">
                 <h4 className="mb-4">Reports</h4>
                 <div className="table-responsive">
@@ -160,8 +154,6 @@ const AdminReports = () => {
                 )}
                 </div>
             </div>
-            </div>
-        </div>
         </div>
     );
     };
