@@ -155,7 +155,7 @@ const Settings_User = () => {
     return (
         <>
             <NavBar />
-            <div style={{ background: "#f8f9fa" }} className="page-form-Settings d-flex justify-content-center align-items-center flex-column mt-3">
+            <div className="page-form-Settings d-flex justify-content-center align-items-center flex-column mt-3">
                 <motion.div
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}

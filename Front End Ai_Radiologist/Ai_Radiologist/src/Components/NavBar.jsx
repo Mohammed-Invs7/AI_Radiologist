@@ -50,11 +50,11 @@ const NavBar = () => {
     return (
         <header className="header">
             <nav className="nav container">
-                <Link to="/" className="nav__logo">
+                <Link to="/" className="nav__logo p-0">
                     <Logo />
                 </Link>
 
-                <div className={`nav__menu ${menuOpen ? "show-menu" : ""}`}>
+                <div className={`nav__menu mt-3 ${menuOpen ? "show-menu" : ""}`}>
                     <ul className="nav__list">
                         {["Home", "Our Goals", "How Use It", "Our Team"].map((item, index) => (
                             <li key={index}>
@@ -69,7 +69,7 @@ const NavBar = () => {
                     </div>
                 </div>
 
-                <div className="nav__actions">
+                <div className="nav__actions pt-2">
                     {user ? (
                         <div className="dropdown" ref={dropdownRef}>
                             <div className="dropdown__profile" onClick={() => setDropdownOpen(prev => !prev)}>
