@@ -2,17 +2,20 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2'; 
+import ReportModal from '../modals/ReportModal'; 
 import "../assets/Styling/Reports_User.css"
 
-// Define API URL
 const API_URL = "http://127.0.0.1:8000/api/v1/user/reports/";
+const REPORT_API = "http://127.0.0.1:8000/api/v1/admin/users/reports/";
 
 const Reports_User = () => {
     const [radiologyData, setRadiologyData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [selectedReport, setSelectedReport] = useState(null);
+    const [showModal, setShowModal] = useState(false);
 
-    // Fetch data on component mount
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -21,8 +24,7 @@ const Reports_User = () => {
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     }
                 });
-
-                setRadiologyData(response.data); // Update data
+                setRadiologyData(response.data);
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -32,24 +34,59 @@ const Reports_User = () => {
         fetchData();
     }, []);
 
-    // Handle delete action
-    const handleDelete = async (id) => {
-        const confirmDelete = window.confirm("Are you sure you want to delete this report?");
-        if (confirmDelete) {
-            try {
-                await axios.delete(`${API_URL}${id}/`, {
-                    headers: {
-                        "Authorization": `Bearer ${localStorage.getItem("token")}`
-                    }
-                });
-
-                // Remove deleted report from the state
-                setRadiologyData(radiologyData.filter(item => item.id !== id));
-                alert("Report deleted successfully.");
-            } catch (err) {
-                setError("Error deleting report: " + err.message);
-            }
+    const handleViewReport = async (id) => {
+        try {
+            const response = await axios.get(`${REPORT_API}${id}/`, {
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+            setSelectedReport(response.data); // Set the selected report details
+            setShowModal(true); // Show the modal with report details
+        } catch (err) {
+            setError("Error fetching report details: " + err.message);
         }
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+        setSelectedReport(null);
+    };
+
+    const handleDelete = async (id) => {
+        // استخدام SweetAlert2 لعرض نافذة التأكيد قبل الحذف
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this action!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await axios.delete(`${API_URL}${id}/`, {
+                        headers: {
+                            "Authorization": `Bearer ${localStorage.getItem("token")}`
+                        }
+                    });
+                    setRadiologyData(radiologyData.filter(item => item.id !== id));
+                    Swal.fire(
+                        'Deleted!',
+                        'Your report has been deleted.',
+                        'success'
+                    );
+                } catch (err) {
+                    setError("Error deleting report: " + err.message);
+                    Swal.fire(
+                        'Error!',
+                        'There was an issue deleting the report.',
+                        'error'
+                    );
+                }
+            }
+        });
     };
 
     return (
@@ -81,7 +118,7 @@ const Reports_User = () => {
                             <small><strong>Region:</strong> {item.body_anatomical_region}</small>
                         </div>
                         <div className='d-flex gap-1'>
-                            <button className="button btn-view"> View</button>
+                            <button className="button btn-view" onClick={() => handleViewReport(item.id)}> View</button>
                             <button className="button btn-delete" onClick={() => handleDelete(item.id)}> Delete</button>
                         </div>
                     </div>
@@ -98,6 +135,10 @@ const Reports_User = () => {
                     <button className="button button-next">Next</button>
                 </div>
             </div>
+
+            {showModal && selectedReport && (
+                <ReportModal selectedReport={selectedReport} onClose={handleCloseModal} />
+            )}
         </div>
     );
 };
