@@ -1,8 +1,7 @@
 from django.shortcuts import render
-from rest_framework import generics, status
-from rest_framework.request import Request
+from rest_framework import  status
 from rest_framework.response import Response
-from rest_framework.serializers import Serializer
+
 
 from urllib.parse import urljoin
 
@@ -13,8 +12,12 @@ from django.contrib.auth import get_user_model
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import NotFound
-from users.serializers import AdminUserDetailsSerializer, UserTypeIdSerializer, AdminUserDetailsSerializer, \
-    AdminUserCreateSerializer
+from users.serializers import (
+    AdminUserDetailsSerializer,
+    UserTypeIdSerializer,
+    AdminUserCreateSerializer,
+    EmailExistsSerializer,
+)
 from users.permissions import IsAdminUser
 
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
@@ -83,6 +86,29 @@ class CurrentUserTypeView(RetrieveAPIView):
             raise NotFound("User type not found.")
         return user.user_type
 
+
+class CheckEmailView(RetrieveAPIView):
+    """
+    GET endpoint to check if an email exists in the database.
+    Uses the email passed in the URL as the lookup field.
+
+    Example:
+      GET /api/check-email/user@example.com/
+
+    Response:
+      {
+        "email": "user@example.com",
+        "exists": true
+      }
+    """
+    serializer_class = EmailExistsSerializer
+    lookup_field = 'email'
+
+    def get_object(self):
+        email = self.kwargs.get(self.lookup_field)
+        exists = User.objects.filter(email=email).exists()
+        return {"email": email, "exists": exists}
+
 ###########
 
 
@@ -112,7 +138,7 @@ class GoogleLoginCallback(APIView):
         return Response(response.json(), status=status.HTTP_200_OK)
 
 
-from django.conf import settings
+# from django.conf import settings
 # from django.shortcuts import render
 from django.views import View
 

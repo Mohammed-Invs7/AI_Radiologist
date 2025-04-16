@@ -23,7 +23,14 @@ from django.urls import path, include, re_path
 from rest_framework.routers import DefaultRouter
 
 from allauth.account.views import ConfirmEmailView
-from users.views import GoogleLogin, GoogleLoginCallback, LoginPage, password_reset_confirm_redirect, email_confirm_redirect
+from users.views import (
+    GoogleLogin,
+    GoogleLoginCallback,
+    LoginPage,
+    password_reset_confirm_redirect,
+    email_confirm_redirect,
+    CheckEmailView
+)
 
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 from dj_rest_auth.registration.views import (
@@ -46,6 +53,7 @@ urlpatterns = [
     #path('admin/', admin.site.urls),
     # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
     path("api/v1/auth/registration/", RegisterView.as_view(), name='rest_register'),
     path("api/v1/auth/registration/verify-email/", VerifyEmailView.as_view(), name="rest_verify_email"),
     path("api/v1/auth/registration/resend-email/", ResendEmailVerificationView.as_view(), name="rest_resend_email"),
@@ -74,7 +82,7 @@ urlpatterns = [
         GoogleLoginCallback.as_view(),
         name="google_login_callback",
     ),
-    # apps
+    path('api/v1/auth/check-email/<str:email>/', CheckEmailView.as_view(), name='check-email'),    # apps
     path('api/v1/user/reports/', include('reports.urls.user_urls')),
     path('api/v1/admin/users/reports/', include('reports.urls.admin_urls')),
 
