@@ -1,123 +1,115 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import Swal from "sweetalert2";
 import "../assets/Styling/Form_User.css";
 
+const schema = yup.object().shape({
+  newPassword: yup.string().min(8, "Must be at least 8 characters").required("New password is required"),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("newPassword"), null], "Passwords must match")
+    .required("Please confirm your password"),
+});
+
 const ResetPassword = () => {
-    const { uid, token } = useParams(); 
-    const navigate = useNavigate();
+  const { uid, token } = useParams();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
-    // State management
-    const [newPassword, setNewPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [message, setMessage] = useState("");
-    const [loading, setLoading] = useState(true);   
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
-    // API URL
-    const API_URL_CONFIRM = "http://127.0.0.1:8000/api/v1/auth/password/reset/confirm/";
+  useEffect(() => {
+    setLoading(false);
+  }, [uid, token]);
 
-    // Verify token when the page loads (removed as it is not necessary now)
-    useEffect(() => {
-        console.log("Received UID:", uid);
-        console.log("Received Token:", token);
-        setLoading(false);  // set loading to false directly since we are not verifying the token here
-    }, [uid, token]);
+  if (loading) {
+    return <div className="container mt-5"><h2>Verifying...</h2></div>;
+  }
 
-    if (loading) {
-        return <div className="container mt-5"><h2>Verifying...</h2></div>;
+  const onSubmit = async (data) => {
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/v1/auth/password/reset/confirm/",
+        {
+          uid: uid,
+          token: token,
+          new_password1: data.newPassword,
+          new_password2: data.confirmPassword,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      if (response.data.detail) {
+        Swal.fire({
+          icon: "success",
+          title: "Password reset successfully!",
+          text: "You will be redirected to login...",
+          timer: 4000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
+
+        setTimeout(() => navigate("/login"), 4000);
+      } else {
+        Swal.fire("Error", "Failed to reset password. Please try again.", "error");
+      }
+    } catch (error) {
+      Swal.fire("Error", error.response?.data?.detail || "An error occurred", "error");
     }
+  };
 
-  // Handle form submission
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setMessage("");
+  return (
+    <div className="page-form">
+      <div className="container-form d-flex flex-column justify-content-center align-items-center">
+        <div className="w-50">
+          <h2>Reset Password</h2>
+          <p>Please enter your new password</p>
 
-        console.log("Submitting new password...");
-        console.log("UID:", uid);
-        console.log("Token:", token);
-        console.log("New Password:", newPassword);
-        console.log("Confirm Password:", confirmPassword);
-
-        if (newPassword !== confirmPassword) {
-            setMessage("The passwords do not match!");
-            return;
-        }
-
-        try {
-            const response = await axios.post(API_URL_CONFIRM, {
-                uid: uid,  
-                token: token,
-                new_password1: newPassword,
-                new_password2: confirmPassword,
-            }, {
-                headers: { "Content-Type": "application/json" }
-            });
-
-            console.log("Password reset response:", response.data);
-
-            // Check if the response contains the 'detail' field indicating success
-            if (response.data.detail) {
-                setMessage("Password reset successfully! Redirecting to login...");
-                setTimeout(() => navigate("/login"), 4000);
-            } else {
-                setMessage("Failed to reset. Please try again.");
-            }
-        } catch (error) {
-            console.error("Error:", error.response?.data || error.message);
-            setMessage(error.response?.data?.detail || "An error occurred while resetting. Please try again.");
-        }
-    };
-
-    return (
-        <div className="page-form">
-            <div className="container-form d-flex flex-column justify-content-center align-items-center" >
-                <div className="w-50">
-                <h2>Reset Password</h2>
-                <p>Please enter your new password</p>
-
-                {message && <div className={`alert ${message.includes("successfully") ? "alert-success" : "alert-danger"}`}>{message}</div>}
-
-                <form className="w-100" onSubmit={handleSubmit} style={{ maxWidth: "400px" }}>
-                    <div className="mb-3">
-                            <label className="form-label">New Password</label>
-                            <div className="input-box">
-                            <input
-                                type="password"
-                                className="form-control"
-                                value={newPassword}
-                                onChange={(e) => setNewPassword(e.target.value)}
-                                required
-                                />
-                            <div className=" mt-3 ">
-                            <label className="form-label">Confirm Password</label>
-                            <input
-                                type="password"
-                                className="form-control"
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                                required
-                            />
-                            </div>
-                        </div>
-
-                    
-                        </div>
-                        
-
-                    <button type="submit" className="btn-blue btn-submit">
-                        Reset Password
-                    </button>
-                </form>
-
-                {message.includes("Password reset successfully") && (
-                    <button style={{display:"none"}} className="btn-blue btn-success mt-3" onClick={() => navigate("/login")}>
-                        Go to Login
-                    </button>
-                )}
+          <form className="w-100" onSubmit={handleSubmit(onSubmit)} style={{ maxWidth: "400px" }}>
+            <div className="mb-3">
+              <label className="form-label">New Password</label>
+              <input
+                type="password"
+                className={`form-control ${errors.newPassword ? "is-invalid" : ""}`}
+                {...register("newPassword")}
+              />
+              {errors.newPassword && (
+                <div className="invalid-feedback">{errors.newPassword.message}</div>
+              )}
             </div>
+
+            <div className="mb-3">
+              <label className="form-label">Confirm Password</label>
+              <input
+                type="password"
+                className={`form-control ${errors.confirmPassword ? "is-invalid" : ""}`}
+                {...register("confirmPassword")}
+              />
+              {errors.confirmPassword && (
+                <div className="invalid-feedback">{errors.confirmPassword.message}</div>
+              )}
             </div>
-            </div>
-    );
+
+            <button type="submit" className="btn-blue btn-submit">
+              Reset Password
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default ResetPassword;
