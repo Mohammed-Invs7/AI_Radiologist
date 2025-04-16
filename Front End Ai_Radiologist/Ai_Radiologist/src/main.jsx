@@ -11,7 +11,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>
     <StrictMode>
-      <App />
+    <App />  
     </StrictMode>
   </BrowserRouter>
 )

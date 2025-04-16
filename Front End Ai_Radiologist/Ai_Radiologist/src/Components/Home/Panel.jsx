@@ -1,13 +1,13 @@
 import Image1 from "../../assets/Images/background.png"
 import Image2 from "../../assets/Images/spark,background.png"
-import "../../assets/Styling/Section_1.css"
+import "../../assets/Styling/panel.css"
 
 
 import UploadButton from "../UploadButton"
 
-const Section1 = () => {
+const Panel = () => {
     return (
-        <div className="Section1-page mt-1">
+        <div className="panel">
             <div className="container-page d-flex justify-content-between ">
                 <div className="title align-items-center d-flex flex-column text-center justify-content-center">
                     <h1 className="mb-2">Use AI To Instantly Analyze
@@ -32,4 +32,4 @@ const Section1 = () => {
         
     );
 }
-export default Section1;
+export default Panel;

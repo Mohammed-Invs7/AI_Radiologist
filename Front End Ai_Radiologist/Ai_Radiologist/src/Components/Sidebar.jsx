@@ -27,7 +27,7 @@ const Sidebar = () => {
                     <img className="img-logo" width={250} src={LogoSidebar} alt="" />
                 </Link>
                 <p className="text-center">At Your Service For <br />Better Health</p>
-                <button className="btn register-btn" onClick={handleClick}>
+                <button style={{color:"white"}} className="btn register-btn fw-bold  " onClick={handleClick}>
                     {buttonText}
                 </button>
             </div>

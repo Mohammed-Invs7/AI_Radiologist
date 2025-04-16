@@ -2,68 +2,75 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Sidebar from "../Components/Sidebar";
 import "../assets/Styling/Form_User.css";
 
-const API_URL = "http://127.0.0.1:8000/api/v1/auth/login/";
+// API Endpoints
+const API_LOGIN = "http://127.0.0.1:8000/api/v1/auth/login/";
+const API_USERS = "http://127.0.0.1:8000/api/v1/auth/user/";
+
+// Yup validation schema
+const schema = yup.object().shape({
+    email: yup.string().email("Invalid email address").required("Email is required"),
+    password: yup.string().required("Password is required"),
+});
 
 const Login = () => {
     const { login } = useAuth();
     const navigate = useNavigate();
 
-    const [formData, setFormData] = useState({ email: "", password: "" });
     const [message, setMessage] = useState("");
 
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        resolver: yupResolver(schema),
+    });
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setMessage("");
+    const onSubmit = async (data) => {
+        setMessage(""); // Reset message before making API call
 
         try {
-            const response = await axios.post(API_URL, formData, {
-                headers: { "Content-Type": "application/json" }
+            const response = await axios.post(API_LOGIN, data, {
+                headers: { "Content-Type": "application/json" },
             });
 
             if (response.data.access) {
                 const token = response.data.access;
                 const refreshToken = response.data.refresh;
 
-                console.log("Received Token:", token);
-
-                const userResponse = await axios.get("http://127.0.0.1:8000/api/v1/auth/user/", {
-                    headers: { "Authorization": `Bearer ${token}` }
+                const userResponse = await axios.get(API_USERS, {
+                    headers: { "Authorization": `Bearer ${token}` },
                 });
+
+                console.log(userResponse.data);
 
                 let userData = userResponse.data;
-                console.log("User Data Fetched:", userData);
-
-                const userTypeResponse = await axios.get("http://127.0.0.1:8000/api/v1/user/user-type/", {
-                    headers: { "Authorization": `Bearer ${token}` }
-                });
 
                 let userType = "";
-                if (userTypeResponse.data.id === 1) {
+                if (userData.user_type === 1) {
                     userType = "admin";
-                } else if (userTypeResponse.data.id === 2) {
+                } else if (userData.user_type === 2) {
                     userType = "user";
                 } else {
                     userType = "unknown";
                 }
 
                 userData.user_type = userType;
-                console.log("User Type:", userData.user_type);
 
                 login(token, userData);
                 localStorage.setItem("refreshToken", refreshToken);
                 localStorage.setItem("user", JSON.stringify(userData));
 
-                if (userData.user_type === "admin") {
-                    navigate('/AdminDashboard');
-                } else if (userData.user_type === "user") {
+                if (userType === "admin") {
+                    navigate('/AdminPanel');
+                } else if (userType === "user") {
                     navigate('/Upload');
                 } else {
                     setMessage("Unknown user type!");
@@ -82,7 +89,7 @@ const Login = () => {
             <div className="container-form">
                 <div className="form-box login flex-column">
                     {message && <div className="alert alert-danger">{message}</div>}
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <h3>Login</h3>
                         <p>Log in to your account</p>
                         <div className="input-box">
@@ -91,10 +98,9 @@ const Login = () => {
                                 name="email"
                                 placeholder="Email"
                                 className="form-control"
-                                value={formData.email}
-                                onChange={handleChange}
-                                required
+                                {...register("email")}
                             />
+                            {errors.email && <p className="text-danger">{errors.email.message}</p>}
                             <i className="bx bx-envelope"></i>
                         </div>
 
@@ -104,10 +110,9 @@ const Login = () => {
                                 name="password"
                                 placeholder="Password"
                                 className="form-control"
-                                value={formData.password}
-                                onChange={handleChange}
-                                required
+                                {...register("password")}
                             />
+                            {errors.password && <p className="text-danger">{errors.password.message}</p>}
                             <i className="bx bx-lock-alt"></i>
                         </div>
 
@@ -115,10 +120,10 @@ const Login = () => {
                             <div className="forget-link">Forgot Password?</div>
                         </Link>
 
-                        <button type="submit" className="btn btn-submit">Log In</button>
+                        <button type="submit" className="btn-blue btn-submit">Log In</button>
                     </form>
                 </div>
-                <Sidebar/>
+                <Sidebar />
             </div>
         </div>
     );

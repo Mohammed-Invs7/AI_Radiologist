@@ -65,14 +65,14 @@ export default function VerifyEmail() {
 
                 {/* ✅ Improve user experience on failure */}
                 {!loading && !success && (
-                    <button className="btn btn-primary mt-3" onClick={() => navigate("/Registration")}>
+                    <button className="btn-blue btn-primary mt-3" onClick={() => navigate("/Registration")}>
                         Register Again
                     </button>
                 )}
 
                 {/* ✅ Improve redirection on success */}
                 {!loading && success && (
-                    <button className="btn btn-success mt-3" onClick={() => navigate("/login")}>
+                    <button className="btn-blue btn-success mt-3" onClick={() => navigate("/login")}>
                         Go to Login
                     </button>
                 )}

@@ -11,14 +11,26 @@
   },
   "dependencies": {
     "@fontsource/inter": "^5.2.5",
+    "@hookform/error-message": "^2.0.1",
+    "@hookform/resolvers": "^5.0.1",
+    "@reduxjs/toolkit": "^2.6.1",
     "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "boxicons": "^2.1.4",
+    "framer-motion": "^12.6.5",
+    "html2pdf.js": "^0.10.3",
+    "jspdf": "^3.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.55.0",
     "react-paginate": "^8.3.0",
-    "react-router-dom": "^7.1.5"
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^7.1.5",
+    "react-toastify": "^11.0.5",
+    "react-tooltip": "^5.28.1",
+    "sweetalert2": "^11.17.2",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",

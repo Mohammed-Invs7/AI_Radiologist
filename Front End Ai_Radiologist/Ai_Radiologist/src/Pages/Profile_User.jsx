@@ -29,7 +29,8 @@ const Profile_User = () => {
                                 <h4>{user.first_name} {user.last_name}</h4>
                                 <p className='mb-1'>Email: {user.email}</p>
                                 <p className='mb-1'>Age: {user.age}</p>
-                                <p className='mb-1'>Gender: {user.gender}</p>
+                                <p className='mb-1'>  Gender: {user.gender === 'M' ? 'Male' : user.gender === 'F' ? 'Female' : user.gender}
+</p>
                             </div>
                         </div>
                     </div>

@@ -1,7 +1,13 @@
 * {
     font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
 }
 body{
     width: 100%;
-    background:#f8f9fa;
+    background-color: white;
+    overflow-x: hidden;
+}
+
+html {
+    background-color: white;
 }

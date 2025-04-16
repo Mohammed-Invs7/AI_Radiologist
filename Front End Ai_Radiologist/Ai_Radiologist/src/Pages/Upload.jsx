@@ -5,10 +5,12 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import Image1 from "../assets/Images/image-upload.png";
 import "../assets/Styling/Upload.css";
 import NavBar from "../Components/NavBar";
-
-const API_URL = "http://localhost:5000/predict";
+import { useAuth } from "../context/AuthContext"; 
+import html2pdf from "html2pdf.js";
 
 const Upload = () => {
+  const { token, user } = useAuth();
+
   const [formData, setFormData] = useState({
     file1: null,
     imagePreview1: null,
@@ -45,33 +47,61 @@ const Upload = () => {
     }
 
     try {
-      setFormData((prev) => ({ ...prev, loading: true, predictionResult: null, errorMessage: null }));
-
-      const uploadData = new FormData();
-      uploadData.append("image1", formData.file1);
-      uploadData.append("type", formData.type);
-      uploadData.append("body_part", formData.bodyPart);
-
-      const response = await axios.post(API_URL, uploadData, {
-        headers: { Accept: "application/json" },
-      });
-
-      if (response.status === 200) {
-        setFormData((prev) => ({
-          ...prev,
-          predictionResult: response.data.prediction,
-          loading: false,
-        }));
-      } else {
-        throw new Error(response.statusText || "Prediction failed, please try again");
-      }
-    } catch (error) {
       setFormData((prev) => ({
         ...prev,
-        errorMessage: error.response?.data?.error || "An error occurred while uploading the image",
+        loading: true,
+        predictionResult: null,
+        errorMessage: null,
+      }));
+
+      const form = new FormData();
+      form.append("image_path", formData.file1); 
+
+      const token = localStorage.getItem("token");
+
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/v1/user/reports/create/",
+        form,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("Upload success:", response.data);
+
+      setFormData((prev) => ({
+        ...prev,
+        predictionResult: response.data.report_details,
+        loading: false,
+      }));
+    } catch (error) {
+      console.error("Upload error:", error);
+      console.log("Server response:", error.response?.data);
+      setFormData((prev) => ({
+        ...prev,
+        errorMessage: "Failed to upload image or generate report.",
         loading: false,
       }));
     }
+  };
+
+  const handleReset = () => {
+    window.location.reload();
+  };
+
+  const handleDownloadPDF = () => {
+    const element = document.getElementById("report-content");
+    const options = {
+      margin: 0.5,
+      filename: "medical_report.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+    };
+    html2pdf().set(options).from(element).save();
   };
 
   return (
@@ -79,31 +109,23 @@ const Upload = () => {
       <NavBar />
       <div className="upload-container d-flex flex-column align-items-center">
         <div className="upload-box d-flex flex-column align-items-center mt-5">
-          <h3 className="upload-header">Upload Image</h3>
+          <h3 className="upload-header">Upload Your Image</h3>
 
           <form onSubmit={handleSubmit} className="d-flex flex-column align-items-center">
             <div className="image-preview-container">
               <img src={formData.imagePreview1 || Image1} alt="Preview 1" className="upload-preview" />
             </div>
 
-            <input
-              type="file"
-              id="file-input-1"
-              hidden
-              onChange={handleFileChange}
-              accept="image/*"
-            />
-            <label htmlFor="file-input-1" className="upload-label">
-              Choose an image
-            </label>
+            <input type="file" id="file-input-1" hidden onChange={handleFileChange} accept="image/*" />
+            <label htmlFor="file-input-1" className="upload-label">Choose File</label>
 
             <select name="type" value={formData.type} onChange={handleChange} className="upload-select">
-              <option value="">Select Type</option>
+              <option value=""> Chest Type</option>
               <option value="X-ray">X-ray</option>
             </select>
 
             <select name="bodyPart" value={formData.bodyPart} onChange={handleChange} className="upload-select">
-              <option value="">Select Body Part</option>
+              <option value="">Chest Part</option>
               <option value="Chest">Chest</option>
             </select>
 
@@ -123,15 +145,33 @@ const Upload = () => {
             </button>
 
             {formData.errorMessage && <div className="alert alert-danger mt-3">{formData.errorMessage}</div>}
-
-            {formData.predictionResult && (
-              <div className="result-box mt-3">
-                <h5>AI Prediction Result:</h5>
-                <p>{formData.predictionResult}</p>
-              </div>
-            )}
           </form>
         </div>
+
+        {formData.predictionResult && (
+          <div id="report-content" className="report-container mt-4 p-4 bg-light rounded shadow-sm w-75 border border-secondary-subtle">
+            <div className="mb-4 border-bottom pb-3">
+              <h4 className="fw-bold text-primary">Medical Report</h4>
+              <p><strong>Name:</strong> {user?.first_name} {user?.last_name}</p>
+              <p><strong>Email:</strong> {user?.email || "N/A"}</p>
+              <p><strong>Date:</strong> {new Date().toLocaleDateString()}</p>
+            </div>
+            <div>
+              <h4 className="mb-4">Report</h4>
+              <p>{formData.predictionResult}</p>
+            </div>
+
+            
+          </div>
+        )}
+        <div className="d-flex justify-content-center gap-3 mt-4">
+              <button className="btn btn-success" onClick={handleDownloadPDF}>
+                <i className="bi bi-download me-2"></i>Download Report
+              </button>
+              <button className="btn btn-outline-secondary" onClick={handleReset}>
+                <i className="bi bi-upload me-2"></i>Upload New Image
+              </button>
+            </div>
       </div>
     </div>
   );

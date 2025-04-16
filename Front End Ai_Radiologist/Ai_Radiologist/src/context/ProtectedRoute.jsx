@@ -1,9 +1,9 @@
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "./AuthContext";
 import PropTypes from "prop-types"; 
 
 const ProtectedRoute = ({ children }) => {
-    const { user, loading } = useAuth(); // Retrieve user authentication state and loading status
+    const { user, loading } = useAuth(); 
 
     // Display a loading screen while authentication status is being checked
     if (loading) {

@@ -11,16 +11,18 @@ import Upload from './Pages/Upload';
 import NavBar from './Components/NavBar';
 import Profile_User from './Pages/Profile_User';
 import Settings_User from './Pages/Settings_User';
-import ProtectedRoute from './Components/ProtectedRoute';
+import ProtectedRoute from './context/ProtectedRoute';
 import AdminRoute from './context/AdminRoute'; 
 import VerifyEmail from './Pages/VerifyEmail';
 import ForgotPassword from './Pages/ForgotPassword';
 import ResetPassword from './Pages/ResetPassword';
-import Admin_Home from './Pages/pages-Admin/Admin_Home';
+import AdminDashboard from './Pages/pages-Admin/AdminDashboard';
 import UsersAdmin from "./Pages/pages-Admin/UsersAdmin";
+import ReportsAdmin from "./Pages/pages-Admin/ReportsAdmin"
 
 //Css//
 import './App.css';
+import AdminPanel from "./Components/Admin/AdminPanel";
 
 function App() {
   return (
@@ -38,10 +40,13 @@ function App() {
           <Route path='/Profile_User' element={<ProtectedRoute><Profile_User /></ProtectedRoute>} /> 
           <Route path='/Settings_User' element={<ProtectedRoute><Settings_User /></ProtectedRoute>} /> 
           <Route element={<AdminRoute />}>
-            <Route path="/AdminDashboard" element={<Admin_Home />} />
-            <Route path="/UsersAdmin" element={<UsersAdmin />} />
-
+          <Route path="/AdminPanel/" element={<AdminPanel />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="UsersAdmin" element={<UsersAdmin />} />
+            <Route path="ReportsAdmin" element={<ReportsAdmin />} />
           </Route>
+        </Route>
+
         </Routes>
       </AuthProvider>
     </>
