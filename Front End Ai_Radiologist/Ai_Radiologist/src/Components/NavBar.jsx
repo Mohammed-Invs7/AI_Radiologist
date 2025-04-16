@@ -56,7 +56,7 @@ const NavBar = () => {
 
                 <div className={`nav__menu mt-3 ${menuOpen ? "show-menu" : ""}`}>
                     <ul className="nav__list">
-                        {["Home", "Our Goals", "How Use It", "Our Team"].map((item, index) => (
+                        {["Home", "Our Vision", "How Use It", "Our Team"].map((item, index) => (
                             <li key={index}>
                                 <Link to="/" className="nav__link" onClick={() => setMenuOpen(false)}>
                                     {item}
@@ -74,7 +74,7 @@ const NavBar = () => {
                         <div className="dropdown" ref={dropdownRef}>
                             <div className="dropdown__profile" onClick={() => setDropdownOpen(prev => !prev)}>
                                 <div className="dropdown__image">
-                                    <img src={user.profile_image || "/default-avatar.png"} alt="Profile" />
+                                    <img src={user.profile_image || "/default-avatar.png"}/>
                                 </div>
                                 <div className="dropdown__names">
                                     <h3>{user.first_name} {user.last_name}</h3>
@@ -83,7 +83,7 @@ const NavBar = () => {
 
                             <ul className={`dropdown__list ${dropdownOpen ? "show-dropdown" : ""}`}>
                                 <div className="d-flex align-items-center mb-2">
-                                    <img width={"40px"} src={user.profile_image || "/default-avatar.png"} alt="Profile" />
+                                    <img width={"40px"} src={user.profile_image || "/default-avatar.png"}/>
                                     <h6 className="mx-2" style={{ fontSize: "12px" }}>{user.first_name} {user.last_name}</h6>
                                 </div>
                                 <li>

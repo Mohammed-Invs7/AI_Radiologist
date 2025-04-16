@@ -5,7 +5,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import Image1 from "../assets/Images/image-upload.png";
 import "../assets/Styling/Upload.css";
 import NavBar from "../Components/NavBar";
-import { useAuth } from "../context/AuthContext"; // تأكد من المسار الصحيح
+import { useAuth } from "../context/AuthContext"; 
 
 const Upload = () => {
   const { token } = useAuth();

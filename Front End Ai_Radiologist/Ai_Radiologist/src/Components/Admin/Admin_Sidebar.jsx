@@ -35,7 +35,7 @@ const Admin_Sidebar = () => {
     };
 
     return (
-        <div className="bg-white Admin-Sidebar py-2">
+        <div className="bg-white Admin-Sidebar py-2 d-flex flex-column">
             <div className="list-group list-group-flush fw-semibold">
 
                 <Link to="/AdminPanel" className="list-group-item d-flex align-items-center text-center">

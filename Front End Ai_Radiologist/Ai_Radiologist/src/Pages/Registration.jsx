@@ -1,205 +1,210 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
-import '../assets/Styling/Form_User.css'
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import Swal from "sweetalert2";
+import "../assets/Styling/Form_User.css";
 import Sidebar from "../Components/Sidebar";
+import { Tooltip } from "react-tooltip";
+import "react-tooltip/dist/react-tooltip.css";
 
-// Backend server URL
-const API_URL = "http://127.0.0.1:8000/api/v1/auth/registration/"; 
+const API_URL = "http://127.0.0.1:8000/api/v1/auth/registration/";
+
+const schema = yup.object().shape({
+  first_name: yup.string().required("First name is required"),
+  last_name: yup.string().required("Last name is required"),
+  email: yup.string().email("Invalid email").required("Email is required"),
+  password: yup.string().min(8, " Min 8 characters").required(),
+  password_confirm: yup
+    .string()
+    .oneOf([yup.ref("password")], "Passwords must match")
+    .required("confirm your password"),
+  date_of_birth: yup.string().required("Date of birth is required"),
+  gender: yup.string().required("Gender is required"),
+});
 
 const Registration = () => {
-    // Store user data
-    const [formData, setFormData] = useState({
-        first_name: "",
-        last_name: "",
-        email: "",
-        password: "",
-        password_confirm:"",
-        date_of_birth: "",
-        gender: ""
-    });
+  const navigate = useNavigate();
+  const [serverError, setServerError] = useState("");
 
-    const [message, setMessage] = useState(""); // Store validation or success messages
-    const [loading, setLoading] = useState(false);  // Loading state
-    // const [isChecked, setIsChecked] = useState(false); // Track terms and conditions agreement
-    const navigate = useNavigate(); // Navigation hook
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
-    // Update values when user inputs data
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-    // Submit data when the register button is clicked
-    const handleSubmit = async (e) => {
-    e.preventDefault();
-    setMessage("");
-
-    // if (!isChecked) {
-    //     setMessage("You must agree to the terms and conditions to register.");
-    //     return;
-    // }
-
-    setLoading(true);
+  const onSubmit = async (data) => {
+    setServerError("");
 
     try {
-        const response = await axios.post(API_URL, formData, {
-            headers: { "Content-Type": "application/json" }
-        });
+      const response = await axios.post(API_URL, data, {
+        headers: { "Content-Type": "application/json" },
+      });
 
-        console.log("Server Response:", response);
-        console.log("🔹 Token:", response.data.token);
-
-        if (response.status === 201 || response.status === 200) {
-            setMessage({
-                text: " Registration successful! Please check your email to verify your account.",
-                type: "success"
+      if (response.status === 201 || response.status === 200) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("username", `${response.data.first_name} ${response.data.last_name}`);
+        
+        Swal.fire({
+  title: 'Registration Successful!',
+  text: 'Please check your email to confirm your account.',
+  icon: 'success',
+  confirmButtonText: 'OK',
+            }).then(() => {
+            navigate("/login");
             });
 
-            // Store token in local storage
-            localStorage.setItem("username", `${response.data.first_name} ${response.data.last_name}`);
-            //localStorage.setItem("username", response.data.first_name);
-            localStorage.setItem("token", response.data.token);
-
-
-            setTimeout(() => navigate("/login"), 5000);
-        } else {
-            setMessage(`❌ An unexpected error occurred. Code: ${response.status}`);
-        }
+      }
     } catch (error) {
-        console.error("❌ Error Response:", error.response?.data);
-        setMessage({
-            text: `❌ Error: ${error.response?.data?.error || "An error occurred during registration"}`,
-            type: "danger"
+      const errData = error.response?.data;
+      if (errData?.email?.length > 0) {
+        setError("email", {
+          type: "server",
+          message: "This email is already in use. Please use a different email.",
         });
-    } finally {
-        setLoading(false);
+      } else {
+        setServerError("Something went wrong. Please try again.");
+      }
+
+      Swal.fire({
+        title: 'Error!',
+        text: serverError || "Something went wrong. Please try again.",
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
     }
-};
+  };
 
+  return (
+    <div className="page-form">
+      <div className="container-form">
+        <div className="form-box registration">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <h1>Registration</h1>
 
-    return (
-        <div className="page-form">
-            <div className="container-form" >
-                    
-
-                    {/* Registration form */}
-                    <div className="form-box flex-column registration">
-                        {/* Display success or error message */}
-                        {message.text && (
-                            <div style={{fontSize:"13px"}} className={`alert alert-${message.type} text-center fw-bold`} role="alert">
-                                {message.text}
-                            </div>
-                        )}
-
-                        {/* Show loading spinner */}
-                        {loading && <div className="spinner-border text-primary" role="status">
-                            <span className="visually-hidden">Loading...</span>
-                        </div>}
-
-                    <form action={{}} onSubmit={handleSubmit}>
-                        <h1>Registration</h1>
-                        {/* Input fields */}
-                            <div className="input-box" >
-                            <input
-                                type="text"
-                                name="first_name"
-                                placeholder="First Name"
-                                value={formData.first_name}
-                                onChange={handleChange}
-                                required
-                            />
-                                <i className="bx bx-user"></i>
-
-                            </div>
-
-                            <div className="input-box" >
-                            <input type="text"
-                                name="last_name"
-                                placeholder="Last Name"
-                                value={formData.last_name}
-                                onChange={handleChange}
-                                required
-                            />
-                                <i className="bx bx-user"></i>
-                            </div>
-
-                            <div className="input-box" >
-                            <input type="email"
-                                name="email"
-                                placeholder="Email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                required
-                            />
-                            <i className="bx bx-envelope"></i>
-
-                            </div>
-
-                            <div className="input-box" >
-                            <input type="password"
-                                name="password"
-                                placeholder="Password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                required
-                            />
-                            <i className="bx bx-lock-alt"></i>
-
-                            </div>
-
-                            <div className="input-box" >
-                            <input type="password"
-                                name="password_confirm"
-                                placeholder="Confirm Password"
-                                value={formData.password_confirm}
-                                onChange={handleChange}
-                                required
-                            />
-                                <i className="bx bx-lock-alt"></i>
-
-                            </div>
-
-                            <div className="input-box" >
-                            <input
-                                style={{paddingRight:"20px",}}
-                                type="date"
-                                name="date_of_birth"
-                                value={formData.date_of_birth}
-                                onChange={handleChange}
-                                required />
-                            </div>
-
-                            {/* Gender selection */}
-                            <div className="mb-3">
-                                <label className="form-label d-block text-start">Gender</label>
-                                <div className="d-flex">
-                                    <div className="form-check form-check-inline">
-                                        <input type="radio" name="gender" value="M" className="form-check-input"
-                                            checked={formData.gender === "M"} onChange={handleChange} required />
-                                        <label className="form-check-label">Male</label>
-                                    </div>
-                                    <div className="form-check form-check-inline">
-                                        <input type="radio" name="gender" value="F" className="form-check-input"
-                                            checked={formData.gender === "F"} onChange={handleChange} required />
-                                        <label className="form-check-label">Female</label>
-                                    </div>
-                                </div>
-                            </div>
-                            
-
-                            {/* Submit button */}
-                            <button type="submit" className="btn">
-                            Register
-                            </button>
-                        </form>
-                            
-                </div>
-                <Sidebar/>
+            {/* First Name */}
+            <div className="input-box">
+              <i className="bx bx-user"></i>
+              <input
+                type="text"
+                placeholder="First Name"
+                {...register("first_name")}
+                className={errors.first_name ? "is-invalid" : "form-control"}
+                data-tooltip-id="form-tooltip"
+                data-tooltip-content={errors.first_name?.message}
+              />
             </div>
+
+            {/* Last Name */}
+            <div className="input-box">
+              <i className="bx bx-user"></i>
+              <input
+                type="text"
+                placeholder="Last Name"
+                {...register("last_name")}
+                className={errors.last_name ? "is-invalid" : "form-control"}
+                data-tooltip-id="form-tooltip"
+                data-tooltip-content={errors.last_name?.message}
+              />
+            </div>
+
+            {/* Email */}
+            <div className="input-box">
+              <i className="bx bx-envelope"></i>
+              <input
+                type="email"
+                placeholder="Email"
+                {...register("email")}
+                className={errors.email ? "is-invalid" : "form-control"}
+                data-tooltip-id="form-tooltip"
+                data-tooltip-content={errors.email?.message}
+              />
+            </div>
+
+            {/* Password */}
+            <div className="input-box">
+              <i className="bx bx-lock"></i>
+              <input
+                type="password"
+                placeholder="Password"
+                {...register("password")}
+                className={errors.password ? "is-invalid" : "form-control"}
+                data-tooltip-id="form-tooltip"
+                data-tooltip-content={errors.password?.message}
+              />
+            </div>
+
+            {/* Confirm Password */}
+            <div className="input-box">
+              <i className="bx bx-lock"></i>
+              <input
+                type="password"
+                placeholder="Confirm Password"
+                {...register("password_confirm")}
+                className={errors.password_confirm ? "is-invalid" : "form-control"}
+                data-tooltip-id="form-tooltip"
+                data-tooltip-content={errors.password_confirm?.message}
+              />
+            </div>
+
+            {/* Date of Birth */}
+            <div className="input-box">
+              <i className="bx bx-calendar"></i>
+              <input
+                type="date"
+                {...register("date_of_birth")}
+                className={errors.date_of_birth ? "is-invalid" : "form-control"}
+                data-tooltip-id="form-tooltip"
+                data-tooltip-content={errors.date_of_birth?.message}
+              />
+            </div>
+
+            {/* Gender */}
+         <div className="mb-3 text-start">
+              <label className="form-label">Gender</label>
+              <div className="d-flex">
+                <div className="form-check form-check-inline">
+                  <input
+                    type="radio"
+                    value="M"
+                    {...register("gender")}
+                    className="form-check-input"
+                    id="male"
+                  />
+                  <label className="form-check-label" htmlFor="male">Male</label>
+                </div>
+                <div className="form-check form-check-inline">
+                  <input
+                    type="radio"
+                    value="F"
+                    {...register("gender")}
+                    className="form-check-input"
+                    id="female"
+                  />
+                  <label className="form-check-label" htmlFor="female">Female</label>
+                </div>
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <button type="submit" className="btn" disabled={isSubmitting}>
+              {isSubmitting ? "Submitting..." : "Register"}
+              {isSubmitting && <span className="spinner-border spinner-border-sm ms-2" />}
+            </button>
+          </form>
         </div>
-    );
+
+        <Tooltip id="form-tooltip" place="right" />
+
+        <Sidebar />
+      </div>
+    </div>
+  );
 };
 
 export default Registration;

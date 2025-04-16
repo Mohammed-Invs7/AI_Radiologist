@@ -57,42 +57,70 @@ const AdminReports = () => {
             <div className="container-fluid">
                 <div className="flex-grow-1 p-4">
                     <h4 className="mb-4">Reports</h4>
-                    <div className="table-responsive">
-                        <table className="table table-bordered table-hover table-sm">
-                            <thead className="table-dark text-center align-middle">
-                                <tr>
-                                    <th>#</th>
-                                    <th>Title</th>
-                                    <th>User</th>
-                                    <th>Modality</th>
-                                    <th>Body Region</th>
-                                    <th>Date</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody className="text-center align-middle">
-                                {reportsToDisplay.map((report, idx) => (
-                                    <tr key={report.id}>
-                                        <td>{idx + 1 + currentPage * itemsPerPage}</td>
-                                        <td>{report.title}</td>
-                                        <td>{report.user_full_name}</td>
-                                        <td>{report.radiology_modality}</td>
-                                        <td>{report.body_anatomical_region}</td>
-                                        <td>{new Date(report.report_date).toLocaleDateString()}</td>
-                                        <td>
-                                            <i
-                                                className="bx bx-show text-info"
-                                                style={{ cursor: "pointer", fontSize: "1.3rem" }}
-                                                onClick={() => fetchReportDetails(report.id)}
-                                                title="View"
-                                            ></i>
-                                        </td>
+                    
+                    <div className="d-none d-lg-block">
+                        <div className="table-responsive">
+                            <table className="table table-bordered table-hover table-sm">
+                                <thead className="table-dark text-center align-middle">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Title</th>
+                                        <th>User</th>
+                                        <th>Modality</th>
+                                        <th>Body Region</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody className="text-center align-middle">
+                                    {reportsToDisplay.map((report, idx) => (
+                                        <tr key={report.id}>
+                                            <td>{idx + 1 + currentPage * itemsPerPage}</td>
+                                            <td>{report.title}</td>
+                                            <td>{report.user_full_name}</td>
+                                            <td>{report.radiology_modality}</td>
+                                            <td>{report.body_anatomical_region}</td>
+                                            <td>{new Date(report.report_date).toLocaleDateString()}</td>
+                                            <td>
+                                                <i
+                                                    className="bx bx-show text-info"
+                                                    style={{ cursor: "pointer", fontSize: "1.3rem" }}
+                                                    onClick={() => fetchReportDetails(report.id)}
+                                                    title="View"
+                                                ></i>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
+                    <div className="d-block d-lg-none">
+                        <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                            {reportsToDisplay.map((report, idx) => (
+                                <div className="col" key={report.id}>
+                                    <div className="card shadow-sm">
+                                        <div className="card-body">
+                                            <p>{idx + 1 + currentPage * itemsPerPage}</p>
+                                            <h5 className="card-title"><strong>Title: </strong> {report.title}</h5>
+                                            <p className="card-text"><strong>User:</strong> {report.user_full_name}</p>
+                                            <p className="card-text"><strong>Modality:</strong> {report.radiology_modality}</p>
+                                            <p className="card-text"><strong>Body Region:</strong> {report.body_anatomical_region}</p>
+                                            <p className="card-text"><strong>Date:</strong> {new Date(report.report_date).toLocaleDateString()}</p>
+                                            <div className="d-flex justify-content-between">
+                                                <button className="btn btn-info btn-sm" onClick={() => fetchReportDetails(report.id)}>
+                                                    View
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Pagination */}
                     <ReactPaginate
                         pageCount={Math.ceil(reports.length / itemsPerPage)}
                         onPageChange={handlePageClick}

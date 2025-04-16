@@ -11,7 +11,7 @@ import Upload from './Pages/Upload';
 import NavBar from './Components/NavBar';
 import Profile_User from './Pages/Profile_User';
 import Settings_User from './Pages/Settings_User';
-import ProtectedRoute from './Components/ProtectedRoute';
+import ProtectedRoute from './context/ProtectedRoute';
 import AdminRoute from './context/AdminRoute'; 
 import VerifyEmail from './Pages/VerifyEmail';
 import ForgotPassword from './Pages/ForgotPassword';

@@ -1,12 +1,14 @@
-.page-form{
+.page-form {
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background: linear-gradient(90deg, #e2e2e2,#c9d6ff);
+    background: linear-gradient(90deg, #e2e2e2, #c9d6ff);
+    position: relative;
+    z-index: 0;
 }
 
-.container-form{
+.container-form {
     position: relative;
     width: 900px;
     height: 610px;
@@ -15,9 +17,10 @@
     margin: 20px;
     box-shadow: 0 0 30px rgba(0, 0, 0, .2);
     overflow: hidden;
+    z-index: 1;
 }
 
-.form-box{
+.form-box {
     position: absolute;
     right: 0;
     width: 50%;
@@ -32,21 +35,21 @@
     z-index: 1;
 }
 
-form{
-    width: 100%;
+form {
+    width: 85%;
 }
 
-.container h1{
+.container h1 {
     font-size: 36px;
     margin: -10px 0;
 }
 
-.input-box{
+.input-box {
     position: relative;
     margin: 10px 0;
 }
 
-.input-box input{
+.input-box input {
     width: 100%;
     padding: 13px 50px 13px 20px;
     background: #eee;
@@ -54,17 +57,16 @@ form{
     border: none;
     outline: none;
     font-size: 13px;
-    color: 16px;
-    color: #333;
     font-weight: 500;
+    color: #333;
 }
 
-.input-box input::placeholder{
+.input-box input::placeholder {
     color: #888;
     font-weight: 400;
 }
 
-.input-box i{
+.input-box i {
     position: absolute;
     right: 20px;
     top: 50%;
@@ -73,45 +75,64 @@ form{
     color: #888;
 }
 
-.forget-link{
+.forget-link {
     margin: 0 0 15px;
     font-size: 14.5px;
-        color: #333;
-        text-decoration: none;
+    color: #333;
+    text-decoration: none;
 }
 
-.btn{
+.btn {
     width: 100%;
     height: 48px;
     background: linear-gradient(90deg, #017276 0%, #80DFDF 100%);
     border-radius: 8px;
-    box-shadow: 0 0 10 rgba(0, 0, 0, .1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
     border: none;
     cursor: pointer;
     font-size: 16px;
     color: #fff;
-    font-weight: bold;    
+    font-weight: bold;
 }
 
-.btn :hover{
+.btn:hover {
     color: black;
-
-
 }
 
 @media screen and (max-width: 696px) {
-    .container-form{
+    .container-form {
         height: calc(100vh - 40px);
     }
 
-    .form-box{
+    .form-box {
         bottom: 0;
         width: 100%;
         height: 70%;
     }
 
-    .login{
+    .login {
         height: 85%;
     }
-    
+}
+
+.input-box {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-box input {
+    width: 100%;
+}
+
+
+.react-tooltip {
+    background-color: #dc3545 !important;
+    color: #fff !important;
+    font-weight: bold;
+    border-radius: 10px !important;
+    z-index: 9999 !important;
+    max-width: 220px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+    font-size: 12px !important ;
 }

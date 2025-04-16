@@ -20,24 +20,55 @@ const EditUserModal = ({ show, onClose, onChange, onSubmit, currentUser }) => {
             <button type="button" className="btn-close" onClick={onClose}></button>
           </div>
           <div className="modal-body">
-            {[
-              { name: "first_name", label: "First Name" },
-              { name: "last_name", label: "Last Name" },
-              { name: "email", label: "Email", type: "email" },
-              { name: "date_of_birth", label: "Date of Birth", type: "date" },
-            ].map(({ name, label, type = "text" }) => (
-              <div className="mb-3" key={name}>
-                <label className="form-label">{label}</label>
-                <input
-                  type={type}
-                  className="form-control"
-                  name={name}
-                  value={currentUser[name]}
-                  onChange={onChange}
-                />
-              </div>
-            ))}
+            {/* First Name */}
+            <div className="mb-3">
+              <label className="form-label">First Name</label>
+              <input
+                type="text"
+                className="form-control"
+                name="first_name"
+                value={currentUser.first_name}
+                onChange={onChange}
+              />
+            </div>
 
+            {/* Last Name */}
+            <div className="mb-3">
+              <label className="form-label">Last Name</label>
+              <input
+                type="text"
+                className="form-control"
+                name="last_name"
+                value={currentUser.last_name}
+                onChange={onChange}
+              />
+            </div>
+
+              {/* Email 
+            <div className="mb-3">
+              <label className="form-label">Email</label>
+              <input
+                type="email"
+                className="form-control"
+                name="email"
+                value={currentUser.email}
+                onChange={onChange}
+              />
+            </div> */}
+
+            {/* Date of Birth */}
+            <div className="mb-3">
+              <label className="form-label">Date of Birth</label>
+              <input
+                type="date"
+                className="form-control"
+                name="date_of_birth"
+                value={currentUser.date_of_birth}
+                onChange={onChange}
+              />
+            </div>
+
+            {/* Gender */}
             <div className="mb-3">
               <label className="form-label">Gender</label>
               <select className="form-select" name="gender" value={currentUser.gender} onChange={onChange}>
@@ -46,6 +77,7 @@ const EditUserModal = ({ show, onClose, onChange, onSubmit, currentUser }) => {
               </select>
             </div>
 
+            {/* User Type */}
             <div className="mb-3">
               <label className="form-label">User Type</label>
               <select className="form-select" name="user_type" value={currentUser.user_type} onChange={onChange}>

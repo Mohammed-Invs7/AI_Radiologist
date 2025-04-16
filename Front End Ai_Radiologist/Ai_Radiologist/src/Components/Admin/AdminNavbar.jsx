@@ -61,17 +61,17 @@ const AdminNavbar = () => {
 
     return (
         <header className="header mb-3">
-            <nav className="nav container-fluid justify-content-between w-100 mx-5">
+            <nav className="nav container-fluid justify-content-between w-100 mx-3 mx-sm-5">
                 <div className="row w-100">
-                    <div className="col-md-2 d-flex align-items-center">
+                    <div className="col-4 col-md-2 d-flex align-items-center flex-column flex-md-row">
                         <Logo />
                     </div>
 
-                    <div className="col-md-5 d-flex justify-content-center align-items-center">
+                    <div className="col-4 col-md-5 d-flex justify-content-center align-items-center">
                         <h3>{getPageTitle()}</h3>
                     </div>
 
-                    <div className="col-md-4 d-flex justify-content-end align-items-center">
+                    <div className="col-4 col-md-4 d-flex justify-content-end align-items-center">
                         {user ? (
                             <div className="dropdown" ref={dropdownRef}>
                                 <div
