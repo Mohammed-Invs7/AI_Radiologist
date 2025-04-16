@@ -67,7 +67,7 @@ const ForgotPassword = () => {
                 {errors.email && <p className="text-danger">{errors.email.message}</p>}
                 </div>
 
-                <button type="submit" className="btn btn-submit" disabled={loading}>
+                <button type="submit" className="btn-blue btn-submit" disabled={loading}>
                 {loading ? (
                     <>
                     <span className="spinner-border spinner-border-sm"></span> Sending...

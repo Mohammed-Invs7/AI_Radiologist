@@ -36,7 +36,7 @@ const ReportModal = ({ selectedReport, onClose }) => {
                         <p><strong>Details:</strong> {selectedReport.report_details || 'No details available'}</p>
                     </div>
                     <div className="modal-footer">
-                        <button className="btn btn-secondary" onClick={onClose}>Close</button>
+                        <button className="btn-blue btn-secondary" onClick={onClose}>Close</button>
                     </div>
                 </div>
             </div>

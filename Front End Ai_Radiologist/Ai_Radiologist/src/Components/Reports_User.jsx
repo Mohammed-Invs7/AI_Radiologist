@@ -94,7 +94,7 @@ const Reports_User = () => {
             <div className="bg-primary text-white p-3 rounded-top d-flex justify-content-between align-items-center"
                 style={{ background: 'linear-gradient(90deg, rgba(2, 85, 89, 0.90) 0%, #80DFDF 66%)' }}>
                 <h6>Your Radiology Reports</h6>
-                <button className="btn btn-add-radiology d-flex align-items-center">
+                <button className="btn-blue btn-add-radiology d-flex align-items-center">
                     <Link to={"/Upload"}>Add New Radiology Image</Link>
                     <i style={{ color: "black", fontSize: "20px" }} className="bx bx-plus"></i>
                 </button>

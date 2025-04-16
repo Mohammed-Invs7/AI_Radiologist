@@ -120,7 +120,7 @@ const Login = () => {
                             <div className="forget-link">Forgot Password?</div>
                         </Link>
 
-                        <button type="submit" className="btn btn-submit">Log In</button>
+                        <button type="submit" className="btn-blue btn-submit">Log In</button>
                     </form>
                 </div>
                 <Sidebar />

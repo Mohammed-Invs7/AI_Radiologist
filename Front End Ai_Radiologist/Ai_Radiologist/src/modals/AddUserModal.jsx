@@ -103,7 +103,7 @@ const AddUserModal = ({ show, onClose, onSubmit }) => {
               </div>
 
               <div className="modal-footer">
-                <button type="submit" className="btn btn-success">Add</button>
+                <button type="submit" className="btn-blue btn-success">Add</button>
               </div>
             </form>
           </div>

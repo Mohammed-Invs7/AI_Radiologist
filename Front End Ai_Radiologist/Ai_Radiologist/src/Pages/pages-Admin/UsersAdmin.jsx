@@ -153,7 +153,7 @@ const UsersAdmin = () => {
         <div className="flex-grow-1">
           <div className="d-flex justify-content-end mb-3">
             <button
-              className="btn btn-primary"
+              className="btn-blue btn-primary"
               onClick={() => {
                 setNewUser({
                   email: "",
@@ -229,20 +229,22 @@ const UsersAdmin = () => {
                 <div className="col" key={user.id}>
                   <div className="card shadow-sm">
                     <div className="card-body">
-                    <p>{idx + 1 + currentPage * itemsPerPage}</p>
-                      <h5 className="card-title"> <strong>User: </strong>{user.first_name} {user.last_name}</h5>
+                    <p> Num: {idx + 1 + currentPage * itemsPerPage}</p>
+                      <p className="card-text"><strong>User: </strong>{user.first_name} {user.last_name}</p>
                       <p className="card-text"><strong>Email:</strong> {user.email}</p>
                       <p className="card-text"><strong>Gender:</strong> {user.gender}</p>
                       <p className="card-text"><strong>Age:</strong> {user.age}</p>
                       <p className="card-text"><strong>DoB:</strong> {user.date_of_birth}</p>
                       <p className="card-text"><strong>UserType:</strong> {user.user_type}</p>
-                      <div className="d-flex justify-content-between">
-                        <button className="btn btn-warning btn-sm" onClick={() => handleEdit(user, user.id)}>
-                          Edit
+                      <div className="d-flex justify-content-between mx-4">
+                        <button className="btn btn-warning d-flex align-items-center " onClick={() => handleEdit(user, user.id)}>
+                          <i className='bx bx-edit'></i> Edit
                         </button>
-                        <button className="btn btn-danger btn-sm" onClick={() => handleDelete(user.id)}>
-                          Delete
+
+                        <button className="btn btn-danger d-flex align-items-center " onClick={() => handleDelete(user.id)}>
+                          <i className='bx bx-trash'></i> Delete
                         </button>
+
                       </div>
                     </div>
                   </div>

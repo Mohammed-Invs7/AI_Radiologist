@@ -109,7 +109,7 @@ const AdminReports = () => {
                                             <p className="card-text"><strong>Body Region:</strong> {report.body_anatomical_region}</p>
                                             <p className="card-text"><strong>Date:</strong> {new Date(report.report_date).toLocaleDateString()}</p>
                                             <div className="d-flex justify-content-between">
-                                                <button className="btn btn-info btn-sm" onClick={() => fetchReportDetails(report.id)}>
+                                                <button className="btn-blue btn-info btn-sm" onClick={() => fetchReportDetails(report.id)}>
                                                     View
                                                 </button>
                                             </div>

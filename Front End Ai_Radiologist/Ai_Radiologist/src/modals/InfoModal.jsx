@@ -15,7 +15,7 @@ const InfoModal = ({ show, user, onClose, onSave, loading, onChange, previewImag
             transition={{ duration: 0.3 }}
         >
             <div className="modal-dialog">
-                <div className="modal-content">
+                <div className="modal-content align-items-center">
                     <form onSubmit={onSave}>
                         <div className="modal-header">
                             <h5 className="modal-title">Edit Personal Info</h5>
@@ -82,7 +82,7 @@ const InfoModal = ({ show, user, onClose, onSave, loading, onChange, previewImag
                         <div className="modal-footer d-flex justify-content-center align-items-center text-center">
                             <motion.button
                                 type="submit"
-                                className="btn btn-primary w-75"
+                                className="btn-blue btn-primary w-75"
                                 disabled={loading}
                                 whileHover={{ scale: 1.1 }}
                             >

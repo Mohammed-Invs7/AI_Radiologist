@@ -192,7 +192,7 @@ const Registration = () => {
             </div>
 
             {/* Submit Button */}
-            <button type="submit" className="btn" disabled={isSubmitting}>
+            <button type="submit" className="btn-blue" disabled={isSubmitting}>
               {isSubmitting ? "Submitting..." : "Register"}
               {isSubmitting && <span className="spinner-border spinner-border-sm ms-2" />}
             </button>

@@ -87,7 +87,7 @@ const EditUserModal = ({ show, onClose, onChange, onSubmit, currentUser }) => {
             </div>
           </div>
           <div className="modal-footer">
-            <button className="btn btn-success" onClick={onSubmit}>Update</button>
+            <button className="btn-blue btn-success" onClick={onSubmit}>Update</button>
           </div>
         </div>
       </div>

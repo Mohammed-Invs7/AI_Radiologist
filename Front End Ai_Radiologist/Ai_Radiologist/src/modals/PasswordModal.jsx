@@ -29,7 +29,7 @@ const PasswordModal = ({
             transition={{ duration: 0.3 }}
         >
             <div className="modal-dialog">
-                <div className="modal-content">
+                <div className="modal-content ">
                     <div className="modal-header">
                         <h5 className="modal-title">Change Password</h5>
                         <button type="button" className="btn-close" onClick={handleClose}></button>
@@ -56,7 +56,7 @@ const PasswordModal = ({
                         {passwordMessage && <div className="alert alert-info">{passwordMessage}</div>}
                     </div>
                     <div className="modal-footer d-flex justify-content-center align-items-center text-center">
-                        <motion.button className="btn btn-danger w-75 " onClick={onSave} whileHover={{ scale: 1.1 }}>
+                        <motion.button className="btn-blue btn-danger w-75 " onClick={onSave} whileHover={{ scale: 1.1 }}>
                             Save Changes
                         </motion.button>
                     </div>

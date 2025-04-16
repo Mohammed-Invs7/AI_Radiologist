@@ -104,13 +104,13 @@ const ResetPassword = () => {
                         </div>
                         
 
-                    <button type="submit" className="btn btn-submit">
+                    <button type="submit" className="btn-blue btn-submit">
                         Reset Password
                     </button>
                 </form>
 
                 {message.includes("Password reset successfully") && (
-                    <button style={{display:"none"}} className="btn btn-success mt-3" onClick={() => navigate("/login")}>
+                    <button style={{display:"none"}} className="btn-blue btn-success mt-3" onClick={() => navigate("/login")}>
                         Go to Login
                     </button>
                 )}
