@@ -1,6 +1,8 @@
+//Importing Libraries//
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import zxcvbn from "zxcvbn";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -9,37 +11,111 @@ import "../assets/Styling/Form_User.css";
 import Sidebar from "../Components/Sidebar";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
+//Importing Libraries//
 
+//Defining Constants and Schema//
 const API_URL = "http://127.0.0.1:8000/api/v1/auth/registration/";
+const CHECK_EMAIL_URL = "http://127.0.0.1:8000/api/v1/auth/check-email/";
 
 const schema = yup.object().shape({
-  first_name: yup.string().required("First name is required"),
-  last_name: yup.string().required("Last name is required"),
-  email: yup.string().email("Invalid email").required("Email is required"),
-  password: yup.string().min(8, " Min 8 characters").required(),
+  first_name: yup
+    .string()
+    .required("First name is required")
+    .matches(/^[A-Za-z]+$/, "First name must contain letters only"),
+
+  last_name: yup
+    .string()
+    .required("Last name is required")
+    .matches(/^[A-Za-z]+$/, "Last name must contain letters only"),
+
+  email: yup
+    .string()
+    .required("Email is required")
+    .email("Invalid email format")
+    .matches(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, "Invalid email format"),
+
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(8, "Min 8 characters")
+    .test("strong-password", "Password is too weak", (value) => {
+      const result = zxcvbn(value || "");
+      return result.score >= 3;
+    }),
+
   password_confirm: yup
     .string()
-    .oneOf([yup.ref("password")], "Passwords must match")
-    .required("confirm your password"),
-  date_of_birth: yup.string().required("Date of birth is required"),
-  gender: yup.string().required("Gender is required"),
+    .required("Confirm your password")
+    .oneOf([yup.ref("password")], "Passwords must match"),
+
+  date_of_birth: yup
+    .string()
+    .required("Date of birth is required"),
+
+  gender: yup
+    .string()
+    .required("Gender is required"),
 });
+//Defining Constants and Schema//
 
 const Registration = () => {
+
+  //State and useForm Hook Setup//
   const navigate = useNavigate();
   const [serverError, setServerError] = useState("");
+  const [emailStatus, setEmailStatus] = useState("");
 
   const {
     register,
     handleSubmit,
     setError,
+    clearErrors,
     formState: { errors, isSubmitting },
+    watch,
+    trigger,
   } = useForm({
+    mode: "onChange", 
+    reValidateMode: "onChange",
     resolver: yupResolver(schema),
   });
 
+  const passwordValue = watch("password");
+  const passwordStrength = zxcvbn(passwordValue || "");
+
+  //State and useForm Hook Setup//
+
+
+  const handleEmailBlur = async () => {
+  const email = watch("email");
+
+  if (!email) return;
+
+  setEmailStatus("checking");
+  try {
+    const res = await axios.get(`${CHECK_EMAIL_URL}${email}/`);
+    if (res.data.exists) {
+      setEmailStatus("exists");
+      setError("email", {
+        type: "manual",
+        message: "This email is already registered. Please use a different one.",
+      });
+    } else {
+      setEmailStatus("available");
+      clearErrors("email");
+    }
+  } catch {
+    setEmailStatus("");
+  }
+};
+
+
   const onSubmit = async (data) => {
     setServerError("");
+
+    const isValid = await trigger(); 
+    if (!isValid) {
+      return; 
+    }
 
     try {
       const response = await axios.post(API_URL, data, {
@@ -49,16 +125,13 @@ const Registration = () => {
       if (response.status === 201 || response.status === 200) {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("username", `${response.data.first_name} ${response.data.last_name}`);
-        
-        Swal.fire({
-  title: 'Registration Successful!',
-  text: 'Please check your email to confirm your account.',
-  icon: 'success',
-  confirmButtonText: 'OK',
-            }).then(() => {
-            navigate("/login");
-            });
 
+        Swal.fire({
+          title: 'Registration Successful!',
+          text: 'Please check your email to confirm your account.',
+          icon: 'success',
+          confirmButtonText: 'OK',
+        }).then(() => navigate("/login"));
       }
     } catch (error) {
       const errData = error.response?.data;
@@ -67,6 +140,7 @@ const Registration = () => {
           type: "server",
           message: "This email is already in use. Please use a different email.",
         });
+        setEmailStatus("exists");
       } else {
         setServerError("Something went wrong. Please try again.");
       }
@@ -78,6 +152,10 @@ const Registration = () => {
         confirmButtonText: 'OK',
       });
     }
+  };
+
+  const handleBlur = (fieldName) => {
+    trigger(fieldName);
   };
 
   return (
@@ -94,9 +172,10 @@ const Registration = () => {
                 type="text"
                 placeholder="First Name"
                 {...register("first_name")}
-                className={errors.first_name ? "is-invalid" : "form-control"}
+                className={`form-control ${errors.first_name ? "is-invalid": ""}`}
                 data-tooltip-id="form-tooltip"
                 data-tooltip-content={errors.first_name?.message}
+                onBlur={() => handleBlur("first_name")}
               />
             </div>
 
@@ -107,9 +186,10 @@ const Registration = () => {
                 type="text"
                 placeholder="Last Name"
                 {...register("last_name")}
-                className={errors.last_name ? "is-invalid" : "form-control"}
+                className={`form-control ${errors.last_name ? "is-invalid" : ""}`}
                 data-tooltip-id="form-tooltip"
                 data-tooltip-content={errors.last_name?.message}
+                onBlur={() => handleBlur("last_name")}
               />
             </div>
 
@@ -120,9 +200,10 @@ const Registration = () => {
                 type="email"
                 placeholder="Email"
                 {...register("email")}
-                className={errors.email ? "is-invalid" : "form-control"}
+                className={`form-control ${errors.email ? "is-invalid" : emailStatus === "available" ? "is-valid" : ""}`}
                 data-tooltip-id="form-tooltip"
                 data-tooltip-content={errors.email?.message}
+                onBlur={handleEmailBlur}
               />
             </div>
 
@@ -133,9 +214,10 @@ const Registration = () => {
                 type="password"
                 placeholder="Password"
                 {...register("password")}
-                className={errors.password ? "is-invalid" : "form-control"}
+                className={`form-control password ${errors.password ? "is-invalid" : ""}`}
                 data-tooltip-id="form-tooltip"
-                data-tooltip-content={errors.password?.message}
+                data-tooltip-content={errors.password?.message || (passwordValue && passwordStrength.score < 3 ? "Password is too weak" : "")}
+                onBlur={() => handleBlur("password")}
               />
             </div>
 
@@ -146,26 +228,27 @@ const Registration = () => {
                 type="password"
                 placeholder="Confirm Password"
                 {...register("password_confirm")}
-                className={errors.password_confirm ? "is-invalid" : "form-control"}
+                className={`form-control password ${errors.password_confirm ? "is-invalid" : ""}`}
                 data-tooltip-id="form-tooltip"
                 data-tooltip-content={errors.password_confirm?.message}
+                onBlur={() => handleBlur("password_confirm")}
               />
             </div>
 
             {/* Date of Birth */}
             <div className="input-box">
-              <i className="bx bx-calendar"></i>
               <input
                 type="date"
                 {...register("date_of_birth")}
-                className={errors.date_of_birth ? "is-invalid" : "form-control"}
+                className={`form-control date_of_birth ${errors.date_of_birth ? "is-invalid": ""}`}
                 data-tooltip-id="form-tooltip"
                 data-tooltip-content={errors.date_of_birth?.message}
+                onBlur={() => handleBlur("date_of_birth")}
               />
             </div>
 
             {/* Gender */}
-         <div className="mb-3 text-start">
+            <div className="mb-3 text-start">
               <label className="form-label">Gender</label>
               <div className="d-flex">
                 <div className="form-check form-check-inline">
@@ -173,8 +256,11 @@ const Registration = () => {
                     type="radio"
                     value="M"
                     {...register("gender")}
-                    className="form-check-input"
+                    className={`form-check-input ${errors.gender ? "is-invalid" : ""}`}
                     id="male"
+                    data-tooltip-id="form-tooltip"
+                    data-tooltip-content={errors.gender?.message}
+                    onBlur={() => handleBlur("gender")}
                   />
                   <label className="form-check-label" htmlFor="male">Male</label>
                 </div>
@@ -183,8 +269,11 @@ const Registration = () => {
                     type="radio"
                     value="F"
                     {...register("gender")}
-                    className="form-check-input"
+                    className={`form-check-input ${errors.gender ? "is-invalid" : ""}`}
                     id="female"
+                    data-tooltip-id="form-tooltip"
+                    data-tooltip-content={errors.gender?.message}
+                    onBlur={() => handleBlur("gender")}
                   />
                   <label className="form-check-label" htmlFor="female">Female</label>
                 </div>
@@ -200,7 +289,6 @@ const Registration = () => {
         </div>
 
         <Tooltip id="form-tooltip" place="right" />
-
         <Sidebar />
       </div>
     </div>

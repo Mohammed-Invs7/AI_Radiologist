@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@fontsource/inter": "^5.2.5"
+    "@fontsource/inter": "^5.2.5",
+    "zxcvbn": "^4.4.2"
   }
 }

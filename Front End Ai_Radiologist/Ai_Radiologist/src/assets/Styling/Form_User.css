@@ -68,7 +68,7 @@ form {
 
 .input-box i {
     position: absolute;
-    right: 20px;
+    right: 8%;
     top: 50%;
     transform: translateY(-50%);
     font-size: 20px;
@@ -99,6 +99,15 @@ form {
     color: black;
 }
 
+.date_of_birth{
+    padding-right: 8% !important;
+    font-size: 14px !important ;
+}
+
+.password{
+    padding-right: 14% !important;
+}
+
 @media screen and (max-width: 696px) {
     .container-form {
         height: calc(100vh - 40px);
@@ -113,6 +122,9 @@ form {
     .login {
         height: 85%;
     }
+        .input-box i{
+            right: 10%;
+        }
 }
 
 .input-box {
@@ -135,4 +147,13 @@ form {
     text-align: center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
     font-size: 12px !important ;
+}
+
+
+/* .is-valid {
+    border: 2px solid #28a745 !important;
+} */
+
+.is-invalid {
+    border: 2px solid #dc3545 !important;
 }

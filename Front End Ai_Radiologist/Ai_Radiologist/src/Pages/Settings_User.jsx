@@ -9,6 +9,7 @@ import PasswordModal from "../modals/PasswordModal";
 import { motion } from 'framer-motion';
 import "../assets/Styling/Setting_User.css";
 import "../assets/Styling/Form_User.css";
+import InfoUser from "../Components/infoUser";
 
 const API_URL = "http://127.0.0.1:8000/api/v1/auth/user/";
 
@@ -156,40 +157,12 @@ const Settings_User = () => {
         <>
             <NavBar />
             <div className="page-form-Settings d-flex justify-content-center align-items-center flex-column mt-3">
-                <motion.div
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    className='box-user d-flex align-items-center gap-5 mb-5'
-                >
-                    <motion.div
-                        className='img-user'
-                        whileHover={{ scale: 1.1 }}
-                        transition={{ duration: 0.3 }}
-                    >
-                        <img
-                            src={previewImage}
-                            alt="User Profile"
-                            className="rounded-circle"
-                            style={{ width: '140px', height: '140px'}}
-                        />
-                    </motion.div>
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.6 }}
-                    >
-                        <h4>{user.first_name} {user.last_name}</h4>
-                        <p className='mb-1'>Email: {user.email}</p>
-                        <p className='mb-1'>Age: {user.age}</p>
-                        <p className='mb-1'>Gender: {user.gender==='M'?'Male': user.gender==='F'?'Female':user.gender}</p>
-                    </motion.div>
-                </motion.div>
-
+                <InfoUser />
+                
                 {message && <div className="alert alert-info text-center">{message}</div>}
 
                 <motion.div
-                    className="table-responsive"
+                    className="table-responsive mt-4"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.5 }}
