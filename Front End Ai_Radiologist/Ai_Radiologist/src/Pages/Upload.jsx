@@ -160,7 +160,11 @@ const Upload = () => {
               <h4 className="mb-4">Report</h4>
               <p>{formData.predictionResult}</p>
             </div>
-            <div className="d-flex justify-content-center gap-3 mt-4">
+           
+          </div>
+          
+        )}
+         <div className="d-flex justify-content-center gap-3 mt-4">
               <button className="btn btn-success" onClick={handleDownloadPDF}>
                 <i className="bi bi-download me-2"></i>Download Report
               </button>
@@ -169,9 +173,6 @@ const Upload = () => {
               </button>
             </div>
             
-          </div>
-          
-        )}
         
       </div>
     </div>

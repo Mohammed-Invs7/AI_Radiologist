@@ -137,3 +137,19 @@
     height: auto;
     border-radius: 10px;
 }
+
+.pdf-hidden {
+    position: fixed;
+    top: -10000px;
+    left: -10000px;
+    opacity: 0;
+    pointer-events: none;
+    z-index: -9999;
+}
+
+#pdf-report-content {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+    visibility: hidden;
+}

@@ -203,7 +203,12 @@ const Registration = () => {
                 className={`form-control ${errors.email ? "is-invalid" : emailStatus === "available" ? "is-valid" : ""}`}
                 data-tooltip-id="form-tooltip"
                 data-tooltip-content={errors.email?.message}
-                onBlur={handleEmailBlur}
+                onBlur={() => {
+                handleEmailBlur();
+                handleBlur("email");
+              }}
+
+                
               />
             </div>
 
