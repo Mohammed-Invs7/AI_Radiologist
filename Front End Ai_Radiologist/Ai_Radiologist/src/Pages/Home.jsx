@@ -1,3 +1,4 @@
+import HowUseIt from "../Components/Home/HowUseIt";
 import OurVision from "../Components/Home/OurVision";
 import Panel from "../Components/Home/Panel";
 import NavBar from "../Components/NavBar";
@@ -7,7 +8,8 @@ const Home = () => {
         <div>
             <NavBar />
             <Panel />
-            <OurVision/>
+            <OurVision />
+            <HowUseIt/>
         </div>
     );
 };
