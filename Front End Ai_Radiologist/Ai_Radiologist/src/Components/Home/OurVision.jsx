@@ -51,11 +51,11 @@ const OurVision = () => {
         {visions.map((item, index) => (
           <div className="col-md-2 col-6 mb-3" key={index}>
             <div className="card h-100 border-0 shadow-sm" style={{ backgroundColor: "white" }}>
-              <div className="card-body">
-                <div className="align-items-center d-flex justify-content-center mb-3  "
+              <div style={{height:"185px"}} className="card-body w-100">
+                <div className="align-items-center d-flex justify-content-center mb-3 "
                   style={{
                     width: "35%",
-                    height: "30%",
+                    height:"30%",
                     borderRadius: "5px",
                     boxShadow: '0px 4px 6px rgba(45, 156, 142, 0.20)',
                     background: item.iconBackgroundColor,

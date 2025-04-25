@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import ReportModal from "../modals/ReportModal";
 import "../assets/Styling/Reports_User.css";
@@ -87,23 +86,8 @@ const Reports_User = () => {
   };
 
   return (
-    <div className="container mt-3">
-      <div
-        className="bg-primary text-white p-3 rounded-top d-flex justify-content-between align-items-center"
-        style={{
-          background:
-            "linear-gradient(90deg, rgba(2, 85, 89, 0.90) 0%, #80DFDF 66%)",
-        }}
-      >
-        <h6>Your Radiology Reports</h6>
-        <button className="btn-blue btn-add-radiology d-flex align-items-center">
-          <Link to={"/Upload"}>Add New Radiology Image</Link>
-          <i
-            style={{ color: "black", fontSize: "20px" }}
-            className="bx bx-plus"
-          ></i>
-        </button>
-      </div>
+    <div className="container">
+      
 
       {/* Loading and Error States */}
       {loading ? (
@@ -114,7 +98,7 @@ const Reports_User = () => {
         radiologyData.map((item) => (
           <div
             key={item.id}
-            className="card p-2 my-2 d-flex flex-row align-items-center shadow-sm"
+            className="card p-2 my-1 d-flex flex-row align-items-center shadow-sm"
           >
             <img
               src={item.image_path}
