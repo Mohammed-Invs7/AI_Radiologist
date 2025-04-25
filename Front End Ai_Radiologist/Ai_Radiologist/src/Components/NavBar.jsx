@@ -56,7 +56,7 @@ const NavBar = () => {
 
                 <div className={`nav__menu mt-3 ${menuOpen ? "show-menu" : ""}`}>
                     <ul className="nav__list">
-                        {["Home", "Our Vision", "How Use It", "Our Team"].map((item, index) => (
+                        {["Home", "Our_Vision", "How Use It", "Our_Team"].map((item, index) => (
                             <li key={index}>
                                 <Link to="/" className="nav__link" onClick={() => setMenuOpen(false)}>
                                     {item}

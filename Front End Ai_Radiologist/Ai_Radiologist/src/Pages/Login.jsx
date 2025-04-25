@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
@@ -53,9 +52,7 @@ const Login = () => {
                     userType = "admin";
                 } else if (userData.user_type === 2) {
                     userType = "user";
-                } else {
-                    userType = "unknown";
-                }
+                } 
 
                 userData.user_type = userType;
 
