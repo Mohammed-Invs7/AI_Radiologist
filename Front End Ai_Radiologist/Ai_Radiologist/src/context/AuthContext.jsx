@@ -1,32 +1,73 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
+import axios from "axios";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState(null);
+  const [refreshToken, setRefreshToken] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const userData = localStorage.getItem("user");
+    const initializeAuth = async () => {
+      const localToken = localStorage.getItem("token");
+      const localRefresh = localStorage.getItem("refreshToken");
+      const localUser = localStorage.getItem("user");
 
-    if (token && userData) {
-      try {
-        const parsedUserData = JSON.parse(userData);
-        setUser(parsedUserData);
-      } catch (error) {
-        console.error("Error parsing user data:", error);
+      if (localToken && localRefresh) {
+        setToken(localToken);
+        setRefreshToken(localRefresh);
+
+        if (localUser) {
+          setUser(JSON.parse(localUser));
+        }
+
+        if (!isTokenValid(localToken)) {
+          await refreshAccessToken(localRefresh);
+        }
       }
-    }
 
-    setLoading(false);
+      setLoading(false);
+    };
+
+    initializeAuth();
   }, []);
 
-  const login = async (token, userData) => {
+  const isTokenValid = (token) => {
     try {
-      localStorage.setItem("token", token);
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      const expirationTime = payload.exp * 1000;
+      return Date.now() < expirationTime;
+    } catch (err) {
+      return false;
+    }
+  };
+
+  const refreshAccessToken = async (refreshTokenParam) => {
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/v1/auth/token/refresh/",
+        { refresh: refreshTokenParam }
+      );
+      const newAccessToken = response.data.access;
+      setToken(newAccessToken);
+      localStorage.setItem("token", newAccessToken);
+    } catch (error) {
+      console.error("Error refreshing token:", error);
+      logout();
+    }
+  };
+
+  const login = async (newToken, userData, newRefreshToken) => {
+    try {
+      localStorage.setItem("token", newToken);
+      localStorage.setItem("refreshToken", newRefreshToken);
       localStorage.setItem("user", JSON.stringify(userData));
+
+      setToken(newToken);
+      setRefreshToken(newRefreshToken);
       setUser(userData);
     } catch (error) {
       console.error("Error storing token or user data:", error);
@@ -35,8 +76,11 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
     localStorage.removeItem("user");
     setUser(null);
+    setToken(null);
+    setRefreshToken(null);
   };
 
   const updateUser = (updatedUserData) => {
@@ -48,7 +92,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
-        token: localStorage.getItem("token"),
+        token,
         login,
         logout,
         loading,

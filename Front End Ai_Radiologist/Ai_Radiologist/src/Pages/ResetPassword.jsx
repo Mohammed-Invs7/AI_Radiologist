@@ -8,7 +8,10 @@ import Swal from "sweetalert2";
 import "../assets/Styling/Form_User.css";
 
 const schema = yup.object().shape({
-  newPassword: yup.string().min(8, "Must be at least 8 characters").required("New password is required"),
+  newPassword: yup
+    .string()
+    .min(8, "Must be at least 8 characters")
+    .required("New password is required"),
   confirmPassword: yup
     .string()
     .oneOf([yup.ref("newPassword"), null], "Passwords must match")
@@ -33,7 +36,11 @@ const ResetPassword = () => {
   }, [uid, token]);
 
   if (loading) {
-    return <div className="container mt-5"><h2>Verifying...</h2></div>;
+    return (
+      <div className="container mt-5">
+        <h2>Verifying...</h2>
+      </div>
+    );
   }
 
   const onSubmit = async (data) => {
@@ -63,10 +70,18 @@ const ResetPassword = () => {
 
         setTimeout(() => navigate("/login"), 4000);
       } else {
-        Swal.fire("Error", "Failed to reset password. Please try again.", "error");
+        Swal.fire(
+          "Error",
+          "Failed to reset password. Please try again.",
+          "error"
+        );
       }
     } catch (error) {
-      Swal.fire("Error", error.response?.data?.detail || "An error occurred", "error");
+      Swal.fire(
+        "Error",
+        error.response?.data?.detail || "An error occurred",
+        "error"
+      );
     }
   };
 
@@ -77,16 +92,24 @@ const ResetPassword = () => {
           <h2>Reset Password</h2>
           <p>Please enter your new password</p>
 
-          <form className="w-100" onSubmit={handleSubmit(onSubmit)} style={{ maxWidth: "400px" }}>
+          <form
+            className="w-100"
+            onSubmit={handleSubmit(onSubmit)}
+            style={{ maxWidth: "400px" }}
+          >
             <div className="mb-3">
               <label className="form-label">New Password</label>
               <input
                 type="password"
-                className={`form-control ${errors.newPassword ? "is-invalid" : ""}`}
+                className={`form-control ${
+                  errors.newPassword ? "is-invalid" : ""
+                }`}
                 {...register("newPassword")}
               />
               {errors.newPassword && (
-                <div className="invalid-feedback">{errors.newPassword.message}</div>
+                <div className="invalid-feedback">
+                  {errors.newPassword.message}
+                </div>
               )}
             </div>
 
@@ -94,11 +117,15 @@ const ResetPassword = () => {
               <label className="form-label">Confirm Password</label>
               <input
                 type="password"
-                className={`form-control ${errors.confirmPassword ? "is-invalid" : ""}`}
+                className={`form-control ${
+                  errors.confirmPassword ? "is-invalid" : ""
+                }`}
                 {...register("confirmPassword")}
               />
               {errors.confirmPassword && (
-                <div className="invalid-feedback">{errors.confirmPassword.message}</div>
+                <div className="invalid-feedback">
+                  {errors.confirmPassword.message}
+                </div>
               )}
             </div>
 

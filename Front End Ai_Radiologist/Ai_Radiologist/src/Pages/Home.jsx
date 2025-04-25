@@ -4,14 +4,14 @@ import Panel from "../Components/Home/Panel";
 import NavBar from "../Components/NavBar";
 
 const Home = () => {
-    return (
-        <div>
-            <NavBar />
-            <Panel />
-            <OurVision />
-            <HowUseIt/>
-        </div>
-    );
+  return (
+    <div>
+      <NavBar />
+      <Panel />
+      <OurVision />
+      <HowUseIt />
+    </div>
+  );
 };
 
 export default Home;

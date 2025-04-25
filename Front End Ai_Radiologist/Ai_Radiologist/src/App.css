@@ -1,13 +1,44 @@
 * {
-    font-family: 'Inter', sans-serif;
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
-body{
-    width: 100%;
-    background-color: white;
-    overflow-x: hidden;
+body {
+  width: 100%;
+  background-color: white;
+  overflow-x: hidden;
+  font-family: "WinkyRough", sans-serif;
 }
 
 html {
-    background-color: white;
+  background-color: white;
+}
+
+@font-face {
+  font-family: "WinkyRough";
+  src: url("/fonts/WinkyRough-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "WinkyRough";
+  src: url("/fonts/WinkyRough-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "WinkyRough";
+  src: url("/fonts/WinkyRough-Italic.ttf") format("truetype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+.bold-text {
+  font-family: "WinkyRough", sans-serif;
+  font-weight: bold;
+}
+
+.italic-text {
+  font-family: "WinkyRough", sans-serif;
+  font-style: italic;
 }

@@ -1,217 +1,235 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import NavBar from "../Components/NavBar";
-import Swal from "sweetalert2";  
+import Swal from "sweetalert2";
 import InfoModal from "../modals/InfoModal";
 import PasswordModal from "../modals/PasswordModal";
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 import "../assets/Styling/Setting_User.css";
 import "../assets/Styling/Form_User.css";
 import InfoUser from "../Components/infoUser";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schema } from "../modals/InfoModal";
+import { passwordSchema } from "../modals/PasswordModal";
 
 const API_URL = "http://127.0.0.1:8000/api/v1/auth/user/";
 
 const Settings_User = () => {
-    const { user: authUser, updateUser } = useAuth();
-    const navigate = useNavigate();
+  const { user: authUser, updateUser, token } = useAuth();
 
-    const [user, setUser] = useState({
-        first_name: authUser?.first_name || "",
-        last_name: authUser?.last_name || "",
-        gender: authUser?.gender || "",
-        email: authUser?.email || "",
-        age: authUser?.age || "",
-        profile_image: authUser?.profile_image || null,
+  const [user, setUser] = useState({
+    profile_image: authUser?.profile_image || null,
+  });
+
+  const [previewImage, setPreviewImage] = useState(
+    authUser?.profile_image || null
+  );
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [showInfoModal, setShowInfoModal] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [passwordMessage, setPasswordMessage] = useState("");
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    defaultValues: {
+      first_name: authUser?.first_name || "",
+      last_name: authUser?.last_name || "",
+      gender: authUser?.gender || "",
+    },
+    resolver: yupResolver(schema),
+  });
+
+  const { reset: resetPasswordForm } = useForm({
+    resolver: yupResolver(passwordSchema),
+  });
+
+  const openInfoModal = () => {
+    reset({
+      first_name: authUser?.first_name || "",
+      last_name: authUser?.last_name || "",
+      gender: authUser?.gender || "",
     });
+    setShowInfoModal(true);
+  };
 
-    const [previewImage, setPreviewImage] = useState(authUser?.profile_image || null);
-    const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState("");
+  const handleImageChange = (file) => {
+    setUser((prev) => ({ ...prev, profile_image: file }));
+    setPreviewImage(URL.createObjectURL(file));
+  };
 
-    // Modals
-    const [showInfoModal, setShowInfoModal] = useState(false);
-    const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const handleUpdateInfo = async (data) => {
+    setLoading(true);
+    setMessage("");
 
-    // Password fields
-    const [new_password1, setNewPassword1] = useState("");
-    const [new_password2, setNewPassword2] = useState("");
-    const [passwordMessage, setPasswordMessage] = useState("");
+    const formData = new FormData();
+    formData.append("first_name", data.first_name);
+    formData.append("last_name", data.last_name);
+    formData.append("gender", data.gender);
+    if (user.profile_image && user.profile_image.name) {
+      formData.append("profile_image", user.profile_image);
+    }
 
-    useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (!token) navigate("/login");
-    }, [navigate]);
+    try {
+      const response = await axios.patch(API_URL, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    const handleChange = (e) => {
-        if (e.target.name === "profile_image") {
-            const file = e.target.files[0];
-            if (file) {
-                setUser({ ...user, profile_image: file });
-                setPreviewImage(URL.createObjectURL(file));
-            }
-        } else {
-            setUser({ ...user, [e.target.name]: e.target.value });
+      if (response.status === 200) {
+        const updatedUserData = {
+          ...response.data,
+          user_type: response.data.user_type === 1 ? "admin" : "user",
+        };
+        updateUser(updatedUserData);
+        setPreviewImage(
+          `http://127.0.0.1:8000${updatedUserData.profile_image}`
+        );
+        setShowInfoModal(false);
+
+        Swal.fire({
+          title: "Success",
+          text: "✔ Info updated successfully!",
+          icon: "success",
+          confirmButtonText: "OK",
+        }).then(() => window.location.reload());
+      }
+    } catch (error) {
+      console.error("Error updating info:", error);
+      setMessage("An unexpected error occurred.");
+      Swal.fire({
+        title: "Error",
+        text: "An unexpected error occurred.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleChangePassword = async (data) => {
+    const { new_password1, new_password2 } = data;
+    setPasswordMessage("");
+
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/v1/auth/password/change/",
+        { new_password1, new_password2 },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-    };
+      );
 
-    const handleUpdateInfo = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        setMessage("");
+      if (response.status === 200) {
+        setPasswordMessage("Password changed successfully!");
+        resetPasswordForm();
+        setTimeout(() => setShowPasswordModal(false), 1500);
 
-        const formData = new FormData();
-        formData.append("first_name", user.first_name);
-        formData.append("last_name", user.last_name);
-        formData.append("gender", user.gender);
-        if (user.profile_image && user.profile_image.name) {
-            formData.append("profile_image", user.profile_image);
-        }
+        Swal.fire({
+          title: "Success",
+          text: " Password changed successfully!",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+      }
+    } catch (error) {
+      console.error("Change password error:", error.response);
+      const errText =
+        error.response?.data?.new_password1?.[0] ||
+        error.response?.data?.new_password2?.[0] ||
+        error.response?.data?.detail ||
+        "An unexpected error occurred.";
 
-        try {
-            const response = await axios.patch(API_URL, formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
-            });
+      setPasswordMessage(errText);
+      Swal.fire({
+        title: "Error",
+        text: errText,
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+  };
 
-            if (response.status === 200) {
-                const updatedUserData = {
-                    ...response.data,
-                    user_type: response.data.user_type === 1 ? "admin" : "user",
-                };
-                updateUser(updatedUserData);
-                setPreviewImage(`http://127.0.0.1:8000${updatedUserData.profile_image}`);
-                setShowInfoModal(false);
+  return (
+    <>
+      <NavBar />
+      <div className="page-form-Settings d-flex justify-content-center align-items-center flex-column mt-3">
+        <InfoUser />
 
-                Swal.fire({
-                    title: "Success",
-                    text: "✔ Info updated successfully!",
-                    icon: "success",
-                    confirmButtonText: "OK",
-                }).then(() => {
-                    window.location.reload(); 
-                });
-            }
-        } catch (error) {
-            console.error("Error updating info:", error);
-            setMessage("An unexpected error occurred.");
-            Swal.fire({
-                title: "Error",
-                text: "An unexpected error occurred.",
-                icon: "error",
-                confirmButtonText: "OK",
-            });
-        } finally {
-            setLoading(false);
-        }
-    };
+        {message && (
+          <div className="alert alert-info text-center">{message}</div>
+        )}
 
-    const handleChangePassword = async () => {
-        setPasswordMessage("");
-
-        try {
-            const response = await axios.post(
-                "http://127.0.0.1:8000/api/v1/auth/password/change/",
-                { new_password1, new_password2 },
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
-                }
-            );
-
-            if (response.status === 200) {
-                setPasswordMessage("Password changed successfully!");
-                setNewPassword1("");
-                setNewPassword2("");
-                setTimeout(() => setShowPasswordModal(false), 1500);
-
-                Swal.fire({
-                    title: "Success",
-                    text: "✅ Password changed successfully!",
-                    icon: "success",
-                    confirmButtonText: "OK",
-                });
-            }
-        } catch (error) {
-            console.error("Change password error:", error.response);
-            setPasswordMessage(
-                error.response?.data?.new_password1?.[0] ||
-                error.response?.data?.new_password2?.[0] ||
-                error.response?.data?.detail ||
-                "An unexpected error occurred."
-            );
-            Swal.fire({
-                title: "Error",
-                text: passwordMessage || "An unexpected error occurred.",
-                icon: "error",
-                confirmButtonText: "OK",
-            });
-        }
-    };
-
-    return (
-        <>
-            <NavBar />
-            <div className="page-form-Settings d-flex justify-content-center align-items-center flex-column mt-3">
-                <InfoUser />
-                
-                {message && <div className="alert alert-info text-center">{message}</div>}
-
-                <motion.div
-                    className="table-responsive mt-4"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5 }}
+        <motion.div
+          className="table-responsive mt-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <table className="table table-custom table-bordered">
+            <thead>
+              <tr>
+                <th
+                  style={{ background: "#017276", color: "white" }}
+                  colSpan="2"
                 >
-                    <table className="table table-custom table-bordered">
-                        <thead>
-                            <tr>
-                                <th style={{ background: "#017276" }} colSpan="2">Account Information</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td className="d-flex justify-content-between align-items-center gap">
-                                    Edit Personal Info
-                                    <i className="bx bx-edit-alt edit-icon-btn" onClick={() => setShowInfoModal(true)}></i>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="d-flex justify-content-between align-items-center gap">
-                                    Change Password
-                                    <i className="bx bx-edit-alt edit-icon-btn" onClick={() => setShowPasswordModal(true)}></i>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </motion.div>
-            </div>
+                  Account Information
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="d-flex justify-content-between align-items-center gap">
+                  Edit Personal Info
+                  <i
+                    className="bx bx-edit-alt edit-icon-btn"
+                    onClick={openInfoModal}
+                  ></i>
+                </td>
+              </tr>
+              <tr>
+                <td className="d-flex justify-content-between align-items-center gap">
+                  Change Password
+                  <i
+                    className="bx bx-edit-alt edit-icon-btn"
+                    onClick={() => setShowPasswordModal(true)}
+                  ></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </motion.div>
+      </div>
 
-            {/* Use Modal Components */}
-            <InfoModal
-                show={showInfoModal}
-                user={user}
-                onClose={() => setShowInfoModal(false)}
-                onSave={handleUpdateInfo}
-                loading={loading}
-                onChange={handleChange}
-                previewImage={previewImage}
-            />
-            <PasswordModal
-                show={showPasswordModal}
-                new_password1={new_password1}
-                new_password2={new_password2}
-                onClose={() => setShowPasswordModal(false)}
-                onSave={handleChangePassword}
-                setNewPassword1={setNewPassword1}  
-                setNewPassword2={setNewPassword2}  
-            />
-        </>
-    );
+      <InfoModal
+        show={showInfoModal}
+        onClose={() => setShowInfoModal(false)}
+        onSave={handleSubmit(handleUpdateInfo)}
+        loading={loading}
+        previewImage={previewImage}
+        register={register}
+        errors={errors}
+        onImageChange={handleImageChange}
+      />
+
+      <PasswordModal
+        show={showPasswordModal}
+        onClose={() => setShowPasswordModal(false)}
+        onSave={handleChangePassword}
+      />
+    </>
+  );
 };
 
 export default Settings_User;

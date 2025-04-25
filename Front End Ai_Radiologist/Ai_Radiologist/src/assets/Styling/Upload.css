@@ -1,155 +1,155 @@
-/* الأسلوب العام */
 .upload-container {
-    background: #fff;
-    border-radius: 4px;
-    height: 508px;
+  background: #fff;
+  border-radius: 4px;
+  height: 508px;
 }
 
 .upload-header {
-    margin-top: 1rem;
-    text-align: center;
+  margin-top: 1rem;
+  text-align: center;
 }
 
 .upload-header h3 {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .upload-header p {
-    margin: 0;
+  margin: 0;
 }
 
 .upload-header hr {
-    background: #000;
-    width: 100%;
-    margin: 2px 0 19px;
+  background: #000;
+  width: 100%;
+  margin: 2px 0 19px;
 }
 
-/* صندوق الرفع */
 .upload-box {
-    box-shadow: 4px 4px black;
-    width: 65%;
-    border: 2px solid #785a5a6b;
-    border-radius: 30px;
-    text-align: center;
-    height: auto;
+  box-shadow: 4px 4px black;
+  width: 65%;
+  border: 2px solid #785a5a6b;
+  border-radius: 30px;
+  text-align: center;
+  height: auto;
 }
 
-/* صورة الرفع */
 .upload-preview {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
 }
 
 .upload-icon1 {
-    margin-top: 20px;
-    width: 50px;
+  margin-top: 20px;
+  width: 50px;
 }
-.upload-icon2{
-    position: absolute;
-        top: 5%;
-        left: 11%;
-        width: 12%
+.upload-icon2 {
+  position: absolute;
+  top: 5%;
+  left: 11%;
+  width: 12%;
 }
 .upload-icon3 {
-    position: absolute;
-    top: 5%;
-    right: 10%;
-    width: 12%;
+  position: absolute;
+  top: 5%;
+  right: 10%;
+  width: 12%;
 }
 
 .upload-icon4 {
-    position: absolute;
-    top: 52%;
-    right: 35%;
-    width: 8%;
-    transition: top 0.3s ease;
-    /* Smooth animation */
+  position: absolute;
+  top: 52%;
+  right: 35%;
+  width: 8%;
+  transition: top 0.3s ease;
+  /* Smooth animation */
 }
 
-/* When an image is uploaded */
 .image-uploaded {
-    top: 65%;
+  top: 65%;
 }
 
 .upload-label {
-    background: #80808038;
-    color: black;
-    padding: 0.5rem;
-    font-family: sans-serif;
-    border-radius: 0.3rem;
-    cursor: pointer;
-    margin-top: 1rem;
+  background: #80808038;
+  color: black;
+  padding: 0.5rem;
+  font-family: sans-serif;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  margin-top: 1rem;
 }
 
-
 .upload-select {
-    padding: 1.5px;
-    border-radius: 4px;
-    border: none;
-    margin-top: 10px;
+  padding: 1.5px;
+  border-radius: 4px;
+  border: none;
+  margin-top: 10px;
 }
 
 .upload-button {
-    margin: 10px 0px;
-    color: white;
-    border: none;
-    padding: 5px 30px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    border-radius: 17px;
-    background: #9e9c9c;
+  margin: 10px 0px;
+  color: white;
+  border: none;
+  padding: 5px 30px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 17px;
+  background: #9e9c9c;
 }
 
 .upload-button:hover {
-    background-color: #000000;
+  background-color: #000000;
 }
 
 .upload-button:disabled,
 .disabled-button {
-    background-color: #9e9c9c !important;
-    cursor: not-allowed;
+  background-color: #9e9c9c !important;
+  cursor: not-allowed;
 }
 
 .upload-button.enabled {
-    background: linear-gradient(90deg, #017276 0%, #80DFDF 100%) !important;
+  background: linear-gradient(90deg, #017276 0%, #80dfdf 100%) !important;
 }
 
-.box-upload{
-    height: auto;
-    width: 90%;
-    border: 2px dashed #785a5a6b;
-    box-shadow: none;
-    margin-bottom: 20px;
+.box-upload {
+  height: auto;
+  width: 90%;
+  border: 2px dashed #785a5a6b;
+  box-shadow: none;
+  margin-bottom: 20px;
 }
-
 
 .image-preview-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
 }
 
 .upload-preview {
-    width: 150px;
-    height: auto;
-    border-radius: 10px;
+  width: 150px;
+  height: auto;
+  border-radius: 10px;
 }
 
 .pdf-hidden {
-    position: fixed;
-    top: -10000px;
-    left: -10000px;
-    opacity: 0;
-    pointer-events: none;
-    z-index: -9999;
+  position: fixed;
+  top: -10000px;
+  left: -10000px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: -9999;
 }
 
 #pdf-report-content {
-    position: absolute;
-    top: -9999px;
-    left: -9999px;
-    visibility: hidden;
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  visibility: hidden;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
 }
