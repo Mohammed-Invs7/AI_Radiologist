@@ -1,6 +1,12 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from reports.views import UserReportsCountView, GenerateReportPDF, UserReportsViewSet, UserReportCreateView
+from reports.views import (
+    UserReportsCountView,
+    GenerateReportPDF,
+    UserReportsViewSet,
+    UserReportCreateView,
+    RadiologyOptionsView,
+)
 
 # router = DefaultRouter()
 # router.register(r'list', UserReportsViewSet, basename='user_reports')
@@ -25,7 +31,7 @@ urlpatterns = [
     path('<int:pk>/pdf/', GenerateReportPDF.as_view(), name='generate_report'),
     path('count/', UserReportsCountView.as_view(), name='report_count'),
     path('create/', UserReportCreateView.as_view(), name='create_report'),
-
+    path('options/', RadiologyOptionsView.as_view(),   name='report-options'),
 
 ]
 

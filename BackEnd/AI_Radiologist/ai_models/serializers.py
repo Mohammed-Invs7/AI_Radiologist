@@ -22,7 +22,7 @@ class RadiologyDetailsSerializer(serializers.ModelSerializer):
 class AIModelFileSerializer(serializers.ModelSerializer):
     class Meta:
         model = AIModelFile
-        fields = ['id','file','uploaded']
+        fields = ['id', 'model', 'file', 'uploaded']
 
 class AIModelSerializer(serializers.ModelSerializer):
     files        = AIModelFileSerializer(many=True, read_only=True)
