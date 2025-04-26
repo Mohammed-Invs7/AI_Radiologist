@@ -65,8 +65,8 @@ const Admin_Sidebar = () => {
           to="/AdminPanel/Files Admin"
           className="list-group-item d-flex align-items-center text-center"
         >
-          <i className="bx bx-body fs-4 me-2"></i>
-          <span>Files Admin</span>
+          <i className="bx bx-file fs-4 me-2"></i>
+          <span>Files</span>
         </Link>
 
         <Link
