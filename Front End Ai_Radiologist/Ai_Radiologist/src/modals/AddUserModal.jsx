@@ -27,7 +27,7 @@ const AddUserModal = ({ show, onClose, onSubmit }) => {
             <h5 className="modal-title">Add User</h5>
             <button type="button" className="btn-close" onClick={onClose}></button>
           </div>
-          <div className="modal-body">
+          <div className="modal-body d-flex justify-content-center ">
             <form onSubmit={handleSubmit(onFormSubmit)}>
               <div className="mb-3">
                 <label className="form-label">First Name</label>
