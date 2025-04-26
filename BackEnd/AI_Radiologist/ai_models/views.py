@@ -75,7 +75,7 @@ class AIModelViewSet(viewsets.ModelViewSet):
     Permissions:
       - Only users with admin privileges (IsAdminUser) can access.
     """
-    queryset = AIModel.objects.all().order_by('-upload_date')
+    queryset = AIModel.objects.all() #.order_by('-upload_date')
     serializer_class = AIModelSerializer
     permission_classes = [IsAuthenticated, IsAdminUser]
 
