@@ -48,14 +48,22 @@ class AIModelSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         """
-        Ensure a RadiologyDetails exists for the chosen body_ana + radio_mod combo.
+        If the client submitted BOTH 'body_ana' AND 'radio_mod',
+        look up (or create) the RadiologyDetails, pop those two keys,
+        and replace them with the actual detail instance.
+        Otherwise leave `data` alone.
         """
-        b = data.pop('body_ana')
-        r = data.pop('radio_mod')
-        detail, _ = RadiologyDetails.objects.get_or_create(body_ana=b, radio_mod=r)
-        data['radio_detail'] = detail
-        return data
+        # only run on create or when both are provided
+        if 'body_ana' in data and 'radio_mod' in data:
+            b = data.pop('body_ana')
+            r = data.pop('radio_mod')
+            detail, _ = RadiologyDetails.objects.get_or_create(
+                body_ana=b,
+                radio_mod=r
+            )
+            data['radio_detail'] = detail
 
+        return data
     def create(self, validated):
         """
         On create:
