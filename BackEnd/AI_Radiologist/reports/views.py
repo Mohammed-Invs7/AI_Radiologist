@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework.response import Response
 from rest_framework import mixins, viewsets, status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from reports.models import Report
 from reports.serializers import (
@@ -144,7 +144,7 @@ class AdminReportsListView(ListAPIView):
     The list view does not include 'image_path' and 'report_details'.
     """
     serializer_class = AdminReportListSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated, IsAdminUser]
     queryset = Report.objects.all()
 
 
@@ -155,7 +155,7 @@ class AdminReportsDetailView(RetrieveAPIView):
     it includes 'image_path' and 'report_details'.
     """
     serializer_class = AdminReportDetailSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated, IsAdminUser]
     queryset = Report.objects.all()
 
     # def get_serializer_class(self):

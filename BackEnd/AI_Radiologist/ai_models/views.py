@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from users.permissions import IsAdminUser
 from .models import AIModel, AIModelFile, RadiologyModality, BodyAnatomicalRegion
 from .serializers import (
@@ -28,7 +29,7 @@ class RadiologyModalityViewSet(viewsets.ModelViewSet):
     """
     queryset = RadiologyModality.objects.all()
     serializer_class = RadiologyModalitySerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated, IsAdminUser]
 
 
 class BodyAnatomicalRegionViewSet(viewsets.ModelViewSet):
@@ -50,7 +51,7 @@ class BodyAnatomicalRegionViewSet(viewsets.ModelViewSet):
     """
     queryset = BodyAnatomicalRegion.objects.all()
     serializer_class = BodyAnatomicalRegionSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated, IsAdminUser]
 
 
 class AIModelViewSet(viewsets.ModelViewSet):
@@ -74,7 +75,7 @@ class AIModelViewSet(viewsets.ModelViewSet):
     """
     queryset = AIModel.objects.all().order_by('-upload_date')
     serializer_class = AIModelSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated, IsAdminUser]
 
 
 class AIModelFileViewSet(viewsets.ModelViewSet):
@@ -93,4 +94,4 @@ class AIModelFileViewSet(viewsets.ModelViewSet):
     """
     queryset = AIModelFile.objects.all()
     serializer_class = AIModelFileSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated, IsAdminUser]
