@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ReportModal from "../../modals/ReportModal"; 
 
 const AdminReports = () => {
-    const { user } = useAuth();
+    const { user , token } = useAuth();
     const [reports, setReports] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [selectedReport, setSelectedReport] = useState(null);
@@ -21,7 +21,6 @@ const AdminReports = () => {
 
     const fetchReports = async () => {
         try {
-            const token = localStorage.getItem("token");
             const res = await axios.get("http://127.0.0.1:8000/api/v1/admin/users/reports/", {
                 headers: { Authorization: `Bearer ${token}` },
             });
@@ -33,7 +32,6 @@ const AdminReports = () => {
 
     const fetchReportDetails = async (id) => {
         try {
-            const token = localStorage.getItem("token");
             const res = await axios.get(`http://127.0.0.1:8000/api/v1/admin/users/reports/${id}/`, {
                 headers: { Authorization: `Bearer ${token}` },
             });

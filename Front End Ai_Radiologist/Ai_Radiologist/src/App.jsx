@@ -11,12 +11,12 @@ import Profile_User from "./Pages/Profile_User";
 import Settings_User from "./Pages/Settings_User";
 import ProtectedRoute from "./context/ProtectedRoute";
 import AdminRoute from "./context/AdminRoute";
-import VerifyEmail from "./Pages/VerifyEmail";
 import ForgotPassword from "./Pages/ForgotPassword";
 import ResetPassword from "./Pages/ResetPassword";
 import AdminDashboard from "./Pages/pages-Admin/AdminDashboard";
 import UsersAdmin from "./Pages/pages-Admin/UsersAdmin";
 import ReportsAdmin from "./Pages/pages-Admin/ReportsAdmin";
+import Models from './Pages/pages-Admin/MoselsAdmin'
 
 //Css//
 import "./App.css";
@@ -28,8 +28,9 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/Home" element={<Home />} />
+          <Route path="/our-vision" element={<Home />} />
           <Route path="/Registration" element={<Registration />} />
-          <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route
@@ -64,8 +65,9 @@ function App() {
           <Route element={<AdminRoute />}>
             <Route path="/AdminPanel/" element={<AdminPanel />}>
               <Route index element={<AdminDashboard />} />
-              <Route path="UsersAdmin" element={<UsersAdmin />} />
-              <Route path="ReportsAdmin" element={<ReportsAdmin />} />
+              <Route path="Users Admin" element={<UsersAdmin />} />
+              <Route path="Reports Admin" element={<ReportsAdmin />} />
+              <Route path="Models Admin" element={<Models />} />
             </Route>
           </Route>
         </Routes>

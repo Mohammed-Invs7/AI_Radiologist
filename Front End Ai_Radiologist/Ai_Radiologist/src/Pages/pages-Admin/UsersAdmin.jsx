@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
 
 const UsersAdmin = () => {
-  const { user } = useAuth();
+  const { user , token } = useAuth();
   const [users, setUsers] = useState([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -47,7 +47,6 @@ const UsersAdmin = () => {
 
   const fetchUsers = async () => {
     try {
-      const token = localStorage.getItem("token");
       const res = await axios.get("http://127.0.0.1:8000/api/v1/admin/users/", {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -77,7 +76,6 @@ const UsersAdmin = () => {
 
     if (result.isConfirmed) {
       try {
-        const token = localStorage.getItem("token");
         await axios.delete(`http://127.0.0.1:8000/api/v1/admin/users/${id}/`, {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -115,7 +113,6 @@ const UsersAdmin = () => {
 
   const handleSubmitEdit = async () => {
     try {
-      const token = localStorage.getItem("token");
       await axios.put(`http://127.0.0.1:8000/api/v1/admin/users/${editId}/`, currentUser, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -131,7 +128,6 @@ const UsersAdmin = () => {
   const handleSubmitAdd = async (data) => {
     console.log("Submitted Data:", data);
     try {
-      const token = localStorage.getItem("token");
       await axios.post("http://127.0.0.1:8000/api/v1/admin/users/create/", data, {
         headers: { Authorization: `Bearer ${token}` },
       });

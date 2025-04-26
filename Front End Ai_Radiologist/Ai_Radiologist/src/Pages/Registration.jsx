@@ -127,9 +127,7 @@ const Registration = () => {
 
       if (response.status === 201 || response.status === 200) {
         localStorage.setItem("token", response.data.token);
-        localStorage.setItem(
-          "username",
-          `${response.data.first_name} ${response.data.last_name}`
+        localStorage.setItem(`${response.data.first_name} ${response.data.last_name}`
         );
 
         Swal.fire({

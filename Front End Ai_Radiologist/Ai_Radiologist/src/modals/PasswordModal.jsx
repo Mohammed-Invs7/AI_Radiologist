@@ -4,7 +4,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { motion } from "framer-motion";
 import * as yup from "yup";
 
-// تصدير السكيما
 export const passwordSchema = yup.object().shape({
   new_password1: yup
     .string()
