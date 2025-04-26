@@ -62,11 +62,11 @@ const Admin_Sidebar = () => {
         </Link>
 
         <Link
-          to="/AdminPanel/body-anatomical-region"
+          to="/AdminPanel/Files Admin"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-body fs-4 me-2"></i>
-          <span>Body Anatomical Region</span>
+          <span>Files Admin</span>
         </Link>
 
         <Link

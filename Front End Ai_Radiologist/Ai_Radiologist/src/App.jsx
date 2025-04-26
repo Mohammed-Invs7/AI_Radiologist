@@ -21,6 +21,7 @@ import Models from './Pages/pages-Admin/MoselsAdmin'
 //Css//
 import "./App.css";
 import AdminPanel from "./Components/Admin/AdminPanel";
+import FilesAdmin from "./Pages/pages-Admin/FilesAdmin";
 
 function App() {
   return (
@@ -68,6 +69,7 @@ function App() {
               <Route path="Users Admin" element={<UsersAdmin />} />
               <Route path="Reports Admin" element={<ReportsAdmin />} />
               <Route path="Models Admin" element={<Models />} />
+              <Route path="Files Admin" element={<FilesAdmin/>} />
             </Route>
           </Route>
         </Routes>
