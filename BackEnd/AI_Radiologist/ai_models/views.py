@@ -1,7 +1,9 @@
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from users.permissions import IsAdminUser
-from .models import AIModel, AIModelFile, RadiologyModality, BodyAnatomicalRegion
+from .models import AIModel, AIModelFile, RadiologyModality, BodyAnatomicalRegion, RadiologyDetails
 from .serializers import (
     AIModelSerializer,
     AIModelFileSerializer,
@@ -95,3 +97,43 @@ class AIModelFileViewSet(viewsets.ModelViewSet):
     queryset = AIModelFile.objects.all()
     serializer_class = AIModelFileSerializer
     permission_classes = [IsAuthenticated, IsAdminUser]
+
+
+class AdminRadiologyOptionsView(APIView):
+    """
+    Returns JSON of all RadiologyModality objects
+    each with the list of BodyAnatomicalRegion’s.
+
+    Response format:
+    [
+      {
+        "modality": { "id": 2, "name": "X-ray" },
+        "regions": [
+          { "id": 3, "name": "Chest" },
+          { "id": 5, "name": "Abdomen" }
+        ]
+      },
+      ...
+    ]
+    """
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
+    def get(self, request):
+        # get all RadiologyDetails that have an active model
+        active_details = RadiologyDetails.objects.select_related('radio_mod', 'body_ana').distinct()
+
+        # group by modality
+        grouping = {}
+        for det in active_details:
+            mod = det.radio_mod
+            reg = det.body_ana
+            grouping.setdefault(mod, set()).add(reg)
+
+        data = []
+        for mod, regs in grouping.items():
+            data.append({
+                "modality": {"id": mod.id, "name": mod.name},
+                "regions": [{"id": r.id, "name": r.name} for r in regs]
+            })
+
+        return Response(data)

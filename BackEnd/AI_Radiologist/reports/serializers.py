@@ -1,4 +1,6 @@
 from rest_framework import serializers
+
+from ai_models.models import RadiologyModality, BodyAnatomicalRegion, RadiologyDetails
 from reports.models import Report
 
 
@@ -29,11 +31,51 @@ class UserReportDetailSerializer(serializers.ModelSerializer):
         return instance
 
 
+# class UserReportCreateSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Report
+#         fields = ['image_path', 'report_details']
+#         read_only_fields = ['report_details']
+
 class UserReportCreateSerializer(serializers.ModelSerializer):
+    radio_modality = serializers.PrimaryKeyRelatedField(
+        queryset=RadiologyModality.objects.all(),
+        write_only=True,
+        source='radio_detail.radio_mod'
+    )
+    body_ana = serializers.PrimaryKeyRelatedField(
+        queryset=BodyAnatomicalRegion.objects.all(),
+        write_only=True,
+        source='radio_detail.body_ana'
+    )
+    image_path     = serializers.ImageField()
+    report_details = serializers.CharField(read_only=True)
+
     class Meta:
-        model = Report
-        fields = ['image_path', 'report_details']
-        read_only_fields = ['report_details']
+        model  = Report
+        fields = ['id', 'radio_modality','body_ana','image_path','report_details']
+
+    def validate(self, data):
+        """
+        Instead of creating a new RadiologyDetails, only accept an existing one.
+        If there's no matching active model for the chosen combo, raise an error.
+        """
+        b = data['radio_detail']['body_ana']
+        r = data['radio_detail']['radio_mod']
+
+        try:
+            detail = RadiologyDetails.objects.get(body_ana=b, radio_mod=r)
+        except RadiologyDetails.DoesNotExist:
+            raise serializers.ValidationError({
+                "non_field_errors":
+                  "No RadiologyDetails exists for that modality & region."
+            })
+
+        data['radio_detail'] = detail
+        return data
+
+
+
 # Admin
 
 class AdminReportListSerializer(serializers.ModelSerializer):
