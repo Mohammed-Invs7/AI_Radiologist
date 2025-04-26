@@ -46,7 +46,7 @@ const Admin_Sidebar = () => {
         </Link>
 
         <Link
-          to="/AdminPanel/UsersAdmin"
+          to="/AdminPanel/Users Admin"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-user fs-4 me-2"></i>
@@ -54,7 +54,7 @@ const Admin_Sidebar = () => {
         </Link>
 
         <Link
-          to="/AdminPanel/models"
+          to="/AdminPanel/Models Admin"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-layer fs-4 me-2"></i>
@@ -78,7 +78,7 @@ const Admin_Sidebar = () => {
         </Link>
 
         <Link
-          to="/AdminPanel/ReportsAdmin"
+          to="/AdminPanel/Reports Admin"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-file fs-4 me-2"></i>
@@ -86,7 +86,7 @@ const Admin_Sidebar = () => {
         </Link>
 
         <Link
-          to="/AdminPanel/radiology-modality"
+          to="/AdminPanel/radiology modality"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-clinic fs-4 me-2"></i>

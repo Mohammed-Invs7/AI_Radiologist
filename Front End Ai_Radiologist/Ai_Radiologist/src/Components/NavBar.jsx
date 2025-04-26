@@ -47,6 +47,13 @@ const NavBar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const navItems = [
+    { name: "Home", path: "/Home" },
+    { name: "Our Vision", path: "/Home" },
+    { name: "Upload", path: "/Upload" },
+    { name: "How Use It", path: "/Home" },
+  ];
+
   return (
     <header className="header">
       <nav className="nav container">
@@ -56,19 +63,17 @@ const NavBar = () => {
 
         <div className={`nav__menu mt-3 ${menuOpen ? "show-menu" : ""}`}>
           <ul className="nav__list">
-            {["Home", "Our Vision", "How Use It", "Our Team"].map(
-              (item, index) => (
-                <li key={index}>
-                  <Link
-                    to={`/${item}`}
-                    className="nav__link"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    {item}
-                  </Link>
-                </li>
-              )
-            )}
+            {navItems.map((item, index) => (
+              <li key={index}>
+                <Link
+                  to={item.path}
+                  className="nav__link"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {item.name}
+                </Link>
+              </li>
+            ))}
           </ul>
           <div className="nav__close" onClick={() => setMenuOpen(false)}>
             <i className="bx bx-x"></i>

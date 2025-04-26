@@ -39,7 +39,7 @@ const Reports_User = () => {
     try {
       const response = await axios.get(`${REPORT_API}${id}/`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${token}`,
         },
       });
       setSelectedReport(response.data); // Set the selected report details
@@ -68,7 +68,7 @@ const Reports_User = () => {
         try {
           await axios.delete(`${API_URL}${id}/`, {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              Authorization: `Bearer ${token}`,
             },
           });
           setRadiologyData(radiologyData.filter((item) => item.id !== id));
