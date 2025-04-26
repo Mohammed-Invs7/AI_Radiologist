@@ -50,8 +50,8 @@ class AIModelSerializer(serializers.ModelSerializer):
         """
         Ensure a RadiologyDetails exists for the chosen body_ana + radio_mod combo.
         """
-        b = data.get('body_ana')
-        r = data.get('radio_mod')
+        b = data.pop('body_ana')
+        r = data.pop('radio_mod')
         detail, _ = RadiologyDetails.objects.get_or_create(body_ana=b, radio_mod=r)
         data['radio_detail'] = detail
         return data
