@@ -10,7 +10,7 @@ from django.urls import reverse
 from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, RetrieveAPIView, CreateAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.exceptions import NotFound
 from users.serializers import (
     AdminUserDetailsSerializer,
@@ -41,7 +41,7 @@ class AdminUserCreateView(CreateAPIView):
     and automatically creates an email address record with verified=True.
     """
     serializer_class = AdminUserCreateSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated, IsAdminUser]
 
     def perform_create(self, serializer):
         user = serializer.save()
@@ -59,7 +59,7 @@ class AdminUserListView(ListAPIView):
     """
     View to list all users and allow creating a new user.
     """
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated, IsAdminUser]
     queryset = User.objects.all()
     serializer_class = AdminUserDetailsSerializer
 
@@ -69,7 +69,7 @@ class AdminUserDetailView(RetrieveUpdateDestroyAPIView):
     The serializer ensures that 'join_date' and 'age' are read-only,
     and 'user_type' is editable via its name (slug).
     """
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated,IsAdminUser]
     queryset = User.objects.all()
     serializer_class = AdminUserDetailsSerializer
 
@@ -103,6 +103,7 @@ class CheckEmailView(RetrieveAPIView):
     """
     serializer_class = EmailExistsSerializer
     lookup_field = 'email'
+    permission_classes = [AllowAny]
 
     def get_object(self):
         email = self.kwargs.get(self.lookup_field)
