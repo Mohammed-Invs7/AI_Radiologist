@@ -42,3 +42,34 @@ html {
   font-family: "WinkyRough", sans-serif;
   font-style: italic;
 }
+@font-face {
+  font-family: "WinkyRough";
+  src: url("/fonts/WinkyRough-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "WinkyRough";
+  src: url("/fonts/WinkyRough-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "WinkyRough";
+  src: url("/fonts/WinkyRough-Italic.ttf") format("truetype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "boxicons";
+  src: url("../public/boxicons/fonts/boxicons.woff2") format("woff2"),
+    url("../public/boxicons/fonts/boxicons.woff") format("woff"),
+    url("../public/boxicons/fonts/boxicons.ttf") format("truetype"),
+    url("../public/boxicons/fonts/boxicons.eot") format("eot");
+
+  font-weight: normal;
+  font-style: normal;
+}

@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
 
 const UsersAdmin = () => {
-  const { user , token } = useAuth();
+  const { user, token } = useAuth();
   const [users, setUsers] = useState([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -113,9 +113,13 @@ const UsersAdmin = () => {
 
   const handleSubmitEdit = async () => {
     try {
-      await axios.put(`http://127.0.0.1:8000/api/v1/admin/users/${editId}/`, currentUser, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.patch(
+        `http://127.0.0.1:8000/api/v1/admin/users/${editId}/`,
+        currentUser,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setShowEditModal(false);
       toast.success("User updated successfully.");
       fetchUsers();
@@ -128,9 +132,13 @@ const UsersAdmin = () => {
   const handleSubmitAdd = async (data) => {
     console.log("Submitted Data:", data);
     try {
-      await axios.post("http://127.0.0.1:8000/api/v1/admin/users/create/", data, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.post(
+        "http://127.0.0.1:8000/api/v1/admin/users/create/",
+        data,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setShowAddModal(false);
       toast.success("User added successfully.");
       fetchUsers();
@@ -140,7 +148,10 @@ const UsersAdmin = () => {
     }
   };
 
-  const usersToDisplay = users.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+  const usersToDisplay = users.slice(
+    currentPage * itemsPerPage,
+    (currentPage + 1) * itemsPerPage
+  );
 
   return (
     <div className="container-fluid p-0">

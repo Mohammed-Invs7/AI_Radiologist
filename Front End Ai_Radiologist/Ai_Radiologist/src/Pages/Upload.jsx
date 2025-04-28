@@ -29,7 +29,7 @@ const Upload = () => {
     const fetchOptions = async () => {
       try {
         const res = await axios.get(
-          "http://127.0.0.1:8000/api/v1/admin/ai_models/radio-options/",
+          "http://127.0.0.1:8000/api/v1/user/reports/options/",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -84,7 +84,7 @@ const Upload = () => {
       const form = new FormData();
       form.append("image_path", formData.file1);
       form.append("radio_modality", formData.type);
-      form.append("body_ana", formData.bodyPart); 
+      form.append("body_ana", formData.bodyPart);
 
       const response = await axios.post(
         "http://127.0.0.1:8000/api/v1/user/reports/create/",

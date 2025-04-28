@@ -118,7 +118,7 @@ const ModelsAdmin = () => {
         }
       }
 
-      await axios.put(
+      await axios.patch(
         `http://127.0.0.1:8000/api/v1/admin/ai_models/models/${editId}/`,
         formData,
         {
