@@ -19,6 +19,12 @@ class RadiologyDetailsSerializer(serializers.ModelSerializer):
         model = RadiologyDetails
         fields = ['id','body_ana','radio_mod']
 
+class AIModelFileRenameSerializer(serializers.Serializer):
+    new_name = serializers.CharField(
+        max_length=255,
+        help_text="The desired new filename (with or without extension)."
+    )
+
 class AIModelFileSerializer(serializers.ModelSerializer):
     model = serializers.PrimaryKeyRelatedField(
         queryset=AIModel.objects.all(),

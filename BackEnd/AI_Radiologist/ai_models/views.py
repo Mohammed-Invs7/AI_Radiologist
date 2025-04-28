@@ -1,4 +1,5 @@
-from rest_framework import viewsets
+from drf_spectacular.utils import extend_schema
+from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -7,9 +8,12 @@ from .models import AIModel, AIModelFile, RadiologyModality, BodyAnatomicalRegio
 from .serializers import (
     AIModelSerializer,
     AIModelFileSerializer,
+    AIModelFileRenameSerializer,
     RadiologyModalitySerializer,
     BodyAnatomicalRegionSerializer,
 )
+import os
+from rest_framework.decorators import action
 
 
 class RadiologyModalityViewSet(viewsets.ModelViewSet):
@@ -97,7 +101,58 @@ class AIModelFileViewSet(viewsets.ModelViewSet):
     queryset = AIModelFile.objects.all()
     serializer_class = AIModelFileSerializer
     permission_classes = [IsAuthenticated, IsAdminUser]
+    http_method_names = ['get', 'post', 'delete']
 
+    @extend_schema(
+        request=AIModelFileRenameSerializer,
+        responses=AIModelFileSerializer
+    )
+    @action(
+        detail=True,
+        methods=['post'],
+        url_path='rename',
+        serializer_class=AIModelFileRenameSerializer
+    )
+    def rename(self, request, pk=None):
+        """
+        POST /model-files/{id}/rename/
+        Body: { "new_name": "my_new_filename.txt" }
+        """
+        instance = self.get_object()
+        serializer = self.get_serializer(data=request.data)  # now uses AIModelFileRenameSerializer
+        serializer.is_valid(raise_exception=True)
+        new_name = serializer.validated_data['new_name']
+
+        # Determine old & new filesystem paths
+        old_fs_path = instance.file.path
+        directory = os.path.dirname(old_fs_path)
+
+        # Ensure the new filename has the same extension as the old one,
+        # unless the client explicitly includes a different extension.
+        old_ext = os.path.splitext(old_fs_path)[1]
+        if not new_name.lower().endswith(old_ext.lower()):
+            new_filename = new_name + old_ext
+        else:
+            new_filename = new_name
+
+        new_fs_path = os.path.join(directory, new_filename)
+
+        # Perform the rename on disk
+        os.rename(old_fs_path, new_fs_path)
+
+        # Update the FileField.name (storage-relative path)
+        # e.g. if instance.file.name was "models/5_LungNet/old.txt",
+        # we keep the folder and swap in the new filename:
+        folder = os.path.dirname(instance.file.name)
+        instance.file.name = os.path.join(folder, new_filename)
+
+        instance.save()
+
+        # Return the refreshed instance
+        return Response(
+            AIModelFileSerializer(instance, context={'request': request}).data,
+            status=status.HTTP_200_OK
+        )
 
 class AdminRadiologyOptionsView(APIView):
     """

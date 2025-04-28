@@ -146,7 +146,7 @@ Errors (400 Bad Request):
 
         # compute filesystem paths
         fs_path     = file_record.file.path
-        model_folder= os.path.dirname(fs_path)
+        model_folder= os.path.dirname(fs_path) + '/'
 
         # 5a: save the Report (this writes the uploaded image to disk)
         #    we pass an empty report_details for now
