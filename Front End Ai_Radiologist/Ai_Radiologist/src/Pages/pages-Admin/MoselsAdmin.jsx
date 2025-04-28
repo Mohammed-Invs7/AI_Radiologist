@@ -82,8 +82,8 @@ const ModelsAdmin = () => {
       name: model.name || "",
       description: model.description || "",
       active_status: model.active_status ? "true" : "false",
-      body_ana: model.body_ana || "",
-      radio_mod: model.radio_mod || "",
+      body_ana: model.anatomies ? model.anatomies.id : "",
+      radio_mod: model.modalities ? model.modalities.id : "",
       upload_files: [],
     });
     setEditId(model.id);
@@ -206,7 +206,19 @@ const ModelsAdmin = () => {
                 <td>{idx + 1 + currentPage * itemsPerPage}</td>
                 <td>{model.name}</td>
                 <td>{model.description}</td>
-                <td>{model.active_status ? "✅" : "❌"}</td>
+                <td>
+                  {model.active_status ? (
+                    <i
+                      className="bx bx-check-circle text-success fs-4 fw-bold"
+                      title="Active"
+                    ></i>
+                  ) : (
+                    <i
+                      className="bx bx-x-circle text-danger fs-4 fw-bold"
+                      title="Inactive"
+                    ></i>
+                  )}
+                </td>
                 <td>{model.modalities?.name || "-"}</td>
                 <td>{model.anatomies?.name || "-"}</td>
                 <td>{model.upload_date}</td>

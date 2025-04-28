@@ -75,8 +75,7 @@ const FilesAdmin = () => {
 
   return (
     <div className="container-fluid p-0">
-      <ToastContainer />
-      <div className="container-fluid">
+      <div className="container-fluid mt-5">
         <div className="flex-grow-1">
           {/* Desktop Table */}
           <div className="d-none d-lg-block">

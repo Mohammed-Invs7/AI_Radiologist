@@ -43,6 +43,7 @@ const AdminNavbar = () => {
     "/AdminPanel/Users%20Admin": "Users Management",
     "/AdminPanel/Reports%20Admin": "Reports Management",
     "/AdminPanel/Models%20Admin": "Models Management",
+    "/AdminPanel/Files%20Admin": "Files Management",
   };
 
   const getPageTitle = () => pageTitles[location.pathname];

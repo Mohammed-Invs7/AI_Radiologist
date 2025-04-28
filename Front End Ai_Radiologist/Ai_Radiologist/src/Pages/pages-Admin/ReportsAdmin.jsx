@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import ReactPaginate from "react-paginate";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ReportModal from "../../modals/ReportModal"; 
 
@@ -51,10 +50,8 @@ const AdminReports = () => {
 
     return (
         <div className="container-fluid p-0">
-            <ToastContainer />
-            <div className="container-fluid">
+            <div className="container-fluid m-4">
                 <div className="flex-grow-1 p-4">
-                    <h4 className="mb-4">Reports</h4>
                     
                     <div className="d-none d-lg-block">
                         <div className="table-responsive">

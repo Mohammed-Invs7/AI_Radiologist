@@ -153,20 +153,20 @@ const Upload = () => {
             className="d-flex flex-column align-items-center"
           >
             {/* Image Preview with Animation */}
-              <motion.div
-                key={formData.imagePreview1 || "default"}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.4 }}
-                className="image-preview-container"
-              >
-                <img
-                  src={formData.imagePreview1 || Image1}
-                  alt="Preview 1"
-                  className="upload-preview"
-                />
-              </motion.div>
+            <motion.div
+              key={formData.imagePreview1 || "default"}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              className="image-preview-container"
+            >
+              <img
+                src={formData.imagePreview1 || Image1}
+                alt="Preview 1"
+                className="upload-preview"
+              />
+            </motion.div>
 
             {/* Upload Image */}
             <input
@@ -236,7 +236,7 @@ const Upload = () => {
             {/* Upload Button */}
             <button
               type="submit"
-              className={`upload-button ${
+              className={`upload-button mt-4 ${
                 formData.loading ||
                 !formData.file1 ||
                 !formData.type ||

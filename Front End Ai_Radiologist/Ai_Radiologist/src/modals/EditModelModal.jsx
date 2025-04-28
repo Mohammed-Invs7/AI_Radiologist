@@ -12,44 +12,27 @@ const EditModelModal = ({
 }) => {
   const { token } = useAuth();
   const [radioOptions, setRadioOptions] = useState([]);
-  const [selectedModality, setSelectedModality] = useState(
-    currentModel.radio_mod
-  );
-  const [selectedRegion, setSelectedRegion] = useState(currentModel.body_ana);
 
   useEffect(() => {
     const fetchRadioOptions = async () => {
       try {
         const res = await axios.get(
           "http://127.0.0.1:8000/api/v1/admin/ai_models/radio-options/",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+          { headers: { Authorization: `Bearer ${token}` } }
         );
         setRadioOptions(res.data);
       } catch (error) {
         console.error("Error fetching radio options:", error);
       }
     };
-
     fetchRadioOptions();
   }, [token]);
 
   if (!show) return null;
 
-  const handleModalityChange = (e) => {
-    setSelectedModality(e.target.value);
-    setSelectedRegion(""); // Reset selected region when modality changes
-  };
-
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent the default form submission (page reload)
-
-    // Now you can call the onSubmit function passed from the parent,
-    // assuming it handles the API call or further logic.
-    onSubmit();
+    e.preventDefault();
+    onSubmit(); // Assuming onSubmit handles the necessary API call
   };
 
   return (
@@ -72,7 +55,7 @@ const EditModelModal = ({
               onClick={onClose}
             ></button>
           </div>
-          <div className="modal-body d-flex justify-content-center">
+          <div className="modal-body">
             <form onSubmit={handleSubmit}>
               {/* Model Name */}
               <div className="mb-3">
@@ -96,10 +79,7 @@ const EditModelModal = ({
                   onChange={onChange}
                   placeholder="Enter your description here"
                   rows="4"
-                  style={{
-                    resize: "none",
-                    overflow: "hidden",
-                  }}
+                  style={{ resize: "none", overflow: "hidden" }}
                 ></textarea>
               </div>
 
@@ -123,11 +103,8 @@ const EditModelModal = ({
                 <select
                   className="form-select"
                   name="radio_mod"
-                  value={selectedModality}
-                  onChange={(e) => {
-                    handleModalityChange(e);
-                    onChange(e); // Trigger change event
-                  }}
+                  value={currentModel.radio_mod || ""}
+                  onChange={onChange}
                 >
                   <option value="">Select Modality</option>
                   {radioOptions.map((option) => (
@@ -144,17 +121,14 @@ const EditModelModal = ({
                 <select
                   className="form-select"
                   name="body_ana"
-                  value={selectedRegion}
-                  onChange={(e) => {
-                    setSelectedRegion(e.target.value);
-                    onChange(e); // Trigger change event
-                  }}
+                  value={currentModel.body_ana || ""}
+                  onChange={onChange}
                 >
                   <option value="">Select Region</option>
                   {radioOptions
                     .find(
                       (option) =>
-                        option.modality.id === parseInt(selectedModality)
+                        option.modality.id === parseInt(currentModel.radio_mod)
                     )
                     ?.regions.map((region) => (
                       <option key={region.id} value={region.id}>

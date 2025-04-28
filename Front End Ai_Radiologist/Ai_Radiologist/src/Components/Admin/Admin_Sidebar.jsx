@@ -69,29 +69,29 @@ const Admin_Sidebar = () => {
           <span>Files</span>
         </Link>
 
-        <Link
+        {/* <Link
           to="/AdminPanel/radiology-details"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-detail fs-4 me-2"></i>
           <span>Radiology Details</span>
-        </Link>
+        </Link> */}
 
         <Link
           to="/AdminPanel/Reports Admin"
           className="list-group-item d-flex align-items-center text-center"
         >
-          <i className="bx bx-file fs-4 me-2"></i>
+          <i className="bx bx-detail fs-4 me-2"></i>
           <span>Reports</span>
         </Link>
 
-        <Link
+        {/* <Link
           to="/AdminPanel/radiology modality"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-clinic fs-4 me-2"></i>
           <span>Radiology Modality</span>
-        </Link>
+        </Link> */}
 
         <button
           type="button"
