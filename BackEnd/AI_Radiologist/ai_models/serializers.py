@@ -20,9 +20,18 @@ class RadiologyDetailsSerializer(serializers.ModelSerializer):
         fields = ['id','body_ana','radio_mod']
 
 class AIModelFileSerializer(serializers.ModelSerializer):
+    model = serializers.PrimaryKeyRelatedField(
+        queryset=AIModel.objects.all(),
+    )
+    # Read-only name pulled off the related object
+    model_name = serializers.CharField(
+        source='model.name',
+        read_only=True
+    )
+
     class Meta:
-        model = AIModelFile
-        fields = ['id', 'model', 'file', 'uploaded']
+        model  = AIModelFile
+        fields = ['id', 'model', 'model_name', 'file', 'uploaded']
 
 class AIModelSerializer(serializers.ModelSerializer):
     files        = AIModelFileSerializer(many=True, read_only=True)
