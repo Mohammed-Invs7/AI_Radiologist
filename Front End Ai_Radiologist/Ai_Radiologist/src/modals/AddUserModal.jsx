@@ -25,7 +25,11 @@ const AddUserModal = ({ show, onClose, onSubmit }) => {
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">Add User</h5>
-            <button type="button" className="btn-close" onClick={onClose}></button>
+            <button
+              type="button"
+              className="btn-close"
+              onClick={onClose}
+            ></button>
           </div>
           <div className="modal-body d-flex justify-content-center ">
             <form onSubmit={handleSubmit(onFormSubmit)}>
@@ -34,16 +38,22 @@ const AddUserModal = ({ show, onClose, onSubmit }) => {
                 <input
                   type="text"
                   className="form-control"
-                  {...register("first_name", { required: "First name is required" })}
+                  {...register("first_name", {
+                    required: "First name is required",
+                  })}
                 />
-                {errors.first_name && <p className="text-danger">{errors.first_name.message}</p>}
+                {errors.first_name && (
+                  <p className="text-danger">{errors.first_name.message}</p>
+                )}
               </div>
               <div className="mb-3">
                 <label className="form-label">Last Name</label>
                 <input
                   type="text"
                   className="form-control"
-                  {...register("last_name", { required: "Last name is required" })}
+                  {...register("last_name", {
+                    required: "Last name is required",
+                  })}
                 />
               </div>
               <div className="mb-3">
@@ -53,14 +63,18 @@ const AddUserModal = ({ show, onClose, onSubmit }) => {
                   className="form-control"
                   {...register("email", { required: "Email is required" })}
                 />
-                {errors.email && <p className="text-danger">{errors.email.message}</p>}
+                {errors.email && (
+                  <p className="text-danger">{errors.email.message}</p>
+                )}
               </div>
               <div className="mb-3">
                 <label className="form-label">Date of Birth</label>
                 <input
                   type="date"
                   className="form-control"
-                  {...register("date_of_birth", { required: "Date of birth is required" })}
+                  {...register("date_of_birth", {
+                    required: "Date of birth is required",
+                  })}
                 />
               </div>
               <div className="mb-3">
@@ -68,7 +82,9 @@ const AddUserModal = ({ show, onClose, onSubmit }) => {
                 <input
                   type="password"
                   className="form-control"
-                  {...register("password1", { required: "Password is required" })}
+                  {...register("password1", {
+                    required: "Password is required",
+                  })}
                 />
               </div>
               <div className="mb-3">
@@ -76,7 +92,9 @@ const AddUserModal = ({ show, onClose, onSubmit }) => {
                 <input
                   type="password"
                   className="form-control"
-                  {...register("password2", { required: "Confirm password is required" })}
+                  {...register("password2", {
+                    required: "Confirm password is required",
+                  })}
                 />
               </div>
 
@@ -95,7 +113,9 @@ const AddUserModal = ({ show, onClose, onSubmit }) => {
                 <label className="form-label">User Type</label>
                 <select
                   className="form-select"
-                  {...register("user_type", { required: "User type is required" })}
+                  {...register("user_type", {
+                    required: "User type is required",
+                  })}
                 >
                   <option value={2}>User</option>
                   <option value={1}>Admin</option>
@@ -103,7 +123,9 @@ const AddUserModal = ({ show, onClose, onSubmit }) => {
               </div>
 
               <div className="modal-footer">
-                <button type="submit" className="btn-blue btn-success">Add</button>
+                <button type="submit" className="btn btn-success">
+                  Add User
+                </button>
               </div>
             </form>
           </div>

@@ -17,7 +17,11 @@ const EditUserModal = ({ show, onClose, onChange, onSubmit, currentUser }) => {
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">Edit User</h5>
-            <button type="button" className="btn-close" onClick={onClose}></button>
+            <button
+              type="button"
+              className="btn-close"
+              onClick={onClose}
+            ></button>
           </div>
           <div className="modal-body">
             {/* First Name */}
@@ -44,7 +48,7 @@ const EditUserModal = ({ show, onClose, onChange, onSubmit, currentUser }) => {
               />
             </div>
 
-              {/* Email 
+            {/* Email 
             <div className="mb-3">
               <label className="form-label">Email</label>
               <input
@@ -71,7 +75,12 @@ const EditUserModal = ({ show, onClose, onChange, onSubmit, currentUser }) => {
             {/* Gender */}
             <div className="mb-3">
               <label className="form-label">Gender</label>
-              <select className="form-select" name="gender" value={currentUser.gender} onChange={onChange}>
+              <select
+                className="form-select"
+                name="gender"
+                value={currentUser.gender}
+                onChange={onChange}
+              >
                 <option value="M">Male</option>
                 <option value="F">Female</option>
               </select>
@@ -80,14 +89,21 @@ const EditUserModal = ({ show, onClose, onChange, onSubmit, currentUser }) => {
             {/* User Type */}
             <div className="mb-3">
               <label className="form-label">User Type</label>
-              <select className="form-select" name="user_type" value={currentUser.user_type} onChange={onChange}>
+              <select
+                className="form-select"
+                name="user_type"
+                value={currentUser.user_type}
+                onChange={onChange}
+              >
                 <option value="user">User</option>
                 <option value="admin">Admin</option>
               </select>
             </div>
           </div>
           <div className="modal-footer">
-            <button className="btn-blue btn-success" onClick={onSubmit}>Update</button>
+            <button className="btn btn-success" onClick={onSubmit}>
+              Update User
+            </button>
           </div>
         </div>
       </div>

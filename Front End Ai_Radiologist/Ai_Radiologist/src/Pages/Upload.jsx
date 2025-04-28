@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { motion, AnimatePresence } from "framer-motion";
 import Image1 from "../assets/Images/image-upload.png";
 import "../assets/Styling/Upload.css";
 import NavBar from "../Components/NavBar";
@@ -10,6 +11,9 @@ import html2pdf from "html2pdf.js";
 
 const Upload = () => {
   const { token, user } = useAuth();
+
+  const [radioOptions, setRadioOptions] = useState([]);
+  const [loadingOptions, setLoadingOptions] = useState(true);
 
   const [formData, setFormData] = useState({
     file1: null,
@@ -20,6 +24,26 @@ const Upload = () => {
     predictionResult: null,
     errorMessage: null,
   });
+
+  useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        const res = await axios.get(
+          "http://127.0.0.1:8000/api/v1/admin/ai_models/radio-options/",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        setRadioOptions(res.data);
+      } catch (err) {
+        console.error("Failed to fetch radio options", err);
+      } finally {
+        setLoadingOptions(false);
+      }
+    };
+
+    fetchOptions();
+  }, [token]);
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -41,10 +65,10 @@ const Upload = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!formData.file1) {
+    if (!formData.file1 || !formData.type || !formData.bodyPart) {
       setFormData((prev) => ({
         ...prev,
-        errorMessage: "Please upload an image",
+        errorMessage: "Please complete all fields",
       }));
       return;
     }
@@ -59,6 +83,8 @@ const Upload = () => {
 
       const form = new FormData();
       form.append("image_path", formData.file1);
+      form.append("radio_modality", formData.type);
+      form.append("body_ana", formData.bodyPart); 
 
       const response = await axios.post(
         "http://127.0.0.1:8000/api/v1/user/reports/create/",
@@ -71,8 +97,6 @@ const Upload = () => {
         }
       );
 
-      console.log("Upload success:", response.data);
-
       setFormData((prev) => ({
         ...prev,
         predictionResult: response.data.report_details,
@@ -83,7 +107,8 @@ const Upload = () => {
       console.log("Server response:", error.response?.data);
       setFormData((prev) => ({
         ...prev,
-        errorMessage: "Failed to upload image or generate report.",
+        errorMessage:
+          error.response?.data?.detail || "Failed to upload or generate report",
         loading: false,
       }));
     }
@@ -116,7 +141,6 @@ const Upload = () => {
       });
   };
 
-
   return (
     <div>
       <NavBar />
@@ -128,14 +152,23 @@ const Upload = () => {
             onSubmit={handleSubmit}
             className="d-flex flex-column align-items-center"
           >
-            <div className="image-preview-container">
-              <img
-                src={formData.imagePreview1 || Image1}
-                alt="Preview 1"
-                className="upload-preview"
-              />
-            </div>
+            {/* Image Preview with Animation */}
+              <motion.div
+                key={formData.imagePreview1 || "default"}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4 }}
+                className="image-preview-container"
+              >
+                <img
+                  src={formData.imagePreview1 || Image1}
+                  alt="Preview 1"
+                  className="upload-preview"
+                />
+              </motion.div>
 
+            {/* Upload Image */}
             <input
               type="file"
               id="file-input-1"
@@ -147,26 +180,60 @@ const Upload = () => {
               Choose File
             </label>
 
+            {/* Modality Select */}
             <select
               name="type"
               value={formData.type}
               onChange={handleChange}
               className="upload-select"
             >
-              <option value=""> Chest Type</option>
-              <option value="X-ray">X-ray</option>
+              <option value="">
+                {loadingOptions ? "Loading modalities..." : "Select Modality"}
+              </option>
+              {radioOptions.map((modality) => (
+                <option key={modality.modality.id} value={modality.modality.id}>
+                  {modality.modality.name}
+                </option>
+              ))}
             </select>
 
-            <select
-              name="bodyPart"
-              value={formData.bodyPart}
-              onChange={handleChange}
-              className="upload-select"
-            >
-              <option value="">Chest Part</option>
-              <option value="Chest">Chest</option>
-            </select>
+            {/* Body Part Select with Animation */}
+            <AnimatePresence mode="wait">
+              {formData.type && (
+                <motion.div
+                  key={formData.type}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  transition={{ duration: 0.3 }}
+                  className="w-100"
+                >
+                  <select
+                    name="bodyPart"
+                    value={formData.bodyPart}
+                    onChange={handleChange}
+                    className="upload-select"
+                  >
+                    <option value="">
+                      {loadingOptions
+                        ? "Loading regions..."
+                        : "Select Body Part"}
+                    </option>
+                    {radioOptions
+                      .find(
+                        (opt) => opt.modality.id === parseInt(formData.type)
+                      )
+                      ?.regions.map((region) => (
+                        <option key={region.id} value={region.id}>
+                          {region.name}
+                        </option>
+                      ))}
+                  </select>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
+            {/* Upload Button */}
             <button
               type="submit"
               className={`upload-button ${
@@ -198,6 +265,7 @@ const Upload = () => {
               )}
             </button>
 
+            {/* Error Message */}
             {formData.errorMessage && (
               <div className="alert alert-danger mt-3">
                 {formData.errorMessage}
@@ -206,6 +274,7 @@ const Upload = () => {
           </form>
         </div>
 
+        {/* Report Section */}
         {formData.predictionResult && (
           <div
             id="report-content"
@@ -223,67 +292,45 @@ const Upload = () => {
                 <strong>Date:</strong> {new Date().toLocaleDateString()}
               </p>
             </div>
+
             <div className="container mt-4 mb-4">
               <div className="card shadow-sm">
                 <div className="card-body">
                   <h5 className="text-primary mb-3">Technical Description</h5>
                   <p>
                     A chest X-ray was performed using a standard X-ray machine.
-                    The chest was imaged in both the anterior and posterior
+                    The chest was imaged in both anterior and posterior
                     positions.
                   </p>
 
                   <h5 className="text-info mt-4">Results</h5>
-                  <ul>
-                    <li>
-                      <div>
-                        <p>{formData.predictionResult}</p>
-                      </div>
-                    </li>
-                  </ul>
+                  <p>{formData.predictionResult}</p>
 
                   <h5 className="text-info mt-4">Clinical Interpretation</h5>
                   <p>
                     The model demonstrates low accuracy in detecting minor
-                    changes in the lung tissue. Therefore, the results cannot be
-                    considered 100% accurate in this preliminary version. There
-                    may be false positives or false negatives.
+                    changes. Results are preliminary and must be confirmed.
                   </p>
 
                   <h5 className="text-info mt-4">Recommendations</h5>
                   <ol>
-                    <li>
-                      Further tests are required to verify the area indicated by
-                      the model in the left lung.
-                    </li>
-                    <li>
-                      Follow-up clinical evaluation with the physician is
-                      advised.
-                    </li>
+                    <li>Further tests are advised.</li>
+                    <li>Follow-up with a physician is needed.</li>
                   </ol>
 
                   <h5 className="text-info mt-4">Confidence Level</h5>
-                  <p>
-                    The confidence level in the results is around 70% based on
-                    the available data. It is recommended that this report be
-                    considered as part of a comprehensive examination.
-                  </p>
+                  <p>Approximate confidence is 70% based on AI performance.</p>
 
                   <h5 className="text-info mt-4">Additional Notes</h5>
                   <ul>
-                    <li>
-                      This report is based on an AI model in development. The
-                      results may contain errors or warnings due to the
-                      preliminary version of the system.
-                    </li>
-                    <li>
-                      Human medical evaluation is still necessary to review the
-                      results.
-                    </li>
+                    <li>AI model still under development.</li>
+                    <li>Human evaluation required.</li>
                   </ul>
                 </div>
               </div>
             </div>
+
+            {/* Buttons */}
             <div className="d-flex justify-content-center gap-3 mt-4 no-print">
               <button className="btn btn-success" onClick={handleDownloadPDF}>
                 <i className="bi bi-download me-2"></i>Download Report
@@ -295,13 +342,9 @@ const Upload = () => {
                 <i className="bi bi-upload me-2"></i>Upload New Image
               </button>
             </div>
-            
           </div>
-          
         )}
-        
       </div>
-      
     </div>
   );
 };

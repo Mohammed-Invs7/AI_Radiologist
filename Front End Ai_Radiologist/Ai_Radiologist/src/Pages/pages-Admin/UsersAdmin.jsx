@@ -149,7 +149,7 @@ const UsersAdmin = () => {
         <div className="flex-grow-1">
           <div className="d-flex justify-content-end mb-3">
             <button
-              className="btn-blue btn-primary"
+              className="btn btn-primary"
               onClick={() => {
                 setNewUser({
                   email: "",
@@ -225,22 +225,40 @@ const UsersAdmin = () => {
                 <div className="col" key={user.id}>
                   <div className="card shadow-sm">
                     <div className="card-body">
-                    <p> Num: {idx + 1 + currentPage * itemsPerPage}</p>
-                      <p className="card-text"><strong>User: </strong>{user.first_name} {user.last_name}</p>
-                      <p className="card-text"><strong>Email:</strong> {user.email}</p>
-                      <p className="card-text"><strong>Gender:</strong> {user.gender}</p>
-                      <p className="card-text"><strong>Age:</strong> {user.age}</p>
-                      <p className="card-text"><strong>DoB:</strong> {user.date_of_birth}</p>
-                      <p className="card-text"><strong>UserType:</strong> {user.user_type}</p>
+                      <p> Num: {idx + 1 + currentPage * itemsPerPage}</p>
+                      <p className="card-text">
+                        <strong>User: </strong>
+                        {user.first_name} {user.last_name}
+                      </p>
+                      <p className="card-text">
+                        <strong>Email:</strong> {user.email}
+                      </p>
+                      <p className="card-text">
+                        <strong>Gender:</strong> {user.gender}
+                      </p>
+                      <p className="card-text">
+                        <strong>Age:</strong> {user.age}
+                      </p>
+                      <p className="card-text">
+                        <strong>DoB:</strong> {user.date_of_birth}
+                      </p>
+                      <p className="card-text">
+                        <strong>UserType:</strong> {user.user_type}
+                      </p>
                       <div className="d-flex justify-content-between mx-4">
-                        <button className="btn btn-warning d-flex align-items-center " onClick={() => handleEdit(user, user.id)}>
-                          <i className='bx bx-edit'></i> Edit
+                        <button
+                          className="btn btn-warning d-flex align-items-center "
+                          onClick={() => handleEdit(user, user.id)}
+                        >
+                          <i className="bx bx-edit"></i> Edit
                         </button>
 
-                        <button className="btn btn-danger d-flex align-items-center " onClick={() => handleDelete(user.id)}>
-                          <i className='bx bx-trash'></i> Delete
+                        <button
+                          className="btn btn-danger d-flex align-items-center "
+                          onClick={() => handleDelete(user.id)}
+                        >
+                          <i className="bx bx-trash"></i> Delete
                         </button>
-
                       </div>
                     </div>
                   </div>

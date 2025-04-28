@@ -19,7 +19,6 @@ const ModelsAdmin = () => {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm();
 
