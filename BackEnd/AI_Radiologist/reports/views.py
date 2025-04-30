@@ -16,7 +16,7 @@ from reports.serializers import (
 from ai_models.models import AIModel, RadiologyDetails
 from users.permissions import IsAdminUser
 
-from weasyprint import HTML #CSS
+
 from django.template.loader import get_template
 from django.http import FileResponse
 import io
@@ -211,7 +211,7 @@ class RadiologyOptionsView(APIView):
 
         return Response(data)
 
-# Old one that need weasyprint weasyprint==64.0
+# Old one that need weasyprint weasyprint==64.0,,, from weasyprint import HTML #CSS
 
 # class GenerateReportPDFd(APIView):
 #     """
