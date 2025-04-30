@@ -7,7 +7,6 @@ const AddUserModal = ({ show, onClose, onSubmit }) => {
   if (!show) return null;
 
   const onFormSubmit = (data) => {
-    console.log("Form Data:", data);
     onSubmit(data);
   };
 

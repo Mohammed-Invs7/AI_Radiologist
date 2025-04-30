@@ -16,7 +16,7 @@ import ResetPassword from "./Pages/ResetPassword";
 import AdminDashboard from "./Pages/pages-Admin/AdminDashboard";
 import UsersAdmin from "./Pages/pages-Admin/UsersAdmin";
 import ReportsAdmin from "./Pages/pages-Admin/ReportsAdmin";
-import Models from './Pages/pages-Admin/MoselsAdmin'
+import Models from "./Pages/pages-Admin/ModelsAdmin";
 
 //Css//
 import "./App.css";
@@ -69,7 +69,7 @@ function App() {
               <Route path="Users Admin" element={<UsersAdmin />} />
               <Route path="Reports Admin" element={<ReportsAdmin />} />
               <Route path="Models Admin" element={<Models />} />
-              <Route path="Files Admin" element={<FilesAdmin/>} />
+              <Route path="Files Admin" element={<FilesAdmin />} />
             </Route>
           </Route>
         </Routes>

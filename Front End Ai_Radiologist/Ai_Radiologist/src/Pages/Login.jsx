@@ -8,10 +8,12 @@ import Swal from "sweetalert2";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Sidebar from "../Components/Sidebar";
 import "../assets/Styling/Form_User.css";
+ import { BASE_URL } from "../config";
+
 
 // API Endpoints
-const API_LOGIN = "http://127.0.0.1:8000/api/v1/auth/login/";
-const API_USERS = "http://127.0.0.1:8000/api/v1/auth/user/";
+const API_LOGIN = `${BASE_URL}/auth/login/`;
+const API_USERS = `${BASE_URL}/auth/user/`;
 
 const schema = yup.object().shape({
   email: yup

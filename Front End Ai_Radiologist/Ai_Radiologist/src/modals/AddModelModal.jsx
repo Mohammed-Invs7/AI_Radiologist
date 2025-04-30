@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import { BASE_URL } from "../config";
+
+const API_SEL = `${BASE_URL}/admin/ai_models/radio-options/`;
 
 const AddModelModal = ({
   show,
@@ -15,18 +18,17 @@ const AddModelModal = ({
   const [radioOptions, setRadioOptions] = useState([]);
   const [selectedModality, setSelectedModality] = useState("");
   const [selectedRegion, setSelectedRegion] = useState("");
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [formData, setFormData] = useState(new FormData());
 
   useEffect(() => {
     const fetchRadioOptions = async () => {
       try {
-        const res = await axios.get(
-          "http://127.0.0.1:8000/api/v1/admin/ai_models/radio-options/",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`, // إضافة التوكن إلى الـ headers
-            },
-          }
-        );
+        const res = await axios.get(`${API_SEL}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setRadioOptions(res.data);
       } catch (error) {
         console.error("Error fetching radio options:", error);
@@ -41,6 +43,17 @@ const AddModelModal = ({
   const handleModalityChange = (e) => {
     setSelectedModality(e.target.value);
     setSelectedRegion("");
+  };
+
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
+
+    setUploadedFiles(files.map((file) => file.name));
+
+    const newFormData = new FormData();
+    files.forEach((file) => newFormData.append("upload_files", file));
+
+    setFormData(newFormData);
   };
 
   return (
@@ -76,7 +89,6 @@ const AddModelModal = ({
                   <p className="text-danger">{errors.name.message}</p>
                 )}
               </div>
-
               {/* Description Field */}
               <div className="mb-3">
                 <label className="form-label">Description</label>
@@ -91,11 +103,7 @@ const AddModelModal = ({
                     overflow: "hidden",
                   }}
                 />
-                {errors.description && (
-                  <p className="text-danger">{errors.description.message}</p>
-                )}
               </div>
-
               {/* Radiology Modality */}
               <div className="mb-3">
                 <label className="form-label">Radiology Modality</label>
@@ -114,11 +122,7 @@ const AddModelModal = ({
                     </option>
                   ))}
                 </select>
-                {errors.radio_mod && (
-                  <p className="text-danger">{errors.radio_mod.message}</p>
-                )}
               </div>
-
               {/* Body Anatomy */}
               {selectedModality && (
                 <div className="mb-3">
@@ -143,12 +147,8 @@ const AddModelModal = ({
                         </option>
                       ))}
                   </select>
-                  {errors.body_ana && (
-                    <p className="text-danger">{errors.body_ana.message}</p>
-                  )}
                 </div>
               )}
-
               {/* Active Status */}
               <div className="mb-3">
                 <label className="form-label">Active Status</label>
@@ -161,11 +161,7 @@ const AddModelModal = ({
                   <option value="true">Active</option>
                   <option value="false">Inactive</option>
                 </select>
-                {errors.active_status && (
-                  <p className="text-danger">{errors.active_status.message}</p>
-                )}
               </div>
-
               {/* Upload Files */}
               <div className="mb-3">
                 <label className="form-label">Upload Files</label>
@@ -176,12 +172,21 @@ const AddModelModal = ({
                   {...register("upload_files", {
                     required: "Files are required",
                   })}
+                  onChange={handleFileChange}
                 />
-                {errors.upload_files && (
-                  <p className="text-danger">{errors.upload_files.message}</p>
+              </div>
+              <div className="mb-3">
+                {uploadedFiles.length > 0 && (
+                  <div>
+                    <h6>Uploaded Files:</h6>
+                    <ul>
+                      {uploadedFiles.map((file, index) => (
+                        <li key={index}>{file}</li>
+                      ))}
+                    </ul>
+                  </div>
                 )}
               </div>
-
               {/* Submit Button */}
               <div className="modal-footer">
                 <button type="submit" className="btn btn-success">

@@ -13,8 +13,12 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "../modals/InfoModal";
 import { passwordSchema } from "../modals/PasswordModal";
+import { BASE_URL } from "../config";
 
-const API_URL = "http://127.0.0.1:8000/api/v1/auth/user/";
+
+const API_SETTING_USER = `${BASE_URL}/auth/user/`;
+const API_PASS_CHANGE = `${BASE_URL}/auth/password/change/`;
+
 
 const Settings_User = () => {
   const { user: authUser, updateUser, token } = useAuth();
@@ -77,7 +81,7 @@ const Settings_User = () => {
     }
 
     try {
-      const response = await axios.patch(API_URL, formData, {
+      const response = await axios.patch(API_SETTING_USER, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
@@ -122,7 +126,7 @@ const Settings_User = () => {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/v1/auth/password/change/",
+        `${API_PASS_CHANGE}`,
         { new_password1, new_password2 },
         {
           headers: {

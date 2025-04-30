@@ -189,9 +189,16 @@ img {
 }
 
 /*=============== BREAKPOINTS ===============*/
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 450px) {
     .container {
-        margin-inline: 1rem;
+       margin: 0px;
+    }
+    .dropdown__list{
+       right: -40%;
+       padding: 10px 10px;
+    }
+    .get_title{
+        display: none;
     }
 }
 

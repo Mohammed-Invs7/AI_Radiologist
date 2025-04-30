@@ -8,6 +8,9 @@ import "../assets/Styling/Upload.css";
 import NavBar from "../Components/NavBar";
 import { useAuth } from "../context/AuthContext";
 import html2pdf from "html2pdf.js";
+import { BASE_URL } from "../config";
+
+const API_CREATE_REPORT = `${BASE_URL}/user/reports/create/`;
 
 const Upload = () => {
   const { token, user } = useAuth();
@@ -86,16 +89,12 @@ const Upload = () => {
       form.append("radio_modality", formData.type);
       form.append("body_ana", formData.bodyPart);
 
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/v1/user/reports/create/",
-        form,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.post(`${API_CREATE_REPORT}`, form, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       setFormData((prev) => ({
         ...prev,
@@ -303,7 +302,9 @@ const Upload = () => {
                     positions.
                   </p>
 
-                  <h5 style={{color:"red"}} className="mt-4">Results</h5>
+                  <h5 style={{ color: "red" }} className="mt-4">
+                    Results
+                  </h5>
                   <p>{formData.predictionResult}</p>
 
                   <h5 className="text-info mt-4">Clinical Interpretation</h5>

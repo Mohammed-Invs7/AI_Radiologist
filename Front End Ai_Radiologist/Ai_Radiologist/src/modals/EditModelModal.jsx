@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import { BASE_URL } from "../config";
+
+const API_RADIO_OPTIONS = `${BASE_URL}/admin/ai_models/radio-options/`;
 
 const EditModelModal = ({
   show,
@@ -12,14 +15,15 @@ const EditModelModal = ({
 }) => {
   const { token } = useAuth();
   const [radioOptions, setRadioOptions] = useState([]);
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [formData, setFormData] = useState(new FormData());
 
   useEffect(() => {
     const fetchRadioOptions = async () => {
       try {
-        const res = await axios.get(
-          "http://127.0.0.1:8000/api/v1/admin/ai_models/radio-options/",
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        const res = await axios.get(`${API_RADIO_OPTIONS}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setRadioOptions(res.data);
       } catch (error) {
         console.error("Error fetching radio options:", error);
@@ -30,10 +34,38 @@ const EditModelModal = ({
 
   if (!show) return null;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(); // Assuming onSubmit handles the necessary API call
+  const handleFileChange = (e) => {
+    const files = e.target.files;
+    const filesArray = Array.from(files).map((file) => file.name);
+    setUploadedFiles(filesArray);
+
+    const newFormData = new FormData();
+    Array.from(files).forEach((file) => {
+      newFormData.append("upload_files", file);
+    });
+    setFormData(newFormData);
   };
+
+ const handleSubmit = (e) => {
+   e.preventDefault();
+   const updatedFormData = new FormData();
+
+   updatedFormData.append("name", currentModel.name);
+   updatedFormData.append("description", currentModel.description);
+   updatedFormData.append("active_status", String(currentModel.active_status));
+   updatedFormData.append("radio_mod", String(currentModel.radio_mod));
+   updatedFormData.append("body_ana", String(currentModel.body_ana));
+
+   // إضافة الملفات إن وجدت
+   if (formData.getAll("upload_files").length > 0) {
+     formData.getAll("upload_files").forEach((file) => {
+       updatedFormData.append("upload_files", file);
+     });
+   }
+
+   onSubmit(updatedFormData); // الإرسال إلى الأب
+ };
+
 
   return (
     <motion.div
@@ -146,8 +178,22 @@ const EditModelModal = ({
                   name="upload_files"
                   className="form-control"
                   multiple
-                  onChange={onChange}
+                  onChange={handleFileChange}
                 />
+              </div>
+
+              {/* Display uploaded files */}
+              <div className="mb-3">
+                {uploadedFiles.length > 0 && (
+                  <div>
+                    <h6>Uploaded Files:</h6>
+                    <ul>
+                      {uploadedFiles.map((file, index) => (
+                        <li key={index}>{file}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
 
               {/* Submit Button */}

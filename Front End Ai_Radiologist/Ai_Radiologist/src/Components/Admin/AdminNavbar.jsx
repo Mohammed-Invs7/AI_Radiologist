@@ -1,6 +1,7 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../../context/AuthContext";
+import '../../assets/Styling/NavBar.css'
 import Swal from "sweetalert2";
 import Logo from "../Logo";
 
@@ -63,17 +64,17 @@ const AdminNavbar = () => {
 
   return (
     <header className="header mb-3">
-      <nav className="nav container-fluid justify-content-between w-100 mx-3 mx-sm-5">
-        <div className="row w-100">
-          <div className="col-4 col-md-2 d-flex align-items-center flex-column flex-md-row">
+      <nav className="nav container d-flex">
+        
+          <Link to="/" className="nav__logo p-0">
             <Logo />
-          </div>
+          </Link>
 
-          <div className="col-4 col-md-5 d-flex justify-content-center align-items-center">
+          <div className="get_title">
             <h3>{getPageTitle()}</h3>
           </div>
 
-          <div className="col-4 col-md-4 d-flex justify-content-end align-items-center">
+          <div className="nav__actions pt-2">
             {user ? (
               <div className="dropdown" ref={dropdownRef}>
                 <div
@@ -149,7 +150,7 @@ const AdminNavbar = () => {
               </button>
             )}
           </div>
-        </div>
+        
       </nav>
     </header>
   );

@@ -1,8 +1,10 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
+ import {BASE_URL} from '../config'
 
 const AuthContext = createContext();
+const API_TOKEN = `${BASE_URL}/auth/token/refresh/ `;
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -48,7 +50,7 @@ export const AuthProvider = ({ children }) => {
   const refreshAccessToken = async (refreshTokenParam) => {
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/v1/auth/token/refresh/",
+        `${API_TOKEN}`,
         { refresh: refreshTokenParam }
       );
       const newAccessToken = response.data.access;

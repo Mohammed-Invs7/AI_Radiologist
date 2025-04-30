@@ -6,6 +6,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Swal from "sweetalert2";
 import "../assets/Styling/Form_User.css";
+ import { BASE_URL } from "../config";
+
+ const API_RESET_PASS = `${BASE_URL}/auth/password/reset/confirm/`;
 
 const schema = yup.object().shape({
   newPassword: yup
@@ -46,7 +49,7 @@ const ResetPassword = () => {
   const onSubmit = async (data) => {
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/v1/auth/password/reset/confirm/",
+        `${API_RESET_PASS}`,
         {
           uid: uid,
           token: token,

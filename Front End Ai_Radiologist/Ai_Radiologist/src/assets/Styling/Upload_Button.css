@@ -1,58 +1,58 @@
 .btn-Upload {
-    border-radius: 20px;
-    background-color: #017276;
-    border: none;
-    color: #fff;
-    font-size: 18px;
-    padding: 5px;
-    transition: .3s;    
-    cursor: pointer;
-    box-shadow: 0 10px 20px -8px rgba(0, 0, 0, .7);
+  border-radius: 20px;
+  background-color: #017276;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  padding: 5px;
+  transition: 0.3s;
+  cursor: pointer;
+  box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.7);
 }
 
 .btn-Upload:hover {
-    animation: pulse 1s infinite;
-    transition: .3s;
+  animation: pulse 1s infinite;
+  transition: 0.3s;
 }
 
 @keyframes pulse {
-    0% {
-        transform: scale(1);
-    }
+  0% {
+    transform: scale(1);
+  }
 
-    70% {
-        transform: scale(.9);
-    }
+  70% {
+    transform: scale(0.9);
+  }
 
-    100% {
-        transform: scale(1);
-    }
+  100% {
+    transform: scale(1);
+  }
 }
 
-#arrow{
-    width: 46%;
-    position: absolute;
-    bottom:-66%;
-    left:107%;
-    z-index: 999;
+#arrow {
+  width: 46%;
+  position: absolute;
+  bottom: -66%;
+  left: 107%;
+  z-index: 999;
 }
 
 @media (min-width: 484px) and (max-width: 1024px) {
-    #arrow {
-            width: 35%;
-            bottom: -35%;
-            left: 102%;
-        }
+  #arrow {
+    width: 35%;
+    bottom: -35%;
+    left: 102%;
+  }
 
-                .btn-Upload {
-                    font-size: 14px;
-                    padding: 5px;
-                }
+  .btn-Upload {
+    font-size: 14px;
+    padding: 5px;
+  }
 }
 
 @media screen and (max-width: 482px) {
-    .btn-Upload {
-            font-size: 12px;
-            padding: 6px;
-        }
+  .btn-Upload {
+    font-size: 17px;
+    padding: 10px;
+  }
 }

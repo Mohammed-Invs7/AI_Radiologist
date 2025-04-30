@@ -5,9 +5,11 @@ import * as yup from "yup";
 import axios from "axios";
 import Swal from "sweetalert2";
 import "../assets/Styling/Form_User.css";
+ import { BASE_URL } from "../config";
+
 
 // API endpoint
-const API_URL = "http://127.0.0.1:8000/api/v1/auth/password/reset/";
+const API_PASS_RESET = `${BASE_URL}/auth/password/reset/`;
 
 // Yup validation schema
 const schema = yup.object().shape({
@@ -29,9 +31,13 @@ const ForgotPassword = () => {
   const handleSubmitForm = async (data) => {
     setLoading(true);
     try {
-      const response = await axios.post(API_URL, { email: data.email }, {
-        headers: { "Content-Type": "application/json" },
-      });
+      const response = await axios.post(
+        API_PASS_RESET,
+        { email: data.email },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
       if (response.status === 200) {
         Swal.fire({

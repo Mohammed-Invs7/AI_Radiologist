@@ -7,6 +7,10 @@ import ReactPaginate from "react-paginate";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
+import { BASE_URL } from "../../config";
+
+const API_USERS = `${BASE_URL}/admin/users/`;
+const API_CREATE_USERS = `${BASE_URL}/admin/users/create/`;
 
 const UsersAdmin = () => {
   const { user, token } = useAuth();
@@ -47,7 +51,7 @@ const UsersAdmin = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("http://127.0.0.1:8000/api/v1/admin/users/", {
+      const res = await axios.get(`${API_USERS}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -76,7 +80,7 @@ const UsersAdmin = () => {
 
     if (result.isConfirmed) {
       try {
-        await axios.delete(`http://127.0.0.1:8000/api/v1/admin/users/${id}/`, {
+        await axios.delete(`${API_USERS}${id}/`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -113,13 +117,9 @@ const UsersAdmin = () => {
 
   const handleSubmitEdit = async () => {
     try {
-      await axios.patch(
-        `http://127.0.0.1:8000/api/v1/admin/users/${editId}/`,
-        currentUser,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await axios.patch(`${API_USERS}${editId}/`, currentUser, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setShowEditModal(false);
       toast.success("User updated successfully.");
       fetchUsers();
@@ -132,13 +132,9 @@ const UsersAdmin = () => {
   const handleSubmitAdd = async (data) => {
     console.log("Submitted Data:", data);
     try {
-      await axios.post(
-        "http://127.0.0.1:8000/api/v1/admin/users/create/",
-        data,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await axios.post(`${API_CREATE_USERS}`, data, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setShowAddModal(false);
       toast.success("User added successfully.");
       fetchUsers();
@@ -158,7 +154,8 @@ const UsersAdmin = () => {
       <ToastContainer />
       <div className="container-fluid">
         <div className="flex-grow-1">
-          <div className="d-flex justify-content-end mb-3">
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <h4 className="fw-bold">Users</h4>
             <button
               className="btn btn-primary"
               onClick={() => {
@@ -236,7 +233,11 @@ const UsersAdmin = () => {
                 <div className="col" key={user.id}>
                   <div className="card shadow-sm">
                     <div className="card-body">
-                      <p> Num: {idx + 1 + currentPage * itemsPerPage}</p>
+                      <p>
+                        {" "}
+                        <strong>#:</strong>{" "}
+                        {idx + 1 + currentPage * itemsPerPage}
+                      </p>
                       <p className="card-text">
                         <strong>User: </strong>
                         {user.first_name} {user.last_name}
@@ -256,20 +257,19 @@ const UsersAdmin = () => {
                       <p className="card-text">
                         <strong>UserType:</strong> {user.user_type}
                       </p>
-                      <div className="d-flex justify-content-between mx-4">
-                        <button
-                          className="btn btn-warning d-flex align-items-center "
+                      <div className="d-flex justify-content-end gap-3">
+                        <i
+                          className="bx bx-edit text-warning fs-5"
                           onClick={() => handleEdit(user, user.id)}
-                        >
-                          <i className="bx bx-edit"></i> Edit
-                        </button>
-
-                        <button
-                          className="btn btn-danger d-flex align-items-center "
+                          title="Edit"
+                          style={{ cursor: "pointer" }}
+                        ></i>
+                        <i
+                          className="bx bx-trash text-danger fs-5"
                           onClick={() => handleDelete(user.id)}
-                        >
-                          <i className="bx bx-trash"></i> Delete
-                        </button>
+                          title="Delete"
+                          style={{ cursor: "pointer" }}
+                        ></i>
                       </div>
                     </div>
                   </div>
