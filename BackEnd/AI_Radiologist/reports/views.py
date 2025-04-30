@@ -211,25 +211,70 @@ class RadiologyOptionsView(APIView):
 
         return Response(data)
 
+# Old one that need weasyprint weasyprint==64.0
+
+# class GenerateReportPDFd(APIView):
+#     """
+#     API view for generating a PDF report for an authenticated user.
+#
+#     This view retrieves a report based on the provided report ID (pk) for the currently authenticated user.
+#     It then renders a PDF using a designated HTML template populated with the report's details, such as:
+#       - Full name, age, and gender of the user.
+#       - Radiology modality and anatomical region information.
+#       - Report date and detailed report content.
+#
+#     The generated PDF is returned as a downloadable file in the HTTP response.
+#
+#     HTTP Method:
+#       GET - Expects the report ID as a URL parameter.
+#
+#     Responses:
+#       200: Returns the PDF file as an attachment if the report is found.
+#       404: Returns an error response if the report does not exist.
+#     """
+#     permission_classes = [IsAuthenticated]
+#
+#     def get(self, request, pk):
+#         try:
+#             report = Report.objects.get(user=request.user, id=pk)
+#         except Report.DoesNotExist:
+#             return Response({"error": "Report does not exist."}, status=status.HTTP_404_NOT_FOUND)
+#
+#         context = {
+#             "full_name": f"{report.user.first_name} {report.user.last_name}",
+#             "age": f"{report.user.age} years",
+#             "gender": "Male" if report.user.gender == 'M' else "Female",
+#
+#             "radiology_modality": report.model.radio_detail.radio_mod.name ,
+#             "anatomical_region": report.model.radio_detail.body_ana.name,
+#
+#             "reported_on": report.report_date.strftime("%d %b %Y - %I:%M %p"),
+#             "report_details": report.report_details,
+#         }
+#         template = get_template('pdf/pdf_template.html')
+#
+#         html_content = template.render(context)
+#         pdf_file = HTML(string=html_content).write_pdf()
+#
+#         pdf_stream = io.BytesIO(pdf_file)
+#
+#         response = FileResponse(pdf_stream, content_type='application/pdf')
+#         response['Content-Disposition'] = f'attachment; filename="{report.title}.pdf"'
+#         return response
+
+from io import BytesIO
+from django.template.loader import get_template
+from django.http import FileResponse
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
+from xhtml2pdf import pisa
+from .models import Report
 
 class GenerateReportPDF(APIView):
     """
-    API view for generating a PDF report for an authenticated user.
-
-    This view retrieves a report based on the provided report ID (pk) for the currently authenticated user.
-    It then renders a PDF using a designated HTML template populated with the report's details, such as:
-      - Full name, age, and gender of the user.
-      - Radiology modality and anatomical region information.
-      - Report date and detailed report content.
-
-    The generated PDF is returned as a downloadable file in the HTTP response.
-
-    HTTP Method:
-      GET - Expects the report ID as a URL parameter.
-
-    Responses:
-      200: Returns the PDF file as an attachment if the report is found.
-      404: Returns an error response if the report does not exist.
+    API view for generating a PDF report for an authenticated user using xhtml2pdf.
     """
     permission_classes = [IsAuthenticated]
 
@@ -243,22 +288,25 @@ class GenerateReportPDF(APIView):
             "full_name": f"{report.user.first_name} {report.user.last_name}",
             "age": f"{report.user.age} years",
             "gender": "Male" if report.user.gender == 'M' else "Female",
-
-            "radiology_modality": report.model.radio_detail.radio_mod.name ,
+            "radiology_modality": report.model.radio_detail.radio_mod.name,
             "anatomical_region": report.model.radio_detail.body_ana.name,
-
             "reported_on": report.report_date.strftime("%d %b %Y - %I:%M %p"),
             "report_details": report.report_details,
         }
         template = get_template('pdf/pdf_template.html')
-
         html_content = template.render(context)
-        pdf_file = HTML(string=html_content).write_pdf()
 
-        pdf_stream = io.BytesIO(pdf_file)
+        # Create PDF
+        pdf_stream = BytesIO()
+        # pisa.CreatePDF(src, dest)
+        result = pisa.CreatePDF(src=html_content, dest=pdf_stream)
+        if result.err:
+            return Response({"error": "Error generating PDF."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+        pdf_stream.seek(0)
         response = FileResponse(pdf_stream, content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename="{report.title}.pdf"'
+        filename = f"{report.title.replace(' ', '_')}.pdf"
+        response['Content-Disposition'] = f'attachment; filename="{filename}"'
         return response
 
 
