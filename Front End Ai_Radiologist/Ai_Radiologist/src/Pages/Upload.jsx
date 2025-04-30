@@ -303,7 +303,7 @@ const Upload = () => {
                     positions.
                   </p>
 
-                  <h5 className="text-info mt-4">Results</h5>
+                  <h5 style={{color:"red"}} className="mt-4">Results</h5>
                   <p>{formData.predictionResult}</p>
 
                   <h5 className="text-info mt-4">Clinical Interpretation</h5>

@@ -12,11 +12,12 @@ import Sidebar from "../Components/Sidebar";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import { useAuth } from "../context/AuthContext";
+import { BASE_URL } from "../config";
 //Importing Libraries//
 
 //Defining Constants and Schema//
-const API_URL = "http://127.0.0.1:8000/api/v1/auth/registration/";
-const CHECK_EMAIL_URL = "http://127.0.0.1:8000/api/v1/auth/check-email/";
+const API_URL = `${BASE_URL}/auth/registration/`;
+const CHECK_EMAIL_URL = `${BASE_URL}/auth/check-email/`;
 
 const schema = yup.object().shape({
   first_name: yup
@@ -127,7 +128,9 @@ const Registration = () => {
 
       if (response.status === 201 || response.status === 200) {
         localStorage.setItem("token", response.data.token);
-        localStorage.setItem(`${response.data.first_name} ${response.data.last_name}`
+        localStorage.setItem(
+          "user_fullname",
+          `${response.data.first_name} ${response.data.last_name}`
         );
 
         Swal.fire({

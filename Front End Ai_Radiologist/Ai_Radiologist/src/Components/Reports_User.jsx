@@ -5,9 +5,11 @@ import Swal from "sweetalert2";
 import ReportModal from "../modals/ReportModal";
 import "../assets/Styling/Reports_User.css";
 import { useAuth } from "../context/AuthContext";
+ import {BASE_URL} from '../config'
 
-const API_URL = "http://127.0.0.1:8000/api/v1/user/reports/";
-const REPORT_API = "http://127.0.0.1:8000/api/v1/admin/users/reports/";
+
+const API_URL = `${BASE_URL}/user/reports/`;
+const REPORT_API = `${BASE_URL}/user/reports/`;
 
 const Reports_User = () => {
   const [radiologyData, setRadiologyData] = useState([]);

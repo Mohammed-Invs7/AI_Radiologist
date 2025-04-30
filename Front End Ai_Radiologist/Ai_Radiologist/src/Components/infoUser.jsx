@@ -5,7 +5,7 @@ import { useState , useEffect } from 'react';
  
 const InfoUser = () => {
 
-    const [user, setUser] = useState({ username: null, profilePic: null });
+    const [user, setUser] = useState({ name: null, profilePic: null });
 
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem("user"));
