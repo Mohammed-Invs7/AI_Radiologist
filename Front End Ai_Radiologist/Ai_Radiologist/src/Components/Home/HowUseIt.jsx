@@ -1,49 +1,95 @@
-import '../../assets/Styling/HowUseIt.css'
+import Image2 from "../../assets/images/Vector 1 copy.png";
+import Image3 from "../../assets/images/Vector 2 copy.png";
+import Image4 from "../../assets/images/Vector 3 copy.png";
 
 const HowUseIt = () => {
   return (
-    <div className="steps-wrapper text-center py-5">
-      <h2 className="fw-bold text-primary">How Use it</h2>
-      <p className="text-muted">
-        Get accurate reports with simplified summaries tailored to your needs.
-      </p>
-
-      <div className="circle-center"></div>
-
-      <div className="step-box step-1">
-        <div className="icon">
-          <i className="bx bx-user-plus"></i>
-        </div>
-        <div>Registering on the Website</div>
+    <div className="justify-content-center d-flex align-items-center flex-column">
+      <div className="m-5 text-center ">
+        <h4 style={{ fontWeight: "700", fontSize: "40px", color: "#2C9E84" }}>
+          How Use it
+        </h4>
+        <p style={{ color: "rgba(0, 0, 0, 0.31)" }}>
+          Get accurate reports with simplified summaries tailored to your needs.
+        </p>
       </div>
-
-      <div className="step-box step-2">
-        <div className="icon">
-          <i className="bx bx-upload"></i>
+      <div className="justify-content-center d-flex align-items-center">
+        <div className="card align-items-center" style={{ width: "18rem" }}>
+          <div
+            style={{
+              width: "100px",
+              height: "100px",
+              borderRadius: "50%",
+              background: "black",
+            }}
+          ></div>
+          <div className="card-body">
+            <p className="card-text">
+              Some quick example text to build on the card title and make up the
+              bulk of the card's content.
+            </p>
+          </div>
         </div>
-        <div>Upload Your Image</div>
+        <img src={Image2} alt="" />
       </div>
-
-      <div className="step-box step-3">
-        <div className="icon">
-          <i className="bx bx-search-alt-2"></i>
+      <div className="justify-content-center d-flex align-items-center">
+        <div className="card align-items-center" style={{ width: "18rem" }}>
+          <div
+            style={{
+              width: "100px",
+              height: "100px",
+              borderRadius: "50%",
+              background: "black",
+            }}
+          ></div>
+          <div className="card-body">
+            <p className="card-text">
+              Some quick example text to build on the card title and make up the
+              bulk of the card's content.
+            </p>
+          </div>
         </div>
-        <div>Scan your X-ray.</div>
+        <img src={Image2} alt="" />
       </div>
-
-      <div className="step-box step-4">
-        <div className="icon">
-          <i className="bx bx-printer"></i>
+      <div className="justify-content-center d-flex align-items-center">
+        <div className="card align-items-center" style={{ width: "18rem" }}>
+          <div
+            style={{
+              width: "100px",
+              height: "100px",
+              borderRadius: "50%",
+              background: "black",
+            }}
+          ></div>
+          <div className="card-body">
+            <p className="card-text">
+              Some quick example text to build on the card title and make up the
+              bulk of the card's content.
+            </p>
+          </div>
         </div>
-        <div>Printing the Report</div>
+        <img src={Image2} alt="" />
       </div>
-
-      <div className="arrow arrow-1">↘</div>
-      <div className="arrow arrow-2">↘</div>
-      <div className="arrow arrow-3">↙</div>
-      <div className="arrow arrow-4">↖</div>
+      <div className="justify-content-center d-flex align-items-center">
+        <div className="card align-items-center" style={{ width: "18rem" }}>
+          <div
+            style={{
+              width: "100px",
+              height: "100px",
+              borderRadius: "50%",
+              background: "black",
+            }}
+          ></div>
+          <div className="card-body">
+            <p className="card-text">
+              Some quick example text to build on the card title and make up the
+              bulk of the card's content.
+            </p>
+          </div>
+        </div>
+        <img src={Image2} alt="" />
+      </div>
     </div>
   );
 };
-
 export default HowUseIt;
