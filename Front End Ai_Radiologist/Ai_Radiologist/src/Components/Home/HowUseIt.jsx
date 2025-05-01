@@ -1,93 +1,70 @@
-import Image2 from "../../assets/images/Vector 1 copy.png";
-import Image3 from "../../assets/images/Vector 2 copy.png";
-import Image4 from "../../assets/images/Vector 3 copy.png";
+import "../../assets/Styling/HowUseIt.css";
+import Image1 from "../../assets/Images/website.png";
+import Image2 from "../../assets/Images/image.png";
+import Image3 from "../../assets/Images/x-ray-test.png";
+import Image4 from "../../assets/Images/radiology (1).png";
+
 
 const HowUseIt = () => {
   return (
-    <div className="justify-content-center d-flex align-items-center flex-column">
-      <div className="m-5 text-center ">
-        <h4 style={{ fontWeight: "700", fontSize: "40px", color: "#2C9E84" }}>
-          How Use it
-        </h4>
-        <p style={{ color: "rgba(0, 0, 0, 0.31)" }}>
-          Get accurate reports with simplified summaries tailored to your needs.
-        </p>
-      </div>
-      <div className="justify-content-center d-flex align-items-center">
-        <div className="card align-items-center" style={{ width: "18rem" }}>
-          <div
-            style={{
-              width: "100px",
-              height: "100px",
-              borderRadius: "50%",
-              background: "black",
-            }}
-          ></div>
-          <div className="card-body">
-            <p className="card-text">
-              Some quick example text to build on the card title and make up the
-              bulk of the card's content.
-            </p>
-          </div>
+    
+    <div className="ps-timeline-sec">
+      <div className="justify-content-center d-flex align-items-center flex-column">
+        <div className=" text-center ">
+          <h2 className="text-center mb-4 fw-bold">How Use it</h2>
+          <p style={{ color: "rgba(0, 0, 0, 0.31)" }}>
+            Get accurate reports with simplified summaries tailored to your
+            needs.
+          </p>
         </div>
-        <img src={Image2} alt="" />
-      </div>
-      <div className="justify-content-center d-flex align-items-center">
-        <div className="card align-items-center" style={{ width: "18rem" }}>
-          <div
-            style={{
-              width: "100px",
-              height: "100px",
-              borderRadius: "50%",
-              background: "black",
-            }}
-          ></div>
-          <div className="card-body">
-            <p className="card-text">
-              Some quick example text to build on the card title and make up the
-              bulk of the card's content.
-            </p>
-          </div>
+        <div className="container ">
+          <ol className="ps-timeline">
+            <li>
+              <div className="img-handler-top">
+                <img src={Image1} alt="" />
+              </div>
+              <div className="ps-bot">
+                <strong>Create Your Account</strong> Easily register to access
+                personalized radiology services{" "}
+              </div>
+              <span className="ps-sp-top">01</span>
+            </li>
+
+            <li>
+              <div className="img-handler-bot">
+                <img src={Image2} alt="" />
+              </div>
+              <div className="ps-top">
+                <strong>Upload Your Radiology Image</strong> Securely upload
+                your X-ray or medical imaging file for analysis
+              </div>
+              <span className="ps-sp-bot">02</span>
+            </li>
+
+            <li>
+              <div className="img-handler-top">
+                <img src={Image3} alt="" />
+              </div>
+              <div className="ps-bot">
+                <strong>AI-Powered Image Analysis</strong> Let our advanced AI
+                scan and interpret your radiology image with precision.
+              </div>
+              <span className="ps-sp-top">03</span>
+            </li>
+
+            <li>
+              <div className="img-handler-bot">
+                <img src={Image4} alt="" />
+              </div>
+              <div className="ps-top">
+                <strong>Generate and Print Your Report</strong> Receive a
+                detailed report with key insights—ready to view, download, or
+                print.
+              </div>
+              <span className="ps-sp-bot">04</span>
+            </li>
+          </ol>
         </div>
-        <img src={Image2} alt="" />
-      </div>
-      <div className="justify-content-center d-flex align-items-center">
-        <div className="card align-items-center" style={{ width: "18rem" }}>
-          <div
-            style={{
-              width: "100px",
-              height: "100px",
-              borderRadius: "50%",
-              background: "black",
-            }}
-          ></div>
-          <div className="card-body">
-            <p className="card-text">
-              Some quick example text to build on the card title and make up the
-              bulk of the card's content.
-            </p>
-          </div>
-        </div>
-        <img src={Image2} alt="" />
-      </div>
-      <div className="justify-content-center d-flex align-items-center">
-        <div className="card align-items-center" style={{ width: "18rem" }}>
-          <div
-            style={{
-              width: "100px",
-              height: "100px",
-              borderRadius: "50%",
-              background: "black",
-            }}
-          ></div>
-          <div className="card-body">
-            <p className="card-text">
-              Some quick example text to build on the card title and make up the
-              bulk of the card's content.
-            </p>
-          </div>
-        </div>
-        <img src={Image2} alt="" />
       </div>
     </div>
   );
