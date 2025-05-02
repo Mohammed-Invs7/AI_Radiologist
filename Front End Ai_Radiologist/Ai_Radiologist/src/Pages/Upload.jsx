@@ -120,8 +120,14 @@ const Upload = () => {
   const handleDownloadPDF = () => {
     const element = document.getElementById("report-content");
 
-    const buttons = document.querySelectorAll(".no-print");
-    buttons.forEach((btn) => (btn.style.display = "none"));
+    const buttons = element.querySelectorAll(".no-print");
+
+    const removedElements = [];
+
+    buttons.forEach((btn) => {
+      removedElements.push(btn);
+      btn.parentNode.removeChild(btn);
+    });
 
     const options = {
       margin: 0.5,
@@ -129,6 +135,7 @@ const Upload = () => {
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 2 },
       jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+      pagebreak: { mode: ["avoid-all", "css", "legacy"] },
     };
 
     html2pdf()
@@ -136,9 +143,15 @@ const Upload = () => {
       .from(element)
       .save()
       .then(() => {
-        buttons.forEach((btn) => (btn.style.display = "flex"));
+        const buttonContainer = document.createElement("div");
+        buttonContainer.className =
+          "d-flex justify-content-center gap-3 mt-4 no-print";
+        removedElements.forEach((btn) => buttonContainer.appendChild(btn));
+        element.appendChild(buttonContainer);
       });
   };
+
+
 
   return (
     <div>

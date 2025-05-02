@@ -1,11 +1,9 @@
 .ps-timeline-sec {
   background: #fff;
 }
-.ps-timeline-sec .container {
-}
+
 @media screen and (max-width: 767px) {
   .ps-timeline-sec .container ol:before {
-    background: #348e80;
     content: "";
     width: 10px;
     height: 10px;
