@@ -69,13 +69,21 @@ const Admin_Sidebar = () => {
           <span>Files</span>
         </Link>
 
-        {/* <Link
-          to="/AdminPanel/radiology-details"
+        <Link
+          to="/AdminPanel/Modalities Admin"
           className="list-group-item d-flex align-items-center text-center"
         >
-          <i className="bx bx-detail fs-4 me-2"></i>
-          <span>Radiology Details</span>
-        </Link> */}
+          <i className="bx bx-search-alt-2 fs-4 me-2"></i>
+          <span>Modalities</span>
+        </Link>
+
+        <Link
+          to="/AdminPanel/Anatomies Admin"
+          className="list-group-item d-flex align-items-center text-center"
+        >
+          <i className="bx bx-body fs-4 me-2"></i>
+          <span>Anatomies</span>
+        </Link>
 
         <Link
           to="/AdminPanel/Reports Admin"
@@ -84,14 +92,6 @@ const Admin_Sidebar = () => {
           <i className="bx bx-detail fs-4 me-2"></i>
           <span>Reports</span>
         </Link>
-
-        {/* <Link
-          to="/AdminPanel/radiology modality"
-          className="list-group-item d-flex align-items-center text-center"
-        >
-          <i className="bx bx-clinic fs-4 me-2"></i>
-          <span>Radiology Modality</span>
-        </Link> */}
 
         <button
           type="button"

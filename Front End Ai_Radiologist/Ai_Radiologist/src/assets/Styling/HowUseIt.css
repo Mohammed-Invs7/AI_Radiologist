@@ -13,7 +13,6 @@
     left: 36px !important;
   }
   .ps-timeline-sec .container ol:after {
-    background: #348e80;
     content: "";
     width: 10px;
     height: 10px;

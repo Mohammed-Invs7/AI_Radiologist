@@ -37,17 +37,20 @@ const deleteFile = async (fileId, token) => {
 const FilesAdmin = () => {
   const { token } = useAuth();
   const [files, setFiles] = useState([]);
+  const [filteredFiles, setFilteredFiles] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [showAddFile, setShowAddFile] = useState(false);
-  const [showRenameModal, setShowRenameModal] = useState(false); // ✅ جديد
-  const [selectedFile, setSelectedFile] = useState(null); // ✅ جديد
+  const [showRenameModal, setShowRenameModal] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [modelFilter, setModelFilter] = useState(""); // جديد: حقل الفلترة
   const itemsPerPage = 10;
 
   const fetchFilesData = async () => {
     try {
       const data = await fetchFiles(token);
       setFiles(data);
+      setFilteredFiles(data);
     } catch (error) {}
   };
 
@@ -116,7 +119,7 @@ const FilesAdmin = () => {
     try {
       await axios.post(
         `${API_Files}${selectedFile.id}/rename/`,
-        { new_name: newName }, // استخدم "new_name" بدلاً من "name"
+        { new_name: newName },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -131,21 +134,45 @@ const FilesAdmin = () => {
     }
   };
 
-  const filesToDisplay = files.slice(
+  const handleFilterChange = (e) => {
+    setModelFilter(e.target.value);
+    if (e.target.value === "") {
+      setFilteredFiles(files);
+    } else {
+      setFilteredFiles(
+        files.filter((file) =>
+          file.model_name.toLowerCase().includes(e.target.value.toLowerCase())
+        )
+      );
+    }
+  };
+
+  const filesToDisplay = filteredFiles.slice(
     currentPage * itemsPerPage,
     (currentPage + 1) * itemsPerPage
   );
 
   return (
-    <div className="container py-4">
+    <div className="container-fluid p-0">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h4 className="fw-bold">Files Model</h4>
-        <button
+        {/* <button
           className="btn btn-primary"
           onClick={() => setShowAddFile(true)}
         >
           Add File
-        </button>
+        </button> */}
+      </div>
+
+      {/* Add Filter Input */}
+      <div className="mb-3">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Filter by model name..."
+          value={modelFilter}
+          onChange={handleFilterChange}
+        />
       </div>
 
       {/* Table - Desktop */}
@@ -154,7 +181,7 @@ const FilesAdmin = () => {
           <thead className="table-dark text-center align-middle">
             <tr>
               <th>#</th>
-              <th>Num Model</th>
+              {/* <th>Num Model</th> */}
               <th>Model Name</th>
               <th>File Name</th>
               <th>Uploaded</th>
@@ -165,7 +192,7 @@ const FilesAdmin = () => {
             {filesToDisplay.map((file, idx) => (
               <tr key={file.id}>
                 <td>{idx + 1 + currentPage * itemsPerPage}</td>
-                <td>{file.model}</td>
+                {/* <td>{file.model}</td> */}
                 <td>{file.model_name}</td>
                 <td>{file.file.split("/").pop()}</td>
                 <td>{new Date(file.uploaded).toLocaleString()}</td>
@@ -258,7 +285,7 @@ const FilesAdmin = () => {
 
       {/* Pagination */}
       <ReactPaginate
-        pageCount={Math.ceil(files.length / itemsPerPage)}
+        pageCount={Math.ceil(filteredFiles.length / itemsPerPage)}
         onPageChange={handlePageClick}
         containerClassName="pagination justify-content-center mt-4"
         pageClassName="page-item"

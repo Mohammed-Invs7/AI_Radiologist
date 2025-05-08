@@ -18,6 +18,9 @@ const UsersAdmin = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editId, setEditId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [genderFilter, setGenderFilter] = useState("All");
+  const [userTypeFilter, setUserTypeFilter] = useState("All");
 
   const [newUser, setNewUser] = useState({
     email: "",
@@ -144,7 +147,23 @@ const UsersAdmin = () => {
     }
   };
 
-  const usersToDisplay = users.slice(
+  const filteredUsers = users.filter((user) => {
+    const fullText =
+      `${user.first_name} ${user.last_name} ${user.email} ${user.gender}`.toLowerCase();
+    const search = searchTerm.toLowerCase();
+    const gender = genderFilter.toLowerCase();
+    const userType = userTypeFilter.toLowerCase();
+
+    const matchesSearch = fullText.includes(search);
+    const matchesGender =
+      gender === "all" || user.gender?.toLowerCase() === gender;
+    const matchesUserType =
+      userType === "all" || String(user.user_type).toLowerCase() === userType;
+
+    return matchesSearch && matchesGender && matchesUserType;
+  });
+
+  const usersToDisplay = filteredUsers.slice(
     currentPage * itemsPerPage,
     (currentPage + 1) * itemsPerPage
   );
@@ -175,6 +194,39 @@ const UsersAdmin = () => {
             >
               + Add User
             </button>
+          </div>
+          <div className="row mb-3 align-items-center">
+            <div className="col-md-6 mb-2">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Search by name or email..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <div className="col-md-3 mb-2">
+              <select
+                className="form-select"
+                value={genderFilter}
+                onChange={(e) => setGenderFilter(e.target.value)}
+              >
+                <option value="All">All Genders</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+              </select>
+            </div>
+            <div className="col-md-3 mb-2">
+              <select
+                className="form-select"
+                value={userTypeFilter}
+                onChange={(e) => setUserTypeFilter(e.target.value)}
+              >
+                <option value="All">All User Types</option>
+                <option value="admin">Admin</option>
+                <option value="user">User</option>
+              </select>
+            </div>
           </div>
 
           <div className="d-none d-lg-block">
@@ -279,7 +331,7 @@ const UsersAdmin = () => {
           </div>
 
           <ReactPaginate
-            pageCount={Math.ceil(users.length / itemsPerPage)}
+            pageCount={Math.ceil(filteredUsers.length / itemsPerPage)}
             onPageChange={handlePageClick}
             containerClassName="pagination justify-content-center mt-4"
             pageClassName="page-item"

@@ -11,14 +11,22 @@ import { useForm } from "react-hook-form";
 import { BASE_URL } from "../../config";
 
 const API_MODELS = `${BASE_URL}/admin/ai_models/models/`;
+const API_SEL = `${BASE_URL}/admin/ai_models/radio-options/`;
 
 const ModelsAdmin = () => {
   const { token } = useAuth();
   const [models, setModels] = useState([]);
+  const [filteredModels, setFilteredModels] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [modalitiesFilter, setModalitiesFilter] = useState("all");
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editId, setEditId] = useState(null);
   const [currentModel, setCurrentModel] = useState({});
+  const [regionFilter, setRegionFilter] = useState("all");
+  const [modalitiesWithRegions, setModalitiesWithRegions] = useState([]);
+
   const {
     register,
     handleSubmit,
@@ -30,7 +38,69 @@ const ModelsAdmin = () => {
 
   useEffect(() => {
     fetchModels();
+    fetchModalitiesWithRegions();
   }, []);
+
+  const fetchModalitiesWithRegions = async () => {
+    try {
+      const res = await axios.get(API_SEL, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setModalitiesWithRegions(res.data);
+    } catch (error) {
+      console.error("Error fetching modalities with regions:", error);
+    }
+  };
+  const selectedRegions =
+    modalitiesWithRegions.find(
+      (item) => item.modality.id === parseInt(modalitiesFilter)
+    )?.regions || [];
+
+  useEffect(() => {
+    filterModels();
+  }, [models, searchTerm, statusFilter, modalitiesFilter, regionFilter]);
+
+  const filterModels = () => {
+    console.log("Filtering models with:", {
+      searchTerm,
+      statusFilter,
+      modalitiesFilter,
+      regionFilter,
+    });
+
+    if (modalitiesFilter === "all") {
+      setRegionFilter("all");
+    }
+
+    let filtered = models.filter((model) => {
+      const searchMatch =
+        model.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        model.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (model.modalities?.name || "")
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        (model.anatomies?.name || "")
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
+
+      const statusMatch =
+        statusFilter === "all" ||
+        (statusFilter === "active" && model.active_status) ||
+        (statusFilter === "inactive" && !model.active_status);
+
+      const modalityMatch =
+        modalitiesFilter === "all" ||
+        model.modalities?.id === parseInt(modalitiesFilter);
+
+      const regionMatch =
+        regionFilter === "all" ||
+        model.anatomies?.id === parseInt(regionFilter);
+
+      return searchMatch && statusMatch && modalityMatch && regionMatch;
+    });
+
+    setFilteredModels(filtered);
+  };
 
   const fetchModels = async () => {
     try {
@@ -109,7 +179,7 @@ const ModelsAdmin = () => {
       );
       toast.success("Model updated successfully.");
       setShowEditModal(false);
-      fetchModels(); // لتحديث الجدول بعد التعديل
+      fetchModels();
     } catch (error) {
       console.error(
         "Error updating model:",
@@ -147,7 +217,7 @@ const ModelsAdmin = () => {
     }
   };
 
-  const modelsToDisplay = models.slice(
+  const modelsToDisplay = filteredModels.slice(
     currentPage * itemsPerPage,
     (currentPage + 1) * itemsPerPage
   );
@@ -156,7 +226,7 @@ const ModelsAdmin = () => {
     <div className="container-fluid p-0">
       <ToastContainer />
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h4 className="fw-bold ">Models</h4>
+        <h4 className="fw-bold">Models</h4>
 
         <button
           className="btn btn-primary"
@@ -164,6 +234,60 @@ const ModelsAdmin = () => {
         >
           + Add Model
         </button>
+      </div>
+
+      {/* Search and Filters */}
+      <div className="row mb-3">
+        <div className="col-5 mb-2">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Search models..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        <div className="col-2 mb-2">
+          <select
+            className="form-select"
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
+            <option value="all">All Statuses</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+        <div className="col-2 mb-2">
+          <select
+            className="form-select"
+            value={modalitiesFilter}
+            onChange={(e) => setModalitiesFilter(e.target.value)}
+          >
+            <option value="all">All Modalities</option>
+            {modalitiesWithRegions.map((item) => (
+              <option key={item.modality.id} value={item.modality.id}>
+                {item.modality.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="col-2 mb-2">
+          {" "}
+          <select
+            className="form-select"
+            value={regionFilter}
+            onChange={(e) => setRegionFilter(e.target.value)}
+          >
+            <option value="all">All Regions</option>
+            {modalitiesFilter !== "all" &&
+              selectedRegions.map((region) => (
+                <option key={region.id} value={region.id}>
+                  {region.name}
+                </option>
+              ))}
+          </select>
+        </div>
       </div>
 
       {/* TABLE FOR DESKTOP */}
@@ -270,7 +394,7 @@ const ModelsAdmin = () => {
       </div>
 
       <ReactPaginate
-        pageCount={Math.ceil(models.length / itemsPerPage)}
+        pageCount={Math.ceil(filteredModels.length / itemsPerPage)}
         onPageChange={handlePageClick}
         containerClassName="pagination justify-content-center mt-4"
         pageClassName="page-item"

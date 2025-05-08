@@ -68,7 +68,7 @@ const EditNameModal = ({
                 </button>
                 <button
                   type="submit"
-                  className="btn btn-primary"
+                  className="btn btn-success"
                   disabled={loading}
                 >
                   {loading ? "Updating..." : "Update"}

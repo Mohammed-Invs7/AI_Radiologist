@@ -56,14 +56,13 @@ const EditModelModal = ({
    updatedFormData.append("radio_mod", String(currentModel.radio_mod));
    updatedFormData.append("body_ana", String(currentModel.body_ana));
 
-   // إضافة الملفات إن وجدت
    if (formData.getAll("upload_files").length > 0) {
      formData.getAll("upload_files").forEach((file) => {
        updatedFormData.append("upload_files", file);
      });
    }
 
-   onSubmit(updatedFormData); // الإرسال إلى الأب
+   onSubmit(updatedFormData);
  };
 
 
@@ -198,7 +197,7 @@ const EditModelModal = ({
 
               {/* Submit Button */}
               <div className="modal-footer">
-                <button className="btn btn-primary" type="submit">
+                <button className="btn btn-success" type="submit">
                   Save Changes
                 </button>
               </div>

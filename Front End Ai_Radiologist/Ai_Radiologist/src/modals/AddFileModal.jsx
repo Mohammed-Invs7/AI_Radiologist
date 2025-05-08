@@ -34,7 +34,7 @@ const AddFileModal = ({ show, onClose, onSubmit }) => {
                   type="file"
                   className="form-control"
                   id="file"
-                  multiple 
+                  multiple
                   onChange={(e) => setFiles(Array.from(e.target.files))}
                 />
               </div>

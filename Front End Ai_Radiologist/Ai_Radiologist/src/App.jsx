@@ -17,6 +17,8 @@ import AdminDashboard from "./Pages/pages-Admin/AdminDashboard";
 import UsersAdmin from "./Pages/pages-Admin/UsersAdmin";
 import ReportsAdmin from "./Pages/pages-Admin/ReportsAdmin";
 import Models from "./Pages/pages-Admin/ModelsAdmin";
+import ModalitiesAdmin from "./Pages/pages-Admin/ModalitiesAdmin"
+import AnatomiesAdmin from "./Pages/pages-Admin/AnatomiesAdmin"
 
 //Css//
 import "./App.css";
@@ -70,6 +72,8 @@ function App() {
               <Route path="Reports Admin" element={<ReportsAdmin />} />
               <Route path="Models Admin" element={<Models />} />
               <Route path="Files Admin" element={<FilesAdmin />} />
+              <Route path="Modalities Admin" element={<ModalitiesAdmin />} />
+              <Route path="Anatomies Admin" element={<AnatomiesAdmin />} />
             </Route>
           </Route>
         </Routes>
