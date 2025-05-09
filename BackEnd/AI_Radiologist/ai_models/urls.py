@@ -6,6 +6,7 @@ from .views import (
     AIModelViewSet,
     AIModelFileViewSet,
     AdminRadiologyOptionsView,
+    RadiologyDetailsViewSet,
 )
 
 router = DefaultRouter()
@@ -13,6 +14,7 @@ router.register('modalities', RadiologyModalityViewSet)
 router.register('anatomies',  BodyAnatomicalRegionViewSet)
 router.register('models',     AIModelViewSet)
 router.register('model-files',AIModelFileViewSet)
+router.register(r'radiology-details', RadiologyDetailsViewSet, basename='radiology-details')
 
 urlpatterns = [
     path('radio-options/', AdminRadiologyOptionsView.as_view(),   name='model-radio-details-options'),

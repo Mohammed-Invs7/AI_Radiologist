@@ -11,6 +11,7 @@ from .serializers import (
     AIModelFileRenameSerializer,
     RadiologyModalitySerializer,
     BodyAnatomicalRegionSerializer,
+    RadiologyDetailsSerializer,
 )
 import os
 from rest_framework.decorators import action
@@ -192,3 +193,19 @@ class AdminRadiologyOptionsView(APIView):
             })
 
         return Response(data)
+
+
+class RadiologyDetailsViewSet(viewsets.ModelViewSet):
+    """
+    CRUD for RadiologyDetails (links between a modality and an anatomical region).
+
+    list     GET    /radiology-details/
+    retrieve GET    /radiology-details/{id}/
+    create   POST   /radiology-details/
+    update   PUT    /radiology-details/{id}/
+    partial  PATCH  /radiology-details/{id}/
+    destroy  DELETE /radiology-details/{id}/
+    """
+    queryset         = RadiologyDetails.objects.all()
+    serializer_class = RadiologyDetailsSerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]
