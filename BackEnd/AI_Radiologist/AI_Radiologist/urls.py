@@ -88,7 +88,8 @@ urlpatterns = [
     path('api/v1/user/', include('users.urls.user_urls')),
     path('api/v1/admin/users/', include('users.urls.admin_urls')),
 
-    path('api/v1/admin/ai_models/', include('ai_models.urls'))
+    path('api/v1/admin/ai_models/', include('ai_models.urls')),
+    path('api/v1/admin/dashboard/', include('dashboard.urls'))
 
 ]
 
