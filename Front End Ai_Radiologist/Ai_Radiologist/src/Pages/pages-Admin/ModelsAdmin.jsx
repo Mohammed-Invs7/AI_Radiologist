@@ -17,7 +17,7 @@ const ModelsAdmin = () => {
   const { token } = useAuth();
   const [models, setModels] = useState([]);
   const [filteredModels, setFilteredModels] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [nameTerm, setnameTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [modalitiesFilter, setModalitiesFilter] = useState("all");
   const [showAddModal, setShowAddModal] = useState(false);
@@ -58,11 +58,11 @@ const ModelsAdmin = () => {
 
   useEffect(() => {
     filterModels();
-  }, [models, searchTerm, statusFilter, modalitiesFilter, regionFilter]);
+  }, [models, nameTerm, statusFilter, modalitiesFilter, regionFilter]);
 
   const filterModels = () => {
     console.log("Filtering models with:", {
-      searchTerm,
+      nameTerm,
       statusFilter,
       modalitiesFilter,
       regionFilter,
@@ -73,15 +73,13 @@ const ModelsAdmin = () => {
     }
 
     let filtered = models.filter((model) => {
+
       const searchMatch =
-        model.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        model.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (model.modalities?.name || "")
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase()) ||
-        (model.anatomies?.name || "")
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase());
+        model.name
+          ?.toLowerCase().
+          includes(nameTerm.toLowerCase());
+      
+
 
       const statusMatch =
         statusFilter === "all" ||
@@ -243,8 +241,8 @@ const ModelsAdmin = () => {
             type="text"
             className="form-control"
             placeholder="Search models..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            value={nameTerm}
+            onChange={(e) => setnameTerm(e.target.value)}
           />
         </div>
         <div className="col-2 mb-2">

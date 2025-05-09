@@ -13,7 +13,7 @@ import ProtectedRoute from "./context/ProtectedRoute";
 import AdminRoute from "./context/AdminRoute";
 import ForgotPassword from "./Pages/ForgotPassword";
 import ResetPassword from "./Pages/ResetPassword";
-import AdminDashboard from "./Pages/pages-Admin/AdminDashboard";
+import AdminDashboard from "./Pages/pages-Admin/Dashboard/AdminDashboard";
 import UsersAdmin from "./Pages/pages-Admin/UsersAdmin";
 import ReportsAdmin from "./Pages/pages-Admin/ReportsAdmin";
 import Models from "./Pages/pages-Admin/ModelsAdmin";
