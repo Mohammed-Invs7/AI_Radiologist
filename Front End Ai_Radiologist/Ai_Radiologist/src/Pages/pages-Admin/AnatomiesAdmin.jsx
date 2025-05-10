@@ -102,7 +102,12 @@ const AnatomiesAdmin = () => {
     <div className="container-fluid p-0">
       <ToastContainer />
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h4 className="fw-bold">Anatomical Regions</h4>
+        <h4 className="fw-bold">
+          <i className="bx bx-body me-2"
+            style={{ color: "#4c74af", fontSize: "24px" }}>
+          </i>
+          Anatomical Regions
+        </h4>
         <div className="d-flex gap-2">
           <button
             className="btn btn-primary"

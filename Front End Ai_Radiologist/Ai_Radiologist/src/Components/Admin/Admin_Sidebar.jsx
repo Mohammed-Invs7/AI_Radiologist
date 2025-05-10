@@ -41,7 +41,7 @@ const Admin_Sidebar = () => {
           to="/AdminPanel"
           className="list-group-item d-flex align-items-center text-center"
         >
-          <i className="bx bx-grid-alt fs-5 me-2"></i>
+          <i className="bx bx-bar-chart-alt-2 fs-5 me-2"></i>
           <span className="fs-5">Dashboard</span>
         </Link>
 
@@ -73,7 +73,7 @@ const Admin_Sidebar = () => {
           to="/AdminPanel/Modalities Admin"
           className="list-group-item d-flex align-items-center text-center"
         >
-          <i className="bx bx-search-alt-2 fs-4 me-2"></i>
+          <i className="bx bx-heart fs-4 me-2"></i>
           <span>Modalities</span>
         </Link>
 
@@ -83,6 +83,13 @@ const Admin_Sidebar = () => {
         >
           <i className="bx bx-body fs-4 me-2"></i>
           <span>Anatomies</span>
+        </Link>
+        <Link
+          to="/AdminPanel/RadiologyDetails Admin"
+          className="list-group-item d-flex align-items-center text-center"
+        >
+          <i className="bx bx-health fs-4 me-2"></i>
+          <span>RadiologyDetails</span>
         </Link>
 
         <Link

@@ -8,11 +8,11 @@ const AdminPanel = () => {
             <AdminNavbar />
 
             <div className="row w-100 bg-white m-0">
-                <div className="col-12 col-md-3 bg-white">
+                <div className="col-12 col-md-2 bg-white">
                     <Admin_Sidebar />
                 </div>
 
-                <div className="col-12 col-md-9">
+                <div className="col-12 col-md-10">
                     <Outlet />
                 </div>
             </div>

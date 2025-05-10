@@ -137,7 +137,13 @@ const AdminReports = () => {
 
   return (
     <div className="container-fluid p-0">
-      <h4 className="fw-bold ">Reports</h4>
+      <h4 className="fw-bold ">
+        <i
+          className="bx bx-detail me-2"
+          style={{ color: "#4c74af", fontSize: "24px" }}
+        ></i>
+        Reports
+      </h4>
       <div className="flex-grow-1 p-4">
         {/* Search and Filters */}
         <div className="row mb-3 d-flex justify-content-center">
@@ -219,7 +225,7 @@ const AdminReports = () => {
                   <th>Title</th>
                   <th>User</th>
                   <th>Modality</th>
-                  <th>Body Region</th>
+                  <th>Anatomy</th>
                   <th>Date</th>
                   <th>Actions</th>
                 </tr>

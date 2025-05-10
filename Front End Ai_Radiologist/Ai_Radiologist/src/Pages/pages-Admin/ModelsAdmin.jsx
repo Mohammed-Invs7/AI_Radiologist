@@ -224,7 +224,13 @@ const ModelsAdmin = () => {
     <div className="container-fluid p-0">
       <ToastContainer />
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h4 className="fw-bold">Models</h4>
+        <h4 className="fw-bold">
+          <i
+            className="bx bx-layer me-2"
+            style={{ color: "#4c74af", fontSize: "24px" }}
+          ></i>
+          Models
+        </h4>
 
         <button
           className="btn btn-primary"

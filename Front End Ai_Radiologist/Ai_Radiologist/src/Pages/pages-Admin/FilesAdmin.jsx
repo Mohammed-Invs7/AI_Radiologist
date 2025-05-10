@@ -155,7 +155,13 @@ const FilesAdmin = () => {
   return (
     <div className="container-fluid p-0">
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h4 className="fw-bold">Files Model</h4>
+        <h4 className="fw-bold">
+          <i
+            className="bx bx-file me-2"
+            style={{ color: "#4c74af", fontSize: "24px" }}
+          ></i>
+          Files Model
+        </h4>
         {/* <button
           className="btn btn-primary"
           onClick={() => setShowAddFile(true)}

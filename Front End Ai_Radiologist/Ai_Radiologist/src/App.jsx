@@ -17,8 +17,9 @@ import AdminDashboard from "./Pages/pages-Admin/Dashboard/AdminDashboard";
 import UsersAdmin from "./Pages/pages-Admin/UsersAdmin";
 import ReportsAdmin from "./Pages/pages-Admin/ReportsAdmin";
 import Models from "./Pages/pages-Admin/ModelsAdmin";
-import ModalitiesAdmin from "./Pages/pages-Admin/ModalitiesAdmin"
-import AnatomiesAdmin from "./Pages/pages-Admin/AnatomiesAdmin"
+import ModalitiesAdmin from "./Pages/pages-Admin/ModalitiesAdmin";
+import AnatomiesAdmin from "./Pages/pages-Admin/AnatomiesAdmin";
+import RadiologyDetailsAdmin from "./Pages/pages-Admin/RadiologyDetailsAdmin";
 
 //Css//
 import "./App.css";
@@ -74,6 +75,11 @@ function App() {
               <Route path="Files Admin" element={<FilesAdmin />} />
               <Route path="Modalities Admin" element={<ModalitiesAdmin />} />
               <Route path="Anatomies Admin" element={<AnatomiesAdmin />} />
+
+              <Route
+                path="RadiologyDetails Admin"
+                element={<RadiologyDetailsAdmin />}
+              />
             </Route>
           </Route>
         </Routes>
