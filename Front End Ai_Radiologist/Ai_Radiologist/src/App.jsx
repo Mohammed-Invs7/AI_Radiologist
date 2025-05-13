@@ -20,6 +20,7 @@ import Models from "./Pages/pages-Admin/ModelsAdmin";
 import ModalitiesAdmin from "./Pages/pages-Admin/ModalitiesAdmin";
 import AnatomiesAdmin from "./Pages/pages-Admin/AnatomiesAdmin";
 import RadiologyDetailsAdmin from "./Pages/pages-Admin/RadiologyDetailsAdmin";
+import ErrorPage from "./Pages/ErrorPage";
 
 //Css//
 import "./App.css";
@@ -82,6 +83,7 @@ function App() {
               />
             </Route>
           </Route>
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
       </AuthProvider>
     </>
