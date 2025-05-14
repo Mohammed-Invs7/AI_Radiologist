@@ -43,6 +43,7 @@ class RecentUserSerializer(serializers.Serializer):
 class RecentReportSerializer(serializers.Serializer):
     id       = serializers.IntegerField(help_text="Report primary key")
     user     = serializers.EmailField(help_text="Email of the report’s owner")
+    full_name = serializers.CharField(help_text="Owner’s full name")
     modality = serializers.CharField(help_text="Radiology modality name")
     date     = serializers.DateTimeField(help_text="When the report was created")
 

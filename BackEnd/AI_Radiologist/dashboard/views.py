@@ -186,17 +186,25 @@ class RecentReportsView(APIView):
     )
     def get(self, request):
         limit = int(request.query_params.get('limit', 10))
-        qs = Report.objects.order_by('-report_date')[:limit]
+        qs = Report.objects.order_by('-report_date').values(
+            'id',
+            'user__email',
+            'user__first_name',
+            'user__last_name',
+            'model__radio_detail__radio_mod__name',
+            'report_date'
+        )[:limit]
+
         reps = []
-        for r in qs.values(
-            'id', 'user__email', 'model__radio_detail__radio_mod__name', 'report_date'
-        ):
+        for r in qs:
             reps.append({
-                'id': r['id'],
-                'user': r['user__email'],
-                'modality': r['model__radio_detail__radio_mod__name'],
-                'date': r['report_date'],
+                'id':        r['id'],
+                'user':      r['user__email'],
+                'full_name': f"{r['user__first_name']} {r['user__last_name']}",
+                'modality':  r['model__radio_detail__radio_mod__name'],
+                'date':      r['report_date'],
             })
+
         return Response(reps)
 
 
