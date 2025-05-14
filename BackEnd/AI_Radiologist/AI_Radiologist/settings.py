@@ -231,6 +231,11 @@ DATABASES = {
         'PASSWORD': os.getenv("MYSQL_PASSWORD"),  # Replace with your MySQL password
         'HOST': os.getenv("MYSQL_HOST"),       # Replace with your database host (default is localhost)
         'PORT': os.getenv("MYSQL_PORT"),            # Replace with your database port (default is 3306)
+        'OPTIONS': {
+            'connect_timeout': 60,
+            'read_timeout': 120,
+            'write_timeout': 120,
+        },
     }
 }
 

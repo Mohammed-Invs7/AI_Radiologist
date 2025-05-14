@@ -45,8 +45,6 @@ class AdminUserCreateView(CreateAPIView):
 
     def perform_create(self, serializer):
         user = serializer.save()
-        # إنشاء سجل في جدول EmailAddress لتوثيق البريد الإلكتروني تلقائيًا
-        # تأكد من أن allauth مضاف في INSTALLED_APPS وأن SITE_ID مضبوط
         EmailAddress.objects.create(
             user=user,
             email=user.email,

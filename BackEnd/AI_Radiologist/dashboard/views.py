@@ -46,8 +46,16 @@ class DashboardSummaryView(APIView):
         )
 
         total_reports = Report.objects.count()
-        today         = timezone.now().date()
-        reports_today = Report.objects.filter(report_date__date=today).count()
+
+        today_local = timezone.localtime(timezone.now()).date()
+
+        start_of_day = datetime.combine(today_local, time.min)
+        start = timezone.make_aware(start_of_day, timezone.get_current_timezone())
+        end = start + timedelta(days=1)
+        reports_today = Report.objects.filter(
+            report_date__gte=start,
+            report_date__lt=end
+        ).count()
         reports_by_modality = (
             Report.objects
             .values(modality=F('model__radio_detail__radio_mod__name'))

@@ -116,7 +116,7 @@ class AdminUserDetailsSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             'id','email', 'first_name', 'last_name', 'gender', 'age',
-            'date_of_birth', 'join_date', 'user_type'
+            'date_of_birth', 'join_date', 'user_type', 'is_active'
         ] #'phone_number'
         read_only_fields = ['join_date', 'age']
 
