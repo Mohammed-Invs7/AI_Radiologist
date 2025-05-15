@@ -47,7 +47,8 @@ const RecentReports = () => {
           <thead>
             <tr>
               <th>ID</th>
-              <th>User</th>
+              <th>Full Name</th>
+              <th>Email</th>
               <th>Modality</th>
               <th>Date</th>
             </tr>
@@ -56,6 +57,9 @@ const RecentReports = () => {
             {reports.map((report) => (
               <tr key={report.id}>
                 <td>{report.id}</td>
+                <td className="text-truncate" style={{ maxWidth: "150px" }}>
+                  {report.full_name}
+                </td>
                 <td className="text-truncate" style={{ maxWidth: "150px" }}>
                   {report.user}
                 </td>

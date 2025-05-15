@@ -42,6 +42,7 @@ const UsersAdmin = () => {
     age: "",
     date_of_birth: "",
     user_type: "user",
+    is_active: true,
   });
 
   const [currentPage, setCurrentPage] = useState(0);
@@ -105,6 +106,7 @@ const UsersAdmin = () => {
       age: user.age,
       date_of_birth: user.date_of_birth,
       user_type: user.user_type,
+      is_active: user.is_active,
     });
     setEditId(id);
     setShowEditModal(true);
@@ -144,6 +146,28 @@ const UsersAdmin = () => {
     } catch (error) {
       console.error("Error adding user:", error);
       toast.error("Failed to add user.");
+    }
+  };
+
+  // ** دالة لتبديل حالة التفعيل (active/inactive) **
+  const handleToggleActive = async (userId, currentState) => {
+    try {
+      await axios.patch(
+        `${API_USERS}${userId}/`,
+        { is_active: !currentState },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      toast.success(
+        `User has been ${
+          !currentState ? "activated" : "deactivated"
+        } successfully.`
+      );
+      fetchUsers();
+    } catch (error) {
+      console.error("Error toggling active state:", error);
+      toast.error("Failed to update user active state.");
     }
   };
 
@@ -249,6 +273,7 @@ const UsersAdmin = () => {
                     <th>Date of Birth</th>
                     <th>User Type</th>
                     <th>Actions</th>
+                    <th>Active</th> {/* العمود الجديد */}
                   </tr>
                 </thead>
                 <tbody className="text-center align-middle">
@@ -262,6 +287,7 @@ const UsersAdmin = () => {
                       <td>{user.age}</td>
                       <td>{user.date_of_birth}</td>
                       <td>{user.user_type}</td>
+
                       <td>
                         <div className="d-flex justify-content-center gap-2">
                           <i
@@ -278,6 +304,18 @@ const UsersAdmin = () => {
                           ></i>
                         </div>
                       </td>
+                      <td>
+                        <input
+                          type="checkbox"
+                          checked={user.is_active}
+                          onChange={() =>
+                            handleToggleActive(user.id, user.is_active)
+                          }
+                          title={
+                            user.is_active ? "Deactivate user" : "Activate user"
+                          }
+                        />
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -292,7 +330,6 @@ const UsersAdmin = () => {
                   <div className="card shadow-sm">
                     <div className="card-body">
                       <p>
-                        {" "}
                         <strong>#:</strong>{" "}
                         {idx + 1 + currentPage * itemsPerPage}
                       </p>
@@ -315,6 +352,10 @@ const UsersAdmin = () => {
                       <p className="card-text">
                         <strong>UserType:</strong> {user.user_type}
                       </p>
+                      <p className="card-text">
+                        <strong>Status:</strong>{" "}
+                        {user.is_active ? "Active" : "Inactive"}
+                      </p>
                       <div className="d-flex justify-content-end gap-3">
                         <i
                           className="bx bx-edit text-warning fs-5"
@@ -328,6 +369,16 @@ const UsersAdmin = () => {
                           title="Delete"
                           style={{ cursor: "pointer" }}
                         ></i>
+                        <input
+                          type="checkbox"
+                          checked={user.is_active}
+                          onChange={() =>
+                            handleToggleActive(user.id, user.is_active)
+                          }
+                          title={
+                            user.is_active ? "Deactivate user" : "Activate user"
+                          }
+                        />
                       </div>
                     </div>
                   </div>

@@ -47,8 +47,8 @@ const RecentUsers = () => {
           <thead>
             <tr>
               <th>ID</th>
+              <th>Full Name</th>
               <th>Email</th>
-              <th>Name</th>
               <th>Join Date</th>
               <th>Type</th>
             </tr>
@@ -57,11 +57,11 @@ const RecentUsers = () => {
             {users.map((user) => (
               <tr key={user.id}>
                 <td>{user.id}</td>
-                <td className="text-truncate" style={{ maxWidth: "140px" }}>
-                  {user.email}
-                </td>
                 <td className="text-truncate" style={{ maxWidth: "100px" }}>
                   {user.first_name} {user.last_name}
+                </td>
+                <td className="text-truncate" style={{ maxWidth: "140px" }}>
+                  {user.email}
                 </td>
                 <td>{new Date(user.join_date).toLocaleString()}</td>
                 <td style={{ maxWidth: "70px" }}>{user.user_type}</td>
