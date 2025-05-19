@@ -17,6 +17,7 @@ const AnatomiesAdmin = () => {
   const [newAnatomy, setNewAnatomy] = useState("");
   const [editAnatomy, setEditAnatomy] = useState({ id: null, name: "" });
   const [showAddModal, setShowAddModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 10;
 
@@ -36,7 +37,10 @@ const AnatomiesAdmin = () => {
   };
 
   const handleAdd = async () => {
-    if (!newAnatomy.trim()) return toast.error("Name is required.");
+    if (!newAnatomy.trim()) {
+      setErrorMessage("Name is required.");
+      return false;
+    }
     try {
       await axios.post(
         API_ANATOMIES,
@@ -45,12 +49,16 @@ const AnatomiesAdmin = () => {
       );
       toast.success("Region added.");
       setNewAnatomy("");
+      setErrorMessage("");
       fetchAnatomies();
+      return true;
     } catch (error) {
       console.error("Add error:", error);
       toast.error("Failed to add region.");
+      return false;
     }
   };
+  
 
   const handleEdit = async () => {
     try {
@@ -103,9 +111,10 @@ const AnatomiesAdmin = () => {
       <ToastContainer />
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h4 className="fw-bold">
-          <i className="bx bx-body me-2"
-            style={{ color: "#4c74af", fontSize: "24px" }}>
-          </i>
+          <i
+            className="bx bx-body me-2"
+            style={{ color: "#4c74af", fontSize: "24px" }}
+          ></i>
           Anatomical Regions
         </h4>
         <div className="d-flex gap-2">
@@ -204,10 +213,17 @@ const AnatomiesAdmin = () => {
       {/* Add Modal */}
       <AddAnatomyModal
         show={showAddModal}
-        onClose={() => setShowAddModal(false)}
+        onClose={() => {
+          setShowAddModal(false);
+          setErrorMessage("");
+        }}
         onAdd={handleAdd}
         value={newAnatomy}
-        onChange={(e) => setNewAnatomy(e.target.value)}
+        onChange={(e) => {
+          setNewAnatomy(e.target.value);
+          setErrorMessage("");
+        }}
+        errorMessage={errorMessage}
       />
 
       {/* Edit Modal */}

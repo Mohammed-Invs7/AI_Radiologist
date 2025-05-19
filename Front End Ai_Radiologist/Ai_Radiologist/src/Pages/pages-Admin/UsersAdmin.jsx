@@ -149,7 +149,6 @@ const UsersAdmin = () => {
     }
   };
 
-  // ** دالة لتبديل حالة التفعيل (active/inactive) **
   const handleToggleActive = async (userId, currentState) => {
     try {
       await axios.patch(

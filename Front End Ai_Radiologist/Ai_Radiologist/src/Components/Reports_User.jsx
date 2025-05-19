@@ -5,8 +5,8 @@ import Swal from "sweetalert2";
 import ReportModal from "../modals/ReportModal";
 import "../assets/Styling/Reports_User.css";
 import { useAuth } from "../context/AuthContext";
- import {BASE_URL} from '../config'
-
+import { BASE_URL } from "../config";
+import ReactPaginate from "react-paginate";
 
 const API_URL = `${BASE_URL}/user/reports/`;
 const REPORT_API = `${BASE_URL}/user/reports/`;
@@ -17,6 +17,8 @@ const Reports_User = () => {
   const [error, setError] = useState(null);
   const [selectedReport, setSelectedReport] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 10;
   const { token } = useAuth();
 
   useEffect(() => {
@@ -27,6 +29,10 @@ const Reports_User = () => {
             Authorization: `Bearer ${token}`,
           },
         });
+        const sortedData = response.data.sort(
+          (a, b) => new Date(b.report_date) - new Date(a.report_date)
+        );
+
         setRadiologyData(response.data);
       } catch (err) {
         setError(err.message);
@@ -44,8 +50,8 @@ const Reports_User = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setSelectedReport(response.data); // Set the selected report details
-      setShowModal(true); // Show the modal with report details
+      setSelectedReport(response.data);
+      setShowModal(true);
     } catch (err) {
       setError("Error fetching report details: " + err.message);
     }
@@ -87,17 +93,23 @@ const Reports_User = () => {
     });
   };
 
+  // Pagination
+  const offset = currentPage * itemsPerPage;
+  const currentItems = radiologyData.slice(offset, offset + itemsPerPage);
+  const pageCount = Math.ceil(radiologyData.length / itemsPerPage);
+
+  const handlePageClick = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
   return (
     <div className="container">
-      
-
-      {/* Loading and Error States */}
       {loading ? (
         <p className="text-center mt-4">Loading...</p>
       ) : error ? (
         <p className="text-center mt-4 text-danger">Error: {error}</p>
-      ) : radiologyData.length > 0 ? (
-        radiologyData.map((item) => (
+      ) : currentItems.length > 0 ? (
+        currentItems.map((item) => (
           <div
             key={item.id}
             className="card p-2 my-1 d-flex flex-row align-items-center shadow-sm"
@@ -112,7 +124,6 @@ const Reports_User = () => {
             <div className="flex-grow-1">
               <h6 className="m-0 text-primary">{item.title}</h6>
               <small className="text-muted">
-                {" "}
                 {new Date(item.report_date).toLocaleDateString()}
               </small>
               <br />
@@ -129,14 +140,12 @@ const Reports_User = () => {
                 className="button btn-view"
                 onClick={() => handleViewReport(item.id)}
               >
-                {" "}
                 View
               </button>
               <button
                 className="button btn-delete"
                 onClick={() => handleDelete(item.id)}
               >
-                {" "}
                 Delete
               </button>
             </div>
@@ -148,16 +157,26 @@ const Reports_User = () => {
         </p>
       )}
 
-      {/* Pagination */}
-      <div className="d-flex justify-content-between text-muted small mt-3">
-        <p>
-          Showing {radiologyData.length} of {radiologyData.length} Reports
-        </p>
-        <div className="d-flex gap-3">
-          <button className="button button-back">Prev</button>
-          <button className="button button-next">Next</button>
-        </div>
-      </div>
+      {/* Pagination Component */}
+      {radiologyData.length > itemsPerPage && (
+        <ReactPaginate
+          previousLabel={"← Previous"}
+          nextLabel={"Next →"}
+          breakLabel={"..."}
+          pageCount={pageCount}
+          onPageChange={handlePageClick}
+          containerClassName={"pagination justify-content-center mt-4"}
+          pageClassName={"page-item"}
+          pageLinkClassName={"page-link"}
+          previousClassName={"page-item"}
+          previousLinkClassName={"page-link"}
+          nextClassName={"page-item"}
+          nextLinkClassName={"page-link"}
+          breakClassName={"page-item"}
+          breakLinkClassName={"page-link"}
+          activeClassName={"active"}
+        />
+      )}
 
       {showModal && selectedReport && (
         <ReportModal

@@ -5,12 +5,10 @@ import axios from "axios";
 import { BASE_URL } from "../../../config";
 import { useAuth } from "../../../context/AuthContext";
 
-const API_TRENDS_USERS = `${BASE_URL}/admin/dashboard/trends/users/?days=30`;
-
 const UserTrendChart = () => {
   const { token } = useAuth();
-
   const [trendData, setTrendData] = useState(null);
+  const [selectedDays, setSelectedDays] = useState(30);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -18,9 +16,12 @@ const UserTrendChart = () => {
     const fetchTrendData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(API_TRENDS_USERS, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await axios.get(
+          `${BASE_URL}/admin/dashboard/trends/users/?days=${selectedDays}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         setTrendData(response.data);
       } catch (err) {
         setError(err);
@@ -31,7 +32,7 @@ const UserTrendChart = () => {
     };
 
     fetchTrendData();
-  }, [token]);
+  }, [token, selectedDays]);
 
   if (loading)
     return <div className="text-center text-light">Loading chart...</div>;
@@ -51,7 +52,7 @@ const UserTrendChart = () => {
     labels: trendData.labels,
     datasets: [
       {
-        label: "User Registrations (Last 30 Days)",
+        label: `User Registrations (${selectedDays} Days)`,
         data: trendData.data,
         fill: true,
         backgroundColor: (ctx) => gradientFill(ctx.chart.ctx),
@@ -65,6 +66,7 @@ const UserTrendChart = () => {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         labels: {
@@ -113,16 +115,33 @@ const UserTrendChart = () => {
         color: "#fff",
       }}
     >
-      <div className="d-flex align-items-center mb-3">
-        <i
-          className="bx bx-user-plus me-2"
-          style={{ fontSize: "26px", color: "#00ffa4" }}
-        ></i>
-        <h5 style={{ margin: 0, fontWeight: "bold" }}>
-          User Registrations (Last 30 Days)
-        </h5>
+      <div className="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+        <div className="d-flex align-items-center">
+          <i
+            className="bx bx-user-plus me-2"
+            style={{ fontSize: "26px", color: "#00ffa4" }}
+          ></i>
+          <h5 style={{ margin: 0, fontWeight: "bold" }}>
+            User Registrations (Last {selectedDays} Days)
+          </h5>
+        </div>
+
+        <select
+          className="form-select form-select-sm"
+          style={{ width: "120px" }}
+          value={selectedDays}
+          onChange={(e) => setSelectedDays(Number(e.target.value))}
+        >
+          <option value={7}>Last 7 Days</option>
+          <option value={30}>Last 30 Days</option>
+          <option value={90}>Last 90 Days</option>
+        </select>
       </div>
-      <div style={{ height: "300px" }}>
+
+      <div
+        className="w-100"
+        style={{ height: "250px", maxHeight: "300px", overflowX: "auto" }}
+      >
         <Line data={data} options={options} />
       </div>
     </div>

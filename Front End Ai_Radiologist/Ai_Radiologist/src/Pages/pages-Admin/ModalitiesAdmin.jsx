@@ -17,6 +17,7 @@ const ModalitiesAdmin = () => {
   const [newModality, setNewModality] = useState("");
   const [editModality, setEditModality] = useState({ id: null, name: "" });
   const [showAddModal, setShowAddModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 10;
 
@@ -36,7 +37,10 @@ const ModalitiesAdmin = () => {
   };
 
   const handleAdd = async () => {
-    if (!newModality.trim()) return toast.error("Name is required.");
+    if (!newModality.trim()) {
+      setErrorMessage("Name is required.");
+      return false;
+    }
     try {
       await axios.post(
         API_MODALITIES,
@@ -45,7 +49,9 @@ const ModalitiesAdmin = () => {
       );
       toast.success("Modality added.");
       setNewModality("");
+      setErrorMessage("");
       fetchModalities();
+      return true;
     } catch (error) {
       console.error("Add error:", error);
       toast.error("Failed to add modality.");
@@ -204,10 +210,17 @@ const ModalitiesAdmin = () => {
 
       <AddModalitieModal
         show={showAddModal}
-        onClose={() => setShowAddModal(false)}
+        onClose={() => {
+          setShowAddModal(false);
+          setErrorMessage("");
+        }}
         onAdd={handleAdd}
         value={newModality}
-        onChange={(e) => setNewModality(e.target.value)}
+        onChange={(e) => {
+          setNewModality(e.target.value);
+          setErrorMessage("");
+        }}
+        errorMessage={errorMessage}
       />
 
       {/* Edit Modal */}

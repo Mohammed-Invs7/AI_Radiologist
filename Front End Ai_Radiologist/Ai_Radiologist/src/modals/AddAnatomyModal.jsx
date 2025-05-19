@@ -1,6 +1,13 @@
 import { motion } from "framer-motion";
 
-const AddAnatomyModal = ({ show, onClose, onAdd, value, onChange }) => {
+const AddAnatomyModal = ({
+  show,
+  onClose,
+  onAdd,
+  value,
+  onChange,
+  errorMessage,
+}) => {
   if (!show) return null;
 
   return (
@@ -26,11 +33,19 @@ const AddAnatomyModal = ({ show, onClose, onAdd, value, onChange }) => {
             </div>
             <div className="modal-body">
               <input
+                type="text"
                 className="form-control"
-                placeholder="Region name"
                 value={value}
                 onChange={onChange}
               />
+              {errorMessage && (
+                <div
+                  className="text-danger mt-1"
+                  style={{ fontSize: "0.9rem" }}
+                >
+                  {errorMessage}
+                </div>
+              )}
             </div>
             <div className="modal-footer">
               <button className="btn btn-secondary" onClick={onClose}>
@@ -38,9 +53,11 @@ const AddAnatomyModal = ({ show, onClose, onAdd, value, onChange }) => {
               </button>
               <button
                 className="btn btn-success"
-                onClick={() => {
-                  onAdd();
-                  onClose();
+                onClick={async () => {
+                  const success = await onAdd();
+                  if (success) {
+                    onClose();
+                  }
                 }}
               >
                 Add

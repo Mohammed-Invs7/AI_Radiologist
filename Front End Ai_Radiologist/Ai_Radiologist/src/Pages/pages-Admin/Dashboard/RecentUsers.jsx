@@ -20,7 +20,6 @@ const RecentUsers = () => {
           params: { limit: 10 },
         });
 
-        console.log("Recent users:", response.data);
         setUsers(response.data);
       } catch (err) {
         setError(err);
@@ -39,7 +38,8 @@ const RecentUsers = () => {
   return (
     <div>
       <h3 className="mb-4">Most Recent Users</h3>
-      <div className="table-responsive">
+
+      <div className="table-responsive d-none d-md-block">
         <table
           className="table table-bordered table-sm"
           style={{ fontSize: "14px" }}
@@ -69,6 +69,31 @@ const RecentUsers = () => {
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div className="d-block d-md-none">
+        <div className="d-flex flex-column gap-3">
+          {users.map((user) => (
+            <div key={user.id} className="card p-3 shadow-sm">
+              <div>
+                <strong>ID:</strong> {user.id}
+              </div>
+              <div>
+                <strong>Full Name:</strong> {user.first_name} {user.last_name}
+              </div>
+              <div>
+                <strong>Email:</strong> {user.email}
+              </div>
+              <div>
+                <strong>Join Date:</strong>{" "}
+                {new Date(user.join_date).toLocaleString()}
+              </div>
+              <div>
+                <strong>Type:</strong> {user.user_type}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

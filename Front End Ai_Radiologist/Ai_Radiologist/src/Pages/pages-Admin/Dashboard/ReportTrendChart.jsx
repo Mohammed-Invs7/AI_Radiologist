@@ -1,15 +1,13 @@
 import { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
-import Chart from "chart.js/auto";
 import axios from "axios";
 import { BASE_URL } from "../../../config";
 import { useAuth } from "../../../context/AuthContext";
 
-const API_TRENDS_REPORTS = `${BASE_URL}/admin/dashboard/trends/reports/?days=30`;
-
 const ReportTrendChart = () => {
   const { token } = useAuth();
   const [trendData, setTrendData] = useState(null);
+  const [selectedDays, setSelectedDays] = useState(30); // 👈 جديد
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -17,9 +15,12 @@ const ReportTrendChart = () => {
     const fetchTrendData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(API_TRENDS_REPORTS, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await axios.get(
+          `${BASE_URL}/admin/dashboard/trends/reports/?days=${selectedDays}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         setTrendData(response.data);
       } catch (err) {
         setError(err);
@@ -30,7 +31,7 @@ const ReportTrendChart = () => {
     };
 
     fetchTrendData();
-  }, [token]);
+  }, [token, selectedDays]); // 👈 التحديث عند تغيير selectedDays
 
   if (loading)
     return <div className="text-center text-light">Loading chart...</div>;
@@ -50,7 +51,7 @@ const ReportTrendChart = () => {
     labels: trendData.labels,
     datasets: [
       {
-        label: "Reports (30 Days)",
+        label: `Reports (${selectedDays} Days)`,
         data: trendData.data,
         fill: true,
         backgroundColor: (ctx) => gradientFill(ctx.chart.ctx),
@@ -64,6 +65,7 @@ const ReportTrendChart = () => {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         labels: {
@@ -112,16 +114,34 @@ const ReportTrendChart = () => {
         color: "#fff",
       }}
     >
-      <div className="d-flex align-items-center mb-3">
-        <i
-          className="bx bx-line-chart me-2"
-          style={{ fontSize: "26px", color: "#00d4ff" }}
-        ></i>
-        <h5 style={{ margin: 0, fontWeight: "bold" }}>
-          Report Trends (Last 30 Days)
-        </h5>
+      <div className="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+        <div className="d-flex align-items-center">
+          <i
+            className="bx bx-line-chart me-2"
+            style={{ fontSize: "26px", color: "#00d4ff" }}
+          ></i>
+          <h5 style={{ margin: 0, fontWeight: "bold" }}>
+            Report Trends (Last {selectedDays} Days)
+          </h5>
+        </div>
+
+        {/* 👇 عنصر اختيار الأيام */}
+        <select
+          className="form-select form-select-sm"
+          style={{ width: "120px" }}
+          value={selectedDays}
+          onChange={(e) => setSelectedDays(Number(e.target.value))}
+        >
+          <option value={7}>Last 7 Days</option>
+          <option value={30}>Last 30 Days</option>
+          <option value={90}>Last 90 Days</option>
+        </select>
       </div>
-      <div style={{ height: "300px" }}>
+
+      <div
+        className="w-100"
+        style={{ height: "250px", maxHeight: "300px", overflowX: "auto" }}
+      >
         <Line data={data} options={options} />
       </div>
     </div>

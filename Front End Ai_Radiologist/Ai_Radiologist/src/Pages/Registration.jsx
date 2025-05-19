@@ -56,6 +56,10 @@ const schema = yup.object().shape({
   date_of_birth: yup.string().required("Date of birth is required"),
 
   gender: yup.string().required("Gender is required"),
+
+  agreeToTerms: yup
+    .bool()
+    .oneOf([true], "You must agree to the terms and conditions"),
 });
 //Defining Constants and Schema//
 
@@ -178,7 +182,7 @@ const Registration = () => {
               <i className="bx bx-user"></i>
               <input
                 type="text"
-                placeholder="First Name"
+                placeholder="First Name *"
                 {...register("first_name")}
                 className={`form-control ${
                   errors.first_name ? "is-invalid" : ""
@@ -194,7 +198,7 @@ const Registration = () => {
               <i className="bx bx-user"></i>
               <input
                 type="text"
-                placeholder="Last Name"
+                placeholder="Last Name *"
                 {...register("last_name")}
                 className={`form-control ${
                   errors.last_name ? "is-invalid" : ""
@@ -210,7 +214,7 @@ const Registration = () => {
               <i className="bx bx-envelope"></i>
               <input
                 type="email"
-                placeholder="Email"
+                placeholder="Email *"
                 {...register("email")}
                 className={`form-control ${
                   errors.email
@@ -233,7 +237,7 @@ const Registration = () => {
               <i className="bx bx-lock"></i>
               <input
                 type="password"
-                placeholder="Password"
+                placeholder="Password *"
                 {...register("password")}
                 className={`form-control password ${
                   errors.password ? "is-invalid" : ""
@@ -254,7 +258,7 @@ const Registration = () => {
               <i className="bx bx-lock"></i>
               <input
                 type="password"
-                placeholder="Confirm Password"
+                placeholder="Confirm Password *"
                 {...register("password_confirm")}
                 className={`form-control password ${
                   errors.password_confirm ? "is-invalid" : ""
@@ -281,7 +285,7 @@ const Registration = () => {
 
             {/* Gender */}
             <div className="mb-3 text-start">
-              <label className="form-label">Gender</label>
+              <label className="form-label">Gender *</label>
               <div className="d-flex">
                 <div className="form-check form-check-inline">
                   <input
@@ -294,6 +298,7 @@ const Registration = () => {
                     id="male"
                     data-tooltip-id="form-tooltip"
                     data-tooltip-content={errors.gender?.message}
+                    data-tooltip-place="left"
                     onBlur={() => handleBlur("gender")}
                   />
                   <label className="form-check-label" htmlFor="male">
@@ -317,6 +322,52 @@ const Registration = () => {
                     Female
                   </label>
                 </div>
+              </div>
+              <div className="input-box terms-checkbox">
+                <input
+                  type="checkbox"
+                  id="agreeToTerms"
+                  {...register("agreeToTerms")}
+                  className={`form-check-input ${
+                    errors.agreeToTerms ? "is-invalid" : ""
+                  }`}
+                  data-tooltip-id="form-tooltip"
+                  data-tooltip-content={errors.agreeToTerms?.message}
+                  data-tooltip-place="left"
+                />
+                <label className="terms-label">
+                  I agree to the{" "}
+                  <span
+                    className="terms-link"
+                    onClick={() => {
+                      Swal.fire({
+                        title: "Terms and Conditions",
+                        html: `
+                          <p>By using this service, you agree to the following:</p>
+                          <ul style="text-align: left;" >
+                            <li><Strong>1-</Strong> Developers will have access to user reports to improve and analyze the service.</li>
+                            <li><Strong>2-</Strong> Your medical data will be used only for diagnostic purposes and X-ray analysis and will not be shared with third parties without your permission.</li>
+                            <li><Strong>3-</Strong> This service does not replace professional medical examination; you should always consult a qualified physician.</li>
+                            <li><Strong>4-</Strong> We maintain the confidentiality of your data and adhere to privacy protection standards.</li>
+                            <li><Strong>5-</Strong> Your data may be used anonymously to improve AI technologies within the service.</li>
+                            <li><Strong>6-</Strong> You are responsible for the accuracy of the information you provide during registration and use of the service.</li>
+                          </ul>
+                          <p>If you do not agree with these terms, please do not use the service.</p>
+                      `,
+                        icon: "info",
+                        confirmButtonText: "Close",
+                        width: 600,
+                      });
+                    }}
+                    style={{
+                      color: "blue",
+                      textDecoration: "underline",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Terms
+                  </span>
+                </label>
               </div>
             </div>
 

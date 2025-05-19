@@ -7,7 +7,7 @@ import Image1 from "../assets/Images/image-upload.png";
 import "../assets/Styling/Upload.css";
 import NavBar from "../Components/NavBar";
 import { useAuth } from "../context/AuthContext";
-import html2pdf from "html2pdf.js";
+// import html2pdf from "html2pdf.js";
 import { BASE_URL } from "../config";
 
 const API_CREATE_REPORT = `${BASE_URL}/user/reports/create/`;
@@ -17,6 +17,8 @@ const Upload = () => {
 
   const [radioOptions, setRadioOptions] = useState([]);
   const [loadingOptions, setLoadingOptions] = useState(true);
+  
+
 
   const [formData, setFormData] = useState({
     file1: null,
@@ -113,43 +115,44 @@ const Upload = () => {
     }
   };
 
-  const handleReset = () => {
-    window.location.reload();
-  };
+  // const handleReset = () => {
+  //   window.location.reload();
+  // };
 
-  const handleDownloadPDF = () => {
-    const element = document.getElementById("report-content");
+  // const handleDownloadPDF = () => {
+  //   const element = document.getElementById("report-content");
 
-    const buttons = element.querySelectorAll(".no-print");
+  //   const buttons = element.querySelectorAll(".no-print");
 
-    const removedElements = [];
+  //   const removedElements = [];
 
-    buttons.forEach((btn) => {
-      removedElements.push(btn);
-      btn.parentNode.removeChild(btn);
-    });
+  //   buttons.forEach((btn) => {
+  //     removedElements.push(btn);
+  //     btn.parentNode.removeChild(btn);
+  //   });
 
-    const options = {
-      margin: 0.5,
-      filename: "medical_report.pdf",
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
-      pagebreak: { mode: ["avoid-all", "css", "legacy"] },
-    };
+  //   const options = {
+  //     margin: 0.5,
+  //     filename: "medical_report.pdf",
+  //     image: { type: "jpeg", quality: 0.98 },
+  //     html2canvas: { scale: 2 },
+  //     jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+  //     pagebreak: { mode: ["avoid-all", "css", "legacy"] },
+  //   };
 
-    html2pdf()
-      .set(options)
-      .from(element)
-      .save()
-      .then(() => {
-        const buttonContainer = document.createElement("div");
-        buttonContainer.className =
-          "d-flex justify-content-center gap-3 mt-4 no-print";
-        removedElements.forEach((btn) => buttonContainer.appendChild(btn));
-        element.appendChild(buttonContainer);
-      });
-  };
+  //   html2pdf()
+  //     .set(options)
+  //     .from(element)
+  //     .save()
+  //     .then(() => {
+  //       const buttonContainer = document.createElement("div");
+  //       buttonContainer.className =
+  //         "d-flex justify-content-center gap-3 mt-4 no-print";
+  //       removedElements.forEach((btn) => buttonContainer.appendChild(btn));
+  //       element.appendChild(buttonContainer);
+  //     });
+  // };
+  
 
 
 
@@ -343,9 +346,15 @@ const Upload = () => {
                 </div>
               </div>
             </div>
+            <p
+              className="text-muted text-center mt-3"
+              style={{ fontSize: "0.9rem" }}
+            >
+              You can download this report later from your profile .
+            </p>
 
             {/* Buttons */}
-            <div className="d-flex justify-content-center gap-3 mt-4 no-print">
+            {/* <div className="d-flex justify-content-center gap-3 mt-4 no-print">
               <button className="btn btn-success" onClick={handleDownloadPDF}>
                 <i className="bi bi-download me-2"></i>Download Report
               </button>
@@ -355,7 +364,7 @@ const Upload = () => {
               >
                 <i className="bi bi-upload me-2"></i>Upload New Image
               </button>
-            </div>
+            </div> */}
           </div>
         )}
       </div>
