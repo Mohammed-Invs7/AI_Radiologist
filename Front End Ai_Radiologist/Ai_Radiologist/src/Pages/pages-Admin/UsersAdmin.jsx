@@ -273,7 +273,7 @@ const UsersAdmin = () => {
                     <th>Date of Birth</th>
                     <th>User Type</th>
                     <th>Actions</th>
-                    <th>Active</th> {/* العمود الجديد */}
+                    <th>Active</th>
                   </tr>
                 </thead>
                 <tbody className="text-center align-middle">

@@ -4,7 +4,7 @@ import axios from "axios";
  import {BASE_URL} from '../config'
 
 const AuthContext = createContext();
-const API_TOKEN = `${BASE_URL}/auth/token/refresh/ `;
+const API_TOKEN = `${BASE_URL}/auth/token/refresh/`;
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
