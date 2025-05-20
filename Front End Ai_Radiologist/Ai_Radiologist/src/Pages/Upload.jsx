@@ -17,8 +17,6 @@ const Upload = () => {
 
   const [radioOptions, setRadioOptions] = useState([]);
   const [loadingOptions, setLoadingOptions] = useState(true);
-  
-
 
   const [formData, setFormData] = useState({
     file1: null,
@@ -152,9 +150,6 @@ const Upload = () => {
   //       element.appendChild(buttonContainer);
   //     });
   // };
-  
-
-
 
   return (
     <div>

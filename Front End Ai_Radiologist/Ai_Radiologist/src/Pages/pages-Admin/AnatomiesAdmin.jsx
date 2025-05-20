@@ -58,7 +58,6 @@ const AnatomiesAdmin = () => {
       return false;
     }
   };
-  
 
   const handleEdit = async () => {
     try {

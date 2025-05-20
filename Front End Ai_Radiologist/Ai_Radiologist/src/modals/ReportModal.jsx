@@ -1,9 +1,13 @@
 import { motion } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import jsPDF from "jspdf";
+import { useLocation } from "react-router-dom";
 
 const ReportModal = ({ selectedReport, onClose }) => {
   const { user } = useAuth();
+
+  const location = useLocation();
+  const pathname = location.pathname;
 
   const getImageBase64 = (url) =>
     new Promise((resolve, reject) => {
@@ -55,14 +59,19 @@ const ReportModal = ({ selectedReport, onClose }) => {
     let cursorY = 30;
 
     [
-      `Name: ${user?.first_name || ""} ${user?.last_name || ""}`,
-      `Date: ${new Date(selectedReport.report_date).toLocaleDateString()}`,
+      `Name: ${
+        location.pathname.includes("/AdminPanel/Reports%20Admin")
+          ? selectedReport?.user_full_name || ""
+          : `${user?.first_name || ""} ${user?.last_name || ""}`
+      }, 
+      Date: ${new Date(selectedReport.report_date).toLocaleDateString()}`,
       `Modality: ${selectedReport.radiology_modality}`,
       `Body Region: ${selectedReport.body_anatomical_region}`,
     ].forEach((line) => {
       pdf.text(line, 15, cursorY);
       cursorY += 8;
     });
+
     cursorY += 5;
 
     if (selectedReport.image_path) {
@@ -212,9 +221,14 @@ const ReportModal = ({ selectedReport, onClose }) => {
               <p>
                 <strong>Title:</strong> {selectedReport.title}
               </p>
+
               <p>
-                <strong>Name:</strong> {user?.first_name} {user?.last_name}
+                <strong>Name:</strong>{" "}
+                {pathname.includes("/AdminPanel/Reports%20Admin")
+                  ? selectedReport?.user_full_name || ""
+                  : `${user?.first_name || ""} ${user?.last_name || ""}`}
               </p>
+
               <p>
                 <strong>Modality:</strong> {selectedReport.radiology_modality}
               </p>
