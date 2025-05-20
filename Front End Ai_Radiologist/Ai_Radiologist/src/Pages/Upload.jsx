@@ -11,6 +11,7 @@ import { useAuth } from "../context/AuthContext";
 import { BASE_URL } from "../config";
 
 const API_CREATE_REPORT = `${BASE_URL}/user/reports/create/`;
+const API_FETCH_OPTIONS = `${BASE_URL}/user/reports/options/`;
 
 const Upload = () => {
   const { token, user } = useAuth();
@@ -31,12 +32,9 @@ const Upload = () => {
   useEffect(() => {
     const fetchOptions = async () => {
       try {
-        const res = await axios.get(
-          "http://127.0.0.1:8000/api/v1/user/reports/options/",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const res = await axios.get(`${API_FETCH_OPTIONS}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setRadioOptions(res.data);
       } catch (err) {
         console.error("Failed to fetch radio options", err);
