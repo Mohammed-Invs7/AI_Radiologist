@@ -13,6 +13,7 @@ import { BASE_URL } from "../../config";
 const API_MODELS = `${BASE_URL}/admin/ai_models/models/`;
 const API_SEL = `${BASE_URL}/admin/ai_models/radio-options/`;
 
+
 const ModelsAdmin = () => {
   const { token } = useAuth();
   const [models, setModels] = useState([]);
@@ -73,13 +74,9 @@ const ModelsAdmin = () => {
     }
 
     let filtered = models.filter((model) => {
-
-      const searchMatch =
-        model.name
-          ?.toLowerCase().
-          includes(nameTerm.toLowerCase());
-      
-
+      const searchMatch = model.name
+        ?.toLowerCase()
+        .includes(nameTerm.toLowerCase());
 
       const statusMatch =
         statusFilter === "all" ||
@@ -167,7 +164,7 @@ const ModelsAdmin = () => {
   const handleEditSubmit = async (formData) => {
     try {
       const res = await axios.patch(
-        `${BASE_URL}/admin/ai_models/models/${editId}/`,
+        `${API_MODELS}${editId}/`,
         formData,
         {
           headers: {
@@ -187,17 +184,17 @@ const ModelsAdmin = () => {
     }
   };
 
-  const handleAddSubmit = async (data) => {
+  const handleAddModel = async (data) => {
     try {
       const formData = new FormData();
-      for (const [key, value] of Object.entries(data)) {
-        if (key === "upload_files") {
-          value.forEach((file) => {
-            formData.append("upload_files", file);
-          });
-        } else {
-          formData.append(key, value);
-        }
+      formData.append("name", data.name);
+      formData.append("description", data.description);
+      formData.append("radio_mod", data.radio_mod);
+      formData.append("body_ana", data.body_ana);
+      formData.append("active_status", data.active_status);
+
+      for (let i = 0; i < data.upload_files.length; i++) {
+        formData.append("upload_files", data.upload_files[i]);
       }
 
       await axios.post(`${API_MODELS}`, formData, {
@@ -206,8 +203,9 @@ const ModelsAdmin = () => {
           "Content-Type": "multipart/form-data",
         },
       });
+
+      toast.success("Model added successfully!");
       setShowAddModal(false);
-      toast.success("Model added successfully.");
       fetchModels();
     } catch (error) {
       console.error("Error adding model:", error);
@@ -413,10 +411,10 @@ const ModelsAdmin = () => {
       <AddModelModal
         show={showAddModal}
         onClose={() => setShowAddModal(false)}
-        onSubmit={handleSubmit(handleAddSubmit)}
         handleSubmit={handleSubmit}
         register={register}
         errors={errors}
+        handleAddModel={handleAddModel}
       />
 
       <EditModelModal

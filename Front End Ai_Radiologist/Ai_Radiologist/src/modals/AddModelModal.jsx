@@ -9,9 +9,9 @@ const API_SEL = `${BASE_URL}/admin/ai_models/radio-options/`;
 const AddModelModal = ({
   show,
   onClose,
-  onSubmit,
-  handleSubmit,
+  handleAddModel,
   register,
+  handleSubmit,
   errors,
 }) => {
   const { token } = useAuth();
@@ -45,6 +45,13 @@ const AddModelModal = ({
     setSelectedRegion("");
   };
 
+  const onSubmit = async (data) => {
+    try {
+      await handleAddModel(data);
+    } catch (error) {
+      console.error("Error from parent handler:", error);
+    }
+  };
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
 
@@ -59,29 +66,26 @@ const AddModelModal = ({
   return (
     <motion.div
       className="modal show d-block"
-      tabIndex="-1"
-      style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
     >
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">Add New AI Model</h5>
+            <h5 className="modal-title">Add AI Model</h5>
             <button
               type="button"
               className="btn-close"
               onClick={onClose}
             ></button>
           </div>
-          <div className="modal-body d-flex justify-content-center">
+          <div className="modal-body">
             <form onSubmit={handleSubmit(onSubmit)}>
-              {/* Name Field */}
+              {/* Name */}
               <div className="mb-3">
                 <label className="form-label">Name</label>
                 <input
+                  type="text"
                   className="form-control"
                   {...register("name", { required: "Name is required" })}
                 />
@@ -89,21 +93,23 @@ const AddModelModal = ({
                   <p className="text-danger">{errors.name.message}</p>
                 )}
               </div>
-              {/* Description Field */}
+
+              {/* Description */}
               <div className="mb-3">
                 <label className="form-label">Description</label>
                 <textarea
                   className="form-control"
+                  rows={4}
+                  style={{ resize: "none", overflow: "hidden" }}
                   {...register("description", {
                     required: "Description is required",
-                    rows: "4",
                   })}
-                  style={{
-                    resize: "none",
-                    overflow: "hidden",
-                  }}
                 />
+                {errors.description && (
+                  <p className="text-danger">{errors.description.message}</p>
+                )}
               </div>
+
               {/* Radiology Modality */}
               <div className="mb-3">
                 <label className="form-label">Radiology Modality</label>
@@ -122,7 +128,11 @@ const AddModelModal = ({
                     </option>
                   ))}
                 </select>
+                {errors.radio_mod && (
+                  <p className="text-danger">{errors.radio_mod.message}</p>
+                )}
               </div>
+
               {/* Body Anatomy */}
               {selectedModality && (
                 <div className="mb-3">
@@ -138,8 +148,7 @@ const AddModelModal = ({
                     <option value="">Select Region</option>
                     {radioOptions
                       .find(
-                        (option) =>
-                          option.modality.id === parseInt(selectedModality)
+                        (opt) => opt.modality.id === parseInt(selectedModality)
                       )
                       ?.regions.map((region) => (
                         <option key={region.id} value={region.id}>
@@ -147,8 +156,12 @@ const AddModelModal = ({
                         </option>
                       ))}
                   </select>
+                  {errors.body_ana && (
+                    <p className="text-danger">{errors.body_ana.message}</p>
+                  )}
                 </div>
               )}
+
               {/* Active Status */}
               <div className="mb-3">
                 <label className="form-label">Active Status</label>
@@ -161,14 +174,18 @@ const AddModelModal = ({
                   <option value="true">Active</option>
                   <option value="false">Inactive</option>
                 </select>
+                {errors.active_status && (
+                  <p className="text-danger">{errors.active_status.message}</p>
+                )}
               </div>
+
               {/* Upload Files */}
               <div className="mb-3">
                 <label className="form-label">Upload Files</label>
                 <input
                   type="file"
-                  multiple
                   className="form-control"
+                  multiple
                   {...register("upload_files", {
                     required: "Files are required",
                   })}
@@ -187,7 +204,7 @@ const AddModelModal = ({
                   </div>
                 )}
               </div>
-              {/* Submit Button */}
+
               <div className="modal-footer">
                 <button type="submit" className="btn btn-success">
                   Add Model
