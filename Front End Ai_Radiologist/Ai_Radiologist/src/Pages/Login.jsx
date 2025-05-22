@@ -1,4 +1,4 @@
-import { Link, useNavigate, Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useForm } from "react-hook-form";
@@ -66,7 +66,7 @@ const Login = () => {
             ? "admin"
             : userData.user_type === 2
             ? "user"
-            : "";
+            "";
         userData.user_type = userType;
 
         await login(token, userData, refreshToken);

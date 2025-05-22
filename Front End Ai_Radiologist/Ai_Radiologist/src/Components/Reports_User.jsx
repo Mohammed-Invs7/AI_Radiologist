@@ -8,8 +8,7 @@ import { useAuth } from "../context/AuthContext";
 import { BASE_URL } from "../config";
 import ReactPaginate from "react-paginate";
 
-const API_URL = `${BASE_URL}/user/reports/`;
-const REPORT_API = `${BASE_URL}/user/reports/`;
+const API_REPORTS = `${BASE_URL}/user/reports/`;
 
 const Reports_User = () => {
   const [radiologyData, setRadiologyData] = useState([]);
@@ -24,7 +23,7 @@ const Reports_User = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(API_URL, {
+        const response = await axios.get(API_REPORTS, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -45,7 +44,7 @@ const Reports_User = () => {
 
   const handleViewReport = async (id) => {
     try {
-      const response = await axios.get(`${REPORT_API}${id}/`, {
+      const response = await axios.get(`${API_REPORTS}${id}/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -74,7 +73,7 @@ const Reports_User = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await axios.delete(`${API_URL}${id}/`, {
+          await axios.delete(`${API_REPORTS}${id}/`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
