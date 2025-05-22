@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
- import {BASE_URL} from '../config'
+import { BASE_URL } from "../config";
 
 const AuthContext = createContext();
 const API_TOKEN = `${BASE_URL}/auth/token/refresh/`;
@@ -49,10 +49,9 @@ export const AuthProvider = ({ children }) => {
 
   const refreshAccessToken = async (refreshTokenParam) => {
     try {
-      const response = await axios.post(
-        `${API_TOKEN}`,
-        { refresh: refreshTokenParam }
-      );
+      const response = await axios.post(`${API_TOKEN}`, {
+        refresh: refreshTokenParam,
+      });
       const newAccessToken = response.data.access;
       setToken(newAccessToken);
       localStorage.setItem("token", newAccessToken);

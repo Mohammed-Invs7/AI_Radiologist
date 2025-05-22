@@ -8,8 +8,7 @@ import Swal from "sweetalert2";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Sidebar from "../Components/Sidebar";
 import "../assets/Styling/Form_User.css";
- import { BASE_URL } from "../config";
-
+import { BASE_URL } from "../config";
 
 // API Endpoints
 const API_LOGIN = `${BASE_URL}/auth/login/`;
@@ -24,8 +23,7 @@ const schema = yup.object().shape({
 });
 
 const Login = () => {
-  const { token, login, loading } = useAuth();
-  const navigate = useNavigate();
+  const { token, user, login, loading } = useAuth();
 
   const {
     register,
@@ -35,12 +33,19 @@ const Login = () => {
     resolver: yupResolver(schema),
   });
 
+ 
+
   if (loading) return null;
-
-  if (token) {
-    return <Navigate to="/" />;
+  if (token && user) {
+    if (user.user_type === "admin") {
+      return <Navigate to="/AdminPanel" />;
+    } else if (user.user_type === "user") {
+      return <Navigate to="/" />;
+    } else {
+      return null;
+    }
   }
-
+  
   const onSubmit = async (data) => {
     try {
       const response = await axios.post(API_LOGIN, data, {
@@ -65,18 +70,6 @@ const Login = () => {
         userData.user_type = userType;
 
         await login(token, userData, refreshToken);
-
-        if (userType === "admin") {
-          navigate("/AdminPanel");
-        } else if (userType === "user") {
-          navigate("/Upload");
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Unknown User Type",
-            text: "Your account type is not recognized.",
-          });
-        }
       } else {
         Swal.fire({
           icon: "error",
@@ -105,7 +98,6 @@ const Login = () => {
             <div className="input-box">
               <input
                 type="email"
-                name="email"
                 placeholder="Email"
                 className="form-control"
                 {...register("email")}
@@ -119,7 +111,6 @@ const Login = () => {
             <div className="input-box">
               <input
                 type="password"
-                name="password"
                 placeholder="Password"
                 className="form-control"
                 {...register("password")}

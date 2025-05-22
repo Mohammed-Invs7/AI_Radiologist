@@ -48,15 +48,24 @@ const Upload = () => {
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
-    if (selectedFile) {
+
+    if (!selectedFile) return;
+
+    if (selectedFile.size > 5 * 1024 * 1024) {
       setFormData((prev) => ({
         ...prev,
-        file1: selectedFile,
-        imagePreview1: URL.createObjectURL(selectedFile),
-        predictionResult: null,
-        errorMessage: null,
+        errorMessage: "File size must be less than 5MB",
       }));
+      return;
     }
+
+    setFormData((prev) => ({
+      ...prev,
+      file1: selectedFile,
+      imagePreview1: URL.createObjectURL(selectedFile),
+      predictionResult: null,
+      errorMessage: null,
+    }));
   };
 
   const handleChange = (event) => {
@@ -182,7 +191,7 @@ const Upload = () => {
               id="file-input-1"
               hidden
               onChange={handleFileChange}
-              accept="image/*"
+              accept="image/jpeg,image/png"
             />
             <label htmlFor="file-input-1" className="upload-label">
               Choose File
@@ -194,6 +203,7 @@ const Upload = () => {
               value={formData.type}
               onChange={handleChange}
               className="upload-select"
+              disabled={formData.predictionResult !== null}
             >
               <option value="">
                 {loadingOptions ? "Loading modalities..." : "Select Modality"}
@@ -221,6 +231,7 @@ const Upload = () => {
                     value={formData.bodyPart}
                     onChange={handleChange}
                     className="upload-select"
+                    disabled={formData.predictionResult !== null}
                   >
                     <option value="">
                       {loadingOptions
@@ -306,9 +317,28 @@ const Upload = () => {
                 <div className="card-body">
                   <h5 className="text-primary mb-3">Technical Description</h5>
                   <p>
-                    A chest X-ray was performed using a standard X-ray machine.
-                    The chest was imaged in both anterior and posterior
-                    positions.
+                    A{" "}
+                    {
+                      radioOptions.find(
+                        (opt) => opt.modality.id === parseInt(formData.type)
+                      )?.modality.name
+                    }{" "}
+                    was performed using a standard{" "}
+                    {radioOptions
+                      .find(
+                        (opt) => opt.modality.id === parseInt(formData.type)
+                      )
+                      ?.modality.name.toLowerCase()}{" "}
+                    machine. The{" "}
+                    {radioOptions
+                      .find(
+                        (opt) => opt.modality.id === parseInt(formData.type)
+                      )
+                      ?.regions.find(
+                        (region) => region.id === parseInt(formData.bodyPart)
+                      )
+                      ?.name.toLowerCase()}{" "}
+                    was imaged in both anterior and posterior positions.
                   </p>
 
                   <h5 style={{ color: "red" }} className="mt-4">

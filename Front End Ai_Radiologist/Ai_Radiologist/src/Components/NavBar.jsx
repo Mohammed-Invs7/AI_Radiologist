@@ -27,7 +27,7 @@ const NavBar = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         logout();
-        navigate("/");
+        navigate("/Login");
         Swal.fire({
           title: "Logged out!",
           text: "You have been logged out successfully.",
