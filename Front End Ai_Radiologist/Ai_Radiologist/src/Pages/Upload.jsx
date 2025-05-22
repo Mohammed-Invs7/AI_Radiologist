@@ -1,23 +1,24 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { motion, AnimatePresence } from "framer-motion";
 import Image1 from "../assets/Images/image-upload.png";
 import "../assets/Styling/Upload.css";
 import NavBar from "../Components/NavBar";
 import { useAuth } from "../context/AuthContext";
-// import html2pdf from "html2pdf.js";
 import { BASE_URL } from "../config";
 
 const API_CREATE_REPORT = `${BASE_URL}/user/reports/create/`;
 const API_FETCH_OPTIONS = `${BASE_URL}/user/reports/options/`;
+const API_MODELS = `${BASE_URL}/admin/ai_models/models/`;
 
 const Upload = () => {
   const { token, user } = useAuth();
 
   const [radioOptions, setRadioOptions] = useState([]);
   const [loadingOptions, setLoadingOptions] = useState(true);
+  const [modelDescription, setModelDescription] = useState("");
 
   const [formData, setFormData] = useState({
     file1: null,
@@ -27,6 +28,7 @@ const Upload = () => {
     loading: false,
     predictionResult: null,
     errorMessage: null,
+    reportId: null,
   });
 
   useEffect(() => {
@@ -44,6 +46,24 @@ const Upload = () => {
     };
 
     fetchOptions();
+  }, [token]);
+
+  useEffect(() => {
+    const fetchModelDescription = async () => {
+      try {
+        const res = await axios.get(API_MODELS, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        // حسب هيكلة البيانات، نفترض أن res.data هي مصفوفة من النماذج
+        if (res.data && res.data.length > 0) {
+          setModelDescription(res.data[0].description || "");
+        }
+      } catch (error) {
+        console.error("Failed to fetch model description:", error);
+      }
+    };
+
+    fetchModelDescription();
   }, [token]);
 
   const handleFileChange = (event) => {
@@ -103,9 +123,11 @@ const Upload = () => {
         },
       });
 
+      // ✅ تحديث reportId بعد نجاح الرفع
       setFormData((prev) => ({
         ...prev,
         predictionResult: response.data.report_details,
+        reportId: response.data.id,
         loading: false,
       }));
     } catch (error) {
@@ -120,43 +142,40 @@ const Upload = () => {
     }
   };
 
-  // const handleReset = () => {
-  //   window.location.reload();
-  // };
+  const handleDownloadPDF = async () => {
+    if (!formData.reportId) {
+      toast.error("No report available to download.");
+      return;
+    }
 
-  // const handleDownloadPDF = () => {
-  //   const element = document.getElementById("report-content");
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/user/reports/${formData.reportId}/pdf/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          responseType: "blob",
+        }
+      );
 
-  //   const buttons = element.querySelectorAll(".no-print");
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "Medical_Report.pdf";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
 
-  //   const removedElements = [];
-
-  //   buttons.forEach((btn) => {
-  //     removedElements.push(btn);
-  //     btn.parentNode.removeChild(btn);
-  //   });
-
-  //   const options = {
-  //     margin: 0.5,
-  //     filename: "medical_report.pdf",
-  //     image: { type: "jpeg", quality: 0.98 },
-  //     html2canvas: { scale: 2 },
-  //     jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
-  //     pagebreak: { mode: ["avoid-all", "css", "legacy"] },
-  //   };
-
-  //   html2pdf()
-  //     .set(options)
-  //     .from(element)
-  //     .save()
-  //     .then(() => {
-  //       const buttonContainer = document.createElement("div");
-  //       buttonContainer.className =
-  //         "d-flex justify-content-center gap-3 mt-4 no-print";
-  //       removedElements.forEach((btn) => buttonContainer.appendChild(btn));
-  //       element.appendChild(buttonContainer);
-  //     });
-  // };
+      toast.success("Report downloaded successfully!");
+    } catch (error) {
+      console.error("Error downloading PDF:", error);
+      toast.error("Failed to download report.");
+    }
+  };
+  
 
   return (
     <div>
@@ -344,24 +363,22 @@ const Upload = () => {
                   <h5 style={{ color: "red" }} className="mt-4">
                     Results
                   </h5>
-                  {formData.predictionResult
-                    .split('\n')
-                    .map((line, index) => {
-                      // Try to capture "Heading:" at the start, plus the rest of the line
-                      const match = line.match(/^([^:]+:)(.*)$/);
-                      if (match) {
-                        const [, heading, rest] = match;
-                        return (
-                          <p key={index}>
-                            <strong>{heading}</strong>
-                            {rest}
-                          </p>
-                        );
-                      } else {
-                        // No leading colon-terminated heading
-                        return <p key={index}>{line}</p>;
-                      }
-                    })}
+                  {formData.predictionResult.split("\n").map((line, index) => {
+                    // Try to capture "Heading:" at the start, plus the rest of the line
+                    const match = line.match(/^([^:]+:)(.*)$/);
+                    if (match) {
+                      const [, heading, rest] = match;
+                      return (
+                        <p key={index}>
+                          <strong>{heading}</strong>
+                          {rest}
+                        </p>
+                      );
+                    } else {
+                      // No leading colon-terminated heading
+                      return <p key={index}>{line}</p>;
+                    }
+                  })}
 
                   <h5 className="text-info mt-4">Clinical Interpretation</h5>
                   <p>
@@ -376,7 +393,9 @@ const Upload = () => {
                   </ol>
 
                   <h5 className="text-info mt-4">Confidence Level</h5>
-                  <p>Approximate confidence is 70% based on AI performance.</p>
+                  <p>
+                    {modelDescription}
+                  </p>
 
                   <h5 className="text-info mt-4">Additional Notes</h5>
                   <ul>
@@ -386,25 +405,12 @@ const Upload = () => {
                 </div>
               </div>
             </div>
-            <p
-              className="text-muted text-center mt-3"
-              style={{ fontSize: "0.9rem" }}
+            <button
+              onClick={handleDownloadPDF}
+              className="btn btn-outline-primary mt-3"
             >
-              You can download this report later from your profile .
-            </p>
-
-            {/* Buttons */}
-            {/* <div className="d-flex justify-content-center gap-3 mt-4 no-print">
-              <button className="btn btn-success" onClick={handleDownloadPDF}>
-                <i className="bi bi-download me-2"></i>Download Report
-              </button>
-              <button
-                className="btn btn-outline-secondary"
-                onClick={handleReset}
-              >
-                <i className="bi bi-upload me-2"></i>Upload New Image
-              </button>
-            </div> */}
+              <i className="bi bi-download me-2"></i> Download PDF Report
+            </button>
           </div>
         )}
       </div>

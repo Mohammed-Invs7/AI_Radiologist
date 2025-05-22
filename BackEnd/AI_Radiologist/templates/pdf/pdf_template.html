@@ -1,152 +1,164 @@
-{# templates/pdf/pdf_template.html #}
-{% load static %}
-{% load static report_extras %}
+{# templates/pdf/pdf_template.html #} {% load static %} {% load static
+report_extras %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>AI Radiology Report</title>
-  <style>
-    @page { size: Letter; margin: 2cm; }
-    body { font-family: Arial, sans-serif; line-height: 1.5; }
-    .container { max-width: 800px; margin: auto; }
+  <head>
+    <meta charset="UTF-8" />
+    <title>AI Radiology Report</title>
+    <style>
+      @page {
+        size: Letter;
+        margin: 2cm;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.5;
+      }
+      .container {
+        max-width: 800px;
+        margin: auto;
+      }
 
-    /* Header: text on left, small logo on right */
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-    .header .header-text {
-      font-size: 14px;
-      color: #14213d;
-    }
-    .header .logo {
-      width: 100px;
-      height: 100px;
-      object-fit: contain;
-    }
+      /* Header: text on left, small logo on right */
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .header .header-text {
+        font-size: 14px;
+        color: #14213d;
+      }
+      .header .logo {
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
+      }
 
-    .title {
-      font-size: 22px;
-      background: #14213d;
-      color: white;
-      padding: 8px;
-    }
-    .details-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    .details-table td {
-      padding: 4px;
-      border: 1px solid #ddd;
-    }
-    .details-table td:first-child {
-      font-weight: bold;
-    }
+      .title {
+        font-size: 22px;
+        background: #14213d;
+        color: white;
+        padding: 8px;
+      }
+      .details-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .details-table td {
+        padding: 4px;
+        border: 1px solid #ddd;
+      }
+      .details-table td:first-child {
+        font-weight: bold;
+      }
 
-    .section h2 {
-      font-size: 16px;
-      border-bottom: 2px solid #14213d;
-      padding-bottom: 4px;
-    }
+      .section h2 {
+        font-size: 16px;
+        border-bottom: 2px solid #14213d;
+        padding-bottom: 4px;
+      }
 
-     .report-image {
-         margin-top: 10px;
-    display: block;
-    width: 150px ;      /* 50% of container width */
-    height: 150px;
-  }
-     .img-dev {
-         margin-top: 10px;
-         display: flex;
-         align-items: center;
-         justify-content: center;
-         text-align: center;
-     }
+      .report-image {
+        margin-top: 10px;
+        display: block;
+        width: 150px; /* 50% of container width */
+        height: 150px;
+      }
+      .img-dev {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
 
-    .footer {
-      text-align: center;
-      font-size: 9pt;
-      background: #14213d;
-      color: white;
-      padding: 6px;
-    }
-    .generated-info {
-      font-size: 10px;
-      color: #888;
-      text-align: right;
-    }
+      .footer {
+        text-align: center;
+        font-size: 9pt;
+        background: #14213d;
+        color: white;
+        padding: 6px;
+      }
+      .generated-info {
+        font-size: 10px;
+        color: #888;
+        text-align: right;
+      }
 
-    p{
+      p {
         font-size: 14px;
         margin: 0;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <div class="header-text">X-RAY | MRI | CT-Scan</div>
-      <img src="{% static 'admin/test_logo_air-removebg.png' %}" class="logo" alt="Logo">
-    </div>
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="header-text">X-RAY | MRI | CT-Scan</div>
+        <img
+          src="{% static 'admin/test_logo_air-removebg.png' %}"
+          class="logo"
+          alt="Logo"
+        />
+      </div>
 
-    <div class="title">AI Report – {{ radiology_modality }} Analysis</div>
+      <div class="title">AI Report – {{ radiology_modality }} Analysis</div>
 
-    <table class="details-table">
-      <tr>
-        <td>Patient Name:</td>      <td>{{ full_name }}</td>
-        <td>Reported On:</td>       <td>{{ reported_on }}</td>
-      </tr>
-      <tr>
-        <td>Age:</td>               <td>{{ age }}</td>
-        <td>Gender:</td>            <td>{{ gender }}</td>
-      </tr>
-      <tr>
-        <td>Modality:</td>          <td>{{ radiology_modality }}</td>
-        <td>Region:</td>            <td>{{ anatomical_region }}</td>
-      </tr>
-    </table>
+      <table class="details-table">
+        <tr>
+          <td>Patient Name:{{ full_name }}</td>
+          <td>Reported On: {{ reported_on }}</td>
+        </tr>
+        <tr>
+          <td>Age:{{ age }}</td>
+          <td>Gender {{ gender }}</td>
+        </tr>
+        <tr>
+          <td>Modality: {{ radiology_modality }}</td>
+          <td>Region: {{ anatomical_region }}</td>
+        </tr>
+      </table>
+      88 {# Large exam image #}
+      <div class="img-dev">
+        <img src="{{ image_url }}" alt="Exam Image" class="report-image" />
+      </div>
+      <div class="section">
+        <h2>Technical Description</h2>
+        <p>
+          A {{ anatomical_region }} {{ radiology_modality }} was performed using
+          a standard {{ radiology_modality }} machine.
+        </p>
+      </div>
 
-    {# Large exam image #}
-    <dev class="img-dev">
-        <img src="{{ image_url }}" alt="Exam Image" class="report-image">
-    </dev>
-    <div class="section">
-      <h2>Technical Description</h2>
-      <p>A {{ anatomical_region }} {{ radiology_modality }} was performed using a standard {{ radiology_modality }} machine.</p>
-    </div>
+      <div class="section">
+        <h2>Results</h2>
+        <p>{{ report_details}}</p>
+      </div>
 
-    <div class="section">
-      <h2>Results</h2>
-      <p>{{ report_details|bold_headings|linebreaks }}</p>
-    </div>
-
-    <div class="section">
-      <h2>Recommendations</h2>
+      <div class="section">
+        <h2>Recommendations</h2>
         <p>Further tests are advised.</p>
         <p>Follow-up with a physician is needed.</p>
-    </div>
+      </div>
 
-    <div class="section">
-      <h2>Confidence Level</h2>
-      <p>{{ model_description }}</p>
-    </div>
+      <div class="section">
+        <h2>Confidence Level</h2>
+        <p>{{ model_description }}</p>
+      </div>
 
-    <div class="section">
-      <h2>Additional Notes</h2>
+      <div class="section">
+        <h2>Additional Notes</h2>
         <p>AI model still under development.</p>
         <p>Human medical evaluation required.</p>
+      </div>
+
+      <div class="generated-info">
+        Generated on {{ now|date:"d M Y - H:i" }}
+      </div>
     </div>
 
-    <div class="generated-info">
-      Generated on {{ now|date:"d M Y - H:i" }}
-    </div>
-  </div>
-
-  <div class="footer">
-    AI Radiology Report – Confidential
-  </div>
-</body>
+    <div class="footer">AI Radiology Report – Confidential</div>
+  </body>
 </html>
