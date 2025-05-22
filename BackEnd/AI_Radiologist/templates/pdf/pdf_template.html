@@ -1,174 +1,152 @@
+{# templates/pdf/pdf_template.html #}
 {% load static %}
+{% load static report_extras %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Radiology Report</title>
-    <style>
-        @page {
-            size: Letter;
-            margin: 2cm;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-        }
-        .container {
-            max-width: 800px;
-            margin: auto;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .header-logo {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .logo {
-            max-height: 60px;
-        }
-        .header-text {
-            text-align: right;
-            font-size: 14px;
-            color: #14213d;
-        }
-        .title {
-            font-size: 24px;
-            font-weight: bold;
-            background-color: #14213d;
-            color: white;
-            padding: 10px;
-        }
-        .details-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        .details-table td {
-            padding: 10px;
-            border: 1px solid #ddd;
-        }
-        .details-table td:first-child {
-            font-weight: bold;
-        }
-        .section {
-            margin-bottom: 20px;
-        }
-        .section h2 {
-            font-size: 18px;
-            border-bottom: 2px solid #14213d;
-            padding-bottom: 5px;
-        }
-        .footer {
-            text-align: center;
-            font-size: 9pt;
-            background: #14213d;
-            color: white;
-            padding: 5px;
-            margin-top: 20px;
-        }
-        .page-number {
-            position: absolute;
-            right: 1cm;
-            bottom: 0.5cm;
-        }
-        .generated-info {
-            font-size: 10px;
-            color: #888;
-            text-align: right;
-            margin-top: 20px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>AI Radiology Report</title>
+  <style>
+    @page { size: Letter; margin: 2cm; }
+    body { font-family: Arial, sans-serif; line-height: 1.5; }
+    .container { max-width: 800px; margin: auto; }
+
+    /* Header: text on left, small logo on right */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .header .header-text {
+      font-size: 14px;
+      color: #14213d;
+    }
+    .header .logo {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+    }
+
+    .title {
+      font-size: 22px;
+      background: #14213d;
+      color: white;
+      padding: 8px;
+    }
+    .details-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .details-table td {
+      padding: 4px;
+      border: 1px solid #ddd;
+    }
+    .details-table td:first-child {
+      font-weight: bold;
+    }
+
+    .section h2 {
+      font-size: 16px;
+      border-bottom: 2px solid #14213d;
+      padding-bottom: 4px;
+    }
+
+     .report-image {
+         margin-top: 10px;
+    display: block;
+    width: 150px ;      /* 50% of container width */
+    height: 150px;
+  }
+     .img-dev {
+         margin-top: 10px;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         text-align: center;
+     }
+
+    .footer {
+      text-align: center;
+      font-size: 9pt;
+      background: #14213d;
+      color: white;
+      padding: 6px;
+    }
+    .generated-info {
+      font-size: 10px;
+      color: #888;
+      text-align: right;
+    }
+
+    p{
+        font-size: 14px;
+        margin: 0;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="header-logo">
-                <img src="{% static '/admin/test_logo_air-removebg.png' %}" alt="AI Radiologist Logo" class="logo">
-                <div class="header-text">
-                    X-RAY | MRI | CT-Scan
-                </div>
-            </div>
-            <div class="title">AI Report - Chest X-ray Analysis</div>
-        </div>
-
-        <table class="details-table">
-            <tr>
-                <td>Patient Name:</td>
-                <td>{{ full_name }}</td>
-                <td>Radiology Modality:</td>
-                <td>{{ radiology_modality }}</td>
-                <td>Reported on:</td>
-                <td>{{ reported_on }}</td>
-            </tr>
-            <tr>
-                <td>Age:</td>
-                <td>{{ age }}</td>
-                <td>Anatomical Region:</td>
-                <td>{{ anatomical_region }}</td>
-                <td>Gender:</td>
-                <td>{{ gender }}</td>
-            </tr>
-        </table>
-
-        <div class="section">
-            <h2>Technical Description</h2>
-            <p>A chest X-ray was performed using a standard X-ray machine. The chest was imaged in both the anterior and posterior positions.</p>
-        </div>
-
-        <div class="section">
-            <h2>Results (Based on AI Analysis - Preliminary Version)</h2>
-            <p><strong>1. Heart and Lungs:</strong></p>
-            <ul>
-                <li>No obvious signs of heart enlargement or major issues with the lungs.</li>
-                <li>No immediate indications of rib fractures or abnormal calcifications.</li>
-            </ul>
-            <p><strong>2. Lung Tissue:</strong></p>
-            <ul>
-                <li>The model may show some signs of minor changes in the left lung, but these findings are not confirmed.</li>
-            </ul>
-            <p><strong>3. Bones and Vessels:</strong></p>
-            <ul>
-                <li>No clear indications of fractures or bone deformities.</li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h2>Clinical Interpretation</h2>
-            <p>The model demonstrates low accuracy in detecting minor changes in the lung tissue, and the results cannot be considered 100%.</p>
-        </div>
-
-        <div class="section">
-            <h2>Recommendations</h2>
-            <ul>
-                <li>Further tests are required to verify the area indicated by the model in the left lung.</li>
-                <li>Follow-up clinical evaluation with the physician is advised.</li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h2>Confidence Level</h2>
-            <p>The confidence level in the results is around 70% based on the available data. It is recommended that this report be considered as part of a comprehensive examination.</p>
-        </div>
-
-        <div class="section">
-            <h2>Additional Notes</h2>
-            <ul>
-                <li>This report is based on an AI model in development. The results may contain errors or warnings due to the preliminary version of the system.</li>
-                <li>Human medical evaluation is still necessary to review the results.</li>
-            </ul>
-        </div>
-
-        <div class="generated-info">
-            Generated: ccddcdc
-        </div>
+  <div class="container">
+    <div class="header">
+      <div class="header-text">X-RAY | MRI | CT-Scan</div>
+      <img src="{% static 'admin/test_logo_air-removebg.png' %}" class="logo" alt="Logo">
     </div>
 
-    <div class="footer">
-        AI Radiology Report - Confidential Document
+    <div class="title">AI Report – {{ radiology_modality }} Analysis</div>
+
+    <table class="details-table">
+      <tr>
+        <td>Patient Name:</td>      <td>{{ full_name }}</td>
+        <td>Reported On:</td>       <td>{{ reported_on }}</td>
+      </tr>
+      <tr>
+        <td>Age:</td>               <td>{{ age }}</td>
+        <td>Gender:</td>            <td>{{ gender }}</td>
+      </tr>
+      <tr>
+        <td>Modality:</td>          <td>{{ radiology_modality }}</td>
+        <td>Region:</td>            <td>{{ anatomical_region }}</td>
+      </tr>
+    </table>
+
+    {# Large exam image #}
+    <dev class="img-dev">
+        <img src="{{ image_url }}" alt="Exam Image" class="report-image">
+    </dev>
+    <div class="section">
+      <h2>Technical Description</h2>
+      <p>A {{ anatomical_region }} {{ radiology_modality }} was performed using a standard {{ radiology_modality }} machine.</p>
     </div>
+
+    <div class="section">
+      <h2>Results</h2>
+      <p>{{ report_details|bold_headings|linebreaks }}</p>
+    </div>
+
+    <div class="section">
+      <h2>Recommendations</h2>
+        <p>Further tests are advised.</p>
+        <p>Follow-up with a physician is needed.</p>
+    </div>
+
+    <div class="section">
+      <h2>Confidence Level</h2>
+      <p>{{ model_description }}</p>
+    </div>
+
+    <div class="section">
+      <h2>Additional Notes</h2>
+        <p>AI model still under development.</p>
+        <p>Human medical evaluation required.</p>
+    </div>
+
+    <div class="generated-info">
+      Generated on {{ now|date:"d M Y - H:i" }}
+    </div>
+  </div>
+
+  <div class="footer">
+    AI Radiology Report – Confidential
+  </div>
 </body>
 </html>

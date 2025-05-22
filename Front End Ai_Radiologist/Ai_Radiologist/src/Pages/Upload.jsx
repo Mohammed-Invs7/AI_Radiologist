@@ -344,7 +344,24 @@ const Upload = () => {
                   <h5 style={{ color: "red" }} className="mt-4">
                     Results
                   </h5>
-                  <p>{formData.predictionResult}</p>
+                  {formData.predictionResult
+                    .split('\n')
+                    .map((line, index) => {
+                      // Try to capture "Heading:" at the start, plus the rest of the line
+                      const match = line.match(/^([^:]+:)(.*)$/);
+                      if (match) {
+                        const [, heading, rest] = match;
+                        return (
+                          <p key={index}>
+                            <strong>{heading}</strong>
+                            {rest}
+                          </p>
+                        );
+                      } else {
+                        // No leading colon-terminated heading
+                        return <p key={index}>{line}</p>;
+                      }
+                    })}
 
                   <h5 className="text-info mt-4">Clinical Interpretation</h5>
                   <p>

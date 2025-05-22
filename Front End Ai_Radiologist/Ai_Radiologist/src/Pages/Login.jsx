@@ -66,7 +66,7 @@ const Login = () => {
             ? "admin"
             : userData.user_type === 2
             ? "user"
-            "";
+            :"";
         userData.user_type = userType;
 
         await login(token, userData, refreshToken);

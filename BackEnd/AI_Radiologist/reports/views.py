@@ -274,7 +274,9 @@ from .models import Report
 
 class GenerateReportPDF(APIView):
     """
-    API view for generating a PDF report for an authenticated user using xhtml2pdf.
+    API view for generating a PDF report for an authenticated user.
+    Embeds the X-ray image, patient info, report text (preserving line breaks),
+    model description, and static sections.
     """
     permission_classes = [IsAuthenticated]
 
@@ -282,33 +284,37 @@ class GenerateReportPDF(APIView):
         try:
             report = Report.objects.get(user=request.user, id=pk)
         except Report.DoesNotExist:
-            return Response({"error": "Report does not exist."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error": "Report does not exist."},
+                            status=status.HTTP_404_NOT_FOUND)
 
+        # Prepare context
         context = {
-            "full_name": f"{report.user.first_name} {report.user.last_name}",
-            "age": f"{report.user.age} years",
-            "gender": "Male" if report.user.gender == 'M' else "Female",
-            "radiology_modality": report.model.radio_detail.radio_mod.name,
-            "anatomical_region": report.model.radio_detail.body_ana.name,
-            "reported_on": report.report_date.strftime("%d %b %Y - %I:%M %p"),
-            "report_details": report.report_details,
+            "full_name":            f"{report.user.first_name} {report.user.last_name}",
+            "age":                  f"{report.user.age} years",
+            "gender":               "Male" if report.user.gender=='M' else "Female",
+            "radiology_modality":   report.model.radio_detail.radio_mod.name,
+            "anatomical_region":    report.model.radio_detail.body_ana.name,
+            "reported_on":          report.report_date.strftime("%d %b %Y - %I:%M %p"),
+            "image_url":            request.build_absolute_uri(report.image_path.url),
+            "report_details":       report.report_details,
+            "model_description":    report.model.description or "",
         }
+
         template = get_template('pdf/pdf_template.html')
         html_content = template.render(context)
 
-        # Create PDF
-        pdf_stream = BytesIO()
-        # pisa.CreatePDF(src, dest)
-        result = pisa.CreatePDF(src=html_content, dest=pdf_stream)
+        # Render to PDF
+        pdf_io = BytesIO()
+        result = pisa.CreatePDF(src=html_content, dest=pdf_io)
         if result.err:
-            return Response({"error": "Error generating PDF."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({"error": "Error generating PDF."},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        pdf_stream.seek(0)
-        response = FileResponse(pdf_stream, content_type='application/pdf')
-        filename = f"{report.title.replace(' ', '_')}.pdf"
-        response['Content-Disposition'] = f'attachment; filename="{filename}"'
-        return response
-
+        pdf_io.seek(0)
+        filename = (report.title or f"report_{report.id}").replace(" ", "_") + ".pdf"
+        return FileResponse(pdf_io, content_type='application/pdf', headers={
+            'Content-Disposition': f'attachment; filename="{filename}"'
+        })
 
 # Admin
 
