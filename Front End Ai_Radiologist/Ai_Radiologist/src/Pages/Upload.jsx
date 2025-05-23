@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { motion, AnimatePresence } from "framer-motion";
 import Image1 from "../assets/Images/image-upload.png";
@@ -394,7 +394,7 @@ const Upload = () => {
                 </div>
               </div>
             </div>
-            <div>
+            <div className="d-flex align-items-center-jestfiy-content-center">
               <button
                 onClick={handleDownloadPDF}
                 className="btn btn-outline-primary mt-3"
