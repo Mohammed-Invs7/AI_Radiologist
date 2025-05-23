@@ -30,7 +30,7 @@ class CustomUserManager(BaseUserManager):
 
 
 class UserType(models.Model):
-    name = models.CharField(max_length=50, unique=True)  # Role names, e.g., "admin", "user"
+    name = models.CharField(max_length=50, unique=True)  # Role names "admin", "user"
     def __str__(self):
         return self.name
 
@@ -82,13 +82,9 @@ class User(AbstractBaseUser):
     def __str__(self):
         return self.email
 
-    # def is_super_admin(self):
-    #     """Check if the user is an admin based on their UserType."""
-    #     return self.user_type and self.user_type.name == "admin"
+
     def is_superuser(self):
         """Check if the user is an admin based on their UserType."""
         return self.user_type and self.user_type.name == "admin"
 
 
-# from users.models import UserType
-# UserType.objects.get_or_create(name="user")

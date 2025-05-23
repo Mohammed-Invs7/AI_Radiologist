@@ -31,11 +31,6 @@ class UserReportDetailSerializer(serializers.ModelSerializer):
         return instance
 
 
-# class UserReportCreateSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Report
-#         fields = ['image_path', 'report_details']
-#         read_only_fields = ['report_details']
 
 class UserReportCreateSerializer(serializers.ModelSerializer):
     radio_modality = serializers.PrimaryKeyRelatedField(
@@ -50,10 +45,11 @@ class UserReportCreateSerializer(serializers.ModelSerializer):
     )
     image_path     = serializers.ImageField()
     report_details = serializers.CharField(read_only=True)
+    model_description = serializers.ReadOnlyField(source='model.description')
 
     class Meta:
         model  = Report
-        fields = ['id', 'radio_modality','body_ana','image_path','report_details']
+        fields = ['id', 'radio_modality','body_ana','image_path','report_details', 'model_description',]
 
     def validate(self, data):
         """

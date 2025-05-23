@@ -12,11 +12,9 @@ class BodyAnatomicalRegionSerializer(serializers.ModelSerializer):
         fields = ['id','name']
 
 class RadiologyDetailsSerializer(serializers.ModelSerializer):
-    # on read, show nested names
     radio_modality     = RadiologyModalitySerializer(source='radio_mod', read_only=True)
     anatomical_region  = BodyAnatomicalRegionSerializer(source='body_ana', read_only=True)
 
-    # on write, accept just the PKs
     radio_mod_id = serializers.PrimaryKeyRelatedField(
         source='radio_mod',
         queryset=RadiologyModality.objects.all(),
@@ -63,7 +61,6 @@ class AIModelSerializer(serializers.ModelSerializer):
     modalities   = RadiologyModalitySerializer(source='radio_detail.radio_mod', read_only=True)
     anatomies    = BodyAnatomicalRegionSerializer(source='radio_detail.body_ana', read_only=True)
 
-    # Incoming fields:
     body_ana     = serializers.PrimaryKeyRelatedField(queryset=BodyAnatomicalRegion.objects.all(), write_only=True)
     radio_mod    = serializers.PrimaryKeyRelatedField(queryset=RadiologyModality.objects.all(), write_only=True)
     active_status= serializers.BooleanField(default=True)

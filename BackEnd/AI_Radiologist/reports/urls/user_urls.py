@@ -8,15 +8,11 @@ from reports.views import (
     RadiologyOptionsView,
 )
 
-# router = DefaultRouter()
-# router.register(r'list', UserReportsViewSet, basename='user_reports')
-# path('', include(router.urls)),
+
 
 # Map viewset actions to HTTP methods for list and detail views
 user_reports_list = UserReportsViewSet.as_view({
     'get': 'list',
-    # If you support creation, you can add:
-    # 'post': 'create'
 })
 user_reports_detail = UserReportsViewSet.as_view({
     'get': 'retrieve',

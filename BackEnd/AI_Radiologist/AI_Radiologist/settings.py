@@ -34,7 +34,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['172.29.103.150','localhost', '127.0.0.1', '::1', '172.16.10.80','172.19.174.80' ,'192.168.1.80', '*']
 DOMAIN_NAME = "http://172.19.174.80:8000"#"http://localhost:8000"
 
-FRONT_END_HOST = 'http://localhost:5173'
+FRONT_END_HOST = os.getenv("FRONT_END_HOST") or'http://localhost:5173'
 CORS_ALLOW_ALL_ORIGINS = True
 
 # Auth details
@@ -117,10 +117,12 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_AUTHENTICATION_METHOD = "email"  # Use Email / Password authentication
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
+
 # ACCOUNT_EMAIL_VERIFICATION = "none" # Do not require email confirmation
 ACCOUNT_EMAIL_VERIFICATION = "mandatory" # Require email confirmation
+
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True  # No need to sent POST request to confirmation link
-LOGIN_URL = FRONT_END_HOST + '/Login' # "/api/v1/auth/login/"  # Path, users will be redirected to after email verification
+LOGIN_URL = FRONT_END_HOST + '/verify-email' # "/api/v1/auth/login/"  # Path, users will be redirected to after email verification
 
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = False
 
@@ -226,11 +228,11 @@ WSGI_APPLICATION = 'AI_Radiologist.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv("MYSQL_DATABASE"),  # Replace with your database name
-        'USER': os.getenv("MYSQL_USER"),   # Replace with your MySQL username
-        'PASSWORD': os.getenv("MYSQL_PASSWORD"),  # Replace with your MySQL password
-        'HOST': os.getenv("MYSQL_HOST"),       # Replace with your database host (default is localhost)
-        'PORT': os.getenv("MYSQL_PORT"),            # Replace with your database port (default is 3306)
+        'NAME': os.getenv("MYSQL_DATABASE"),
+        'USER': os.getenv("MYSQL_USER"),
+        'PASSWORD': os.getenv("MYSQL_PASSWORD"),
+        'HOST': os.getenv("MYSQL_HOST"),
+        'PORT': os.getenv("MYSQL_PORT"),
         'OPTIONS': {
             'connect_timeout': 60,
             'read_timeout': 120,
