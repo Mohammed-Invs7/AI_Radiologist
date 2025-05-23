@@ -1,195 +1,50 @@
 import { motion } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
-import jsPDF from "jspdf";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { BASE_URL } from "../config";
+import axios from "axios";
+
+const API_REPOROTS = `${BASE_URL}/user/reports/`;
 
 const ReportModal = ({ selectedReport, onClose }) => {
-  const { user } = useAuth();
-
+  const { user, token } = useAuth();
   const location = useLocation();
   const pathname = location.pathname;
 
-  const getImageBase64 = (url) =>
-    new Promise((resolve, reject) => {
-      const img = new Image();
-      img.crossOrigin = "anonymous";
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        canvas.width = img.width;
-        canvas.height = img.height;
-        canvas.getContext("2d").drawImage(img, 0, 0);
-        resolve(canvas.toDataURL("image/jpeg"));
-      };
-      img.onerror = () => reject("Could not load image");
-      img.src = url;
-    });
-
-  const addMultilineText = (pdf, text, x, y, maxWidth) => {
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    const lineHeight = 8;
-    const bottomMargin = 20;
-    const lines = pdf.splitTextToSize(text, maxWidth);
-
-    for (const line of lines) {
-      if (y + lineHeight > pageHeight - bottomMargin) {
-        pdf.addPage();
-        y = 20;
-      }
-      pdf.text(line, x, y);
-      y += lineHeight;
-    }
-    return y;
-  };
-
   const handleDownloadPDF = async () => {
-    const pdf = new jsPDF("p", "mm", "a4");
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
+    if (!selectedReport?.id) {
+      toast.error("No report available to download.");
+      return;
+    }
 
-    pdf.setFontSize(18);
-    pdf.setTextColor(0, 51, 102);
-    pdf.text(selectedReport.title || "Radiology Report", pageWidth / 2, 15, {
-      align: "center",
-    });
-    pdf.setDrawColor(0, 51, 102);
-    pdf.line(15, 20, pageWidth - 15, 20);
-
-    pdf.setFontSize(12);
-    pdf.setTextColor(0, 0, 0);
-    let cursorY = 30;
-
-    [
-      `Name: ${
-        location.pathname.includes("/AdminPanel/Reports%20Admin")
-          ? selectedReport?.user_full_name || ""
-          : `${user?.first_name || ""} ${user?.last_name || ""}`
-      }, 
-      Date: ${new Date(selectedReport.report_date).toLocaleDateString()}`,
-      `Modality: ${selectedReport.radiology_modality}`,
-      `Body Region: ${selectedReport.body_anatomical_region}`,
-    ].forEach((line) => {
-      pdf.text(line, 15, cursorY);
-      cursorY += 8;
-    });
-
-    cursorY += 5;
-
-    if (selectedReport.image_path) {
-      try {
-        const imgData = await getImageBase64(selectedReport.image_path);
-        const imgWidth = 80;
-        const imgHeight = 60;
-
-        if (cursorY + imgHeight > pageHeight - 20) {
-          pdf.addPage();
-          cursorY = 20;
+    try {
+      const response = await axios.get(
+        `${API_REPOROTS}${selectedReport.id}/pdf/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          responseType: "blob",
         }
+      );
 
-        pdf.addImage(
-          imgData,
-          "JPEG",
-          (pageWidth - imgWidth) / 2,
-          cursorY,
-          imgWidth,
-          imgHeight
-        );
-        cursorY += imgHeight + 10;
-      } catch {}
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "Medical_Report.pdf";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+
+      toast.success("Report downloaded successfully!");
+    } catch (error) {
+      console.error("Error downloading PDF:", error);
+      toast.error("Failed to download report.");
     }
-
-    const addSection = (title, text, color = [23, 162, 184]) => {
-      if (cursorY + 10 > pageHeight - 20) {
-        pdf.addPage();
-        cursorY = 20;
-      }
-      pdf.setFontSize(14);
-      pdf.setTextColor(...color);
-      pdf.setFont(undefined, "bold");
-      pdf.text(title, 15, cursorY);
-      cursorY += 8;
-
-      pdf.setFontSize(12);
-      pdf.setTextColor(0, 0, 0);
-      pdf.setFont(undefined, "normal");
-      cursorY = addMultilineText(pdf, text, 15, cursorY, pageWidth - 30);
-      cursorY += 10;
-    };
-
-    addSection(
-      "Technical Description",
-      "A chest X-ray was performed using a standard X-ray machine. The chest was imaged in both anterior and posterior positions."
-    );
-
-    addSection(
-      "Results",
-      selectedReport.report_details || "No details available",
-      [255, 0, 0]
-    );
-
-    addSection(
-      "Clinical Interpretation",
-      "The model demonstrates low accuracy in detecting minor changes. Results are preliminary and must be confirmed."
-    );
-
-    if (cursorY + 30 > pageHeight - 20) {
-      pdf.addPage();
-      cursorY = 20;
-    }
-    pdf.setFontSize(14);
-    pdf.setTextColor(...[23, 162, 184]);
-    pdf.setFont(undefined, "bold");
-    pdf.text("Recommendations", 15, cursorY);
-    cursorY += 8;
-
-    pdf.setFontSize(12);
-    pdf.setTextColor(0, 0, 0);
-    pdf.setFont(undefined, "normal");
-
-    [
-      "Further tests are advised.",
-      "Follow-up with a physician is needed.",
-    ].forEach((rec, i) => {
-      if (cursorY + 8 > pageHeight - 20) {
-        pdf.addPage();
-        cursorY = 20;
-      }
-      pdf.text(`${i + 1}. ${rec}`, 20, cursorY);
-      cursorY += 8;
-    });
-
-    cursorY += 10;
-
-    addSection(
-      "Confidence Level",
-      "Approximate confidence is 70% based on AI performance."
-    );
-
-    if (cursorY + 30 > pageHeight - 20) {
-      pdf.addPage();
-      cursorY = 20;
-    }
-    pdf.setFontSize(14);
-    pdf.setTextColor(...[23, 162, 184]);
-    pdf.setFont(undefined, "bold");
-    pdf.text("Additional Notes", 15, cursorY);
-    cursorY += 8;
-
-    pdf.setFontSize(12);
-    pdf.setTextColor(0, 0, 0);
-    pdf.setFont(undefined, "normal");
-
-    ["AI model still under development.", "Human evaluation required."].forEach(
-      (note) => {
-        if (cursorY + 8 > pageHeight - 20) {
-          pdf.addPage();
-          cursorY = 20;
-        }
-        pdf.text(`- ${note}`, 20, cursorY);
-        cursorY += 8;
-      }
-    );
-
-    pdf.save(`${selectedReport.title || "report"}.pdf`);
   };
 
   return (
@@ -252,11 +107,6 @@ const ReportModal = ({ selectedReport, onClose }) => {
               </h5>
               <p>{selectedReport.report_details || "No details available"}</p>
 
-              <h5 className="text-info mt-4">Clinical Interpretation</h5>
-              <p>
-                The model demonstrates low accuracy in detecting minor changes.
-                Results are preliminary and must be confirmed.
-              </p>
 
               <h5 className="text-info mt-4">Recommendations</h5>
               <ol>
@@ -274,12 +124,12 @@ const ReportModal = ({ selectedReport, onClose }) => {
               </ul>
             </div>
           </div>
-          <div className="modal-footer d-flex justify-content-between">
+          <div className="modal-footer d-flex justify-content-end">
             <button
-              className="btn btn-outline-primary"
               onClick={handleDownloadPDF}
+              className="btn btn-outline-primary mt-3"
             >
-              Download as PDF
+              <i className="bi bi-download me-2"></i> Download PDF Report
             </button>
             <button className="btn btn-secondary" onClick={onClose}>
               Close
