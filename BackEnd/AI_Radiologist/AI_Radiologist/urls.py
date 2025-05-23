@@ -47,7 +47,7 @@ urlpatterns = [
     path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 
     # Pages that not an api endpoints
-    path("login/", LoginPage.as_view(), name="login"),
+    # path("login/", LoginPage.as_view(), name="login"),
     #########################################################
     #path('admin/', admin.site.urls),
     # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -75,12 +75,12 @@ urlpatterns = [
     # path('api/v1/auth/registration/', include('dj_rest_auth.registration.urls')),
     #path('api-auth/', include('rest_framework.urls')),
     re_path(r"^api/v1/auth/accounts/", include("allauth.urls")),
-    path("api/v1/auth/google/", GoogleLogin.as_view(), name="google_login"),
-    path(
-        "api/v1/auth/google/callback/",
-        GoogleLoginCallback.as_view(),
-        name="google_login_callback",
-    ),
+    # path("api/v1/auth/google/", GoogleLogin.as_view(), name="google_login"),
+    # path(
+    #     "api/v1/auth/google/callback/",
+    #     GoogleLoginCallback.as_view(),
+    #     name="google_login_callback",
+    # ),
     path('api/v1/auth/check-email/<str:email>/', CheckEmailView.as_view(), name='check-email'),    # apps
     path('api/v1/user/reports/', include('reports.urls.user_urls')),
     path('api/v1/admin/users/reports/', include('reports.urls.admin_urls')),
@@ -95,21 +95,3 @@ urlpatterns = [
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-''' 
-/api/v1/auth/login/ dj_rest_auth.views.LoginView rest_login
-/api/v1/auth/logout/ dj_rest_auth.views.LogoutView rest_logout
-/api/v1/auth/password/change/ dj_rest_auth.views.PasswordChangeView rest_password_change
-/api/v1/auth/password/reset/ dj_rest_auth.views.PasswordResetView rest_password_reset
-/api/v1/auth/password/reset/confirm/ dj_rest_auth.views.PasswordResetConfirmView rest_password_reset_confirm
-/api/v1/auth/token/refresh/ dj_rest_auth.jwt_auth.RefreshViewWithCookieSupport token_refresh
-/api/v1/auth/token/verify/ rest_framework_simplejwt.views.TokenVerifyView token_verify
-/api/v1/auth/user/ dj_rest_auth.views.UserDetailsView rest_user_details
-
-available endpoints:
-/api/v1/auth/registration/      dj_rest_auth.registration.views.RegisterView    rest_register
-/api/v1/auth/registration/account-confirm-email/<key>/  django.views.generic.base.TemplateView  account_confirm_email
-/api/v1/auth/registration/account-email-verification-sent/      django.views.generic.base.TemplateView  account_email_verification_sent
-/api/v1/auth/registration/resend-email/ dj_rest_auth.registration.views.ResendEmailVerificationView     rest_resend_email
-/api/v1/auth/registration/verify-email/ dj_rest_auth.registration.views.VerifyEmailView rest_verify_email
-
-'''

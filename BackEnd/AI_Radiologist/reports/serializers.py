@@ -31,11 +31,6 @@ class UserReportDetailSerializer(serializers.ModelSerializer):
         return instance
 
 
-# class UserReportCreateSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Report
-#         fields = ['image_path', 'report_details']
-#         read_only_fields = ['report_details']
 
 class UserReportCreateSerializer(serializers.ModelSerializer):
     radio_modality = serializers.PrimaryKeyRelatedField(

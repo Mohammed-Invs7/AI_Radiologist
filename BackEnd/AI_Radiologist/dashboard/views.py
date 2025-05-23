@@ -91,20 +91,19 @@ class UserTrendView(APIView):
         responses={200: TrendSerializer}
     )
     def get(self, request):
-        # 1) Number of days back (default 30)
         days = int(request.query_params.get('days', 30))
 
-        # 2) Compute “today” in local time, and build a list of dates
+        # Compute “today” in local time, and build a list of dates
         today_local = timezone.localtime(timezone.now()).date()
         dates = [
             today_local - timedelta(days=i)
             for i in range(days-1, -1, -1)
         ]
 
-        # 3) Build the labels (ISO strings) once
+        # Build the labels (ISO strings) once
         labels = [d.isoformat() for d in dates]
 
-        # 4) For each date, count users whose join_date (UTC) falls into that local day
+        # For each date, count users whose join_date (UTC) falls into that local day
         data = []
         for d in dates:
             # start = d at 00:00 local

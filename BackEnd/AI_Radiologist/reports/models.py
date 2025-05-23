@@ -4,7 +4,7 @@ from ai_models.models import AIModel
 from django.utils import timezone
 
 def get_report_image_upload_to(instance, filename):
-    extension = filename.split('.')[-1]  # استخراج الامتداد من اسم الملف
+    extension = filename.split('.')[-1]
     radio_detail = instance.model.radio_detail
     return fr'images_reports/{radio_detail.radio_mod.name}_{radio_detail.body_ana.name}_{instance.id}_{timezone.now().strftime("%Y%m%d_%H%M%S")}.{extension}'
 
