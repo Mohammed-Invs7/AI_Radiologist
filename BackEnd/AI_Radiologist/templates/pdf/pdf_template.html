@@ -1,4 +1,5 @@
-{# templates/pdf/pdf_template.html #} {% load static %}
+{# templates/pdf/pdf_template.html #}
+{% load static %}
 {% load static report_extras %}
 <!DOCTYPE html>
 <html lang="en">
@@ -120,7 +121,7 @@
           <td>Region: {{ anatomical_region }}</td>
         </tr>
       </table>
-      88 {# Large exam image #}
+       {# Large exam image #}
       <div class="img-dev">
         <img src="{{ image_url }}" alt="Exam Image" class="report-image" />
       </div>
