@@ -98,17 +98,33 @@ const ReportModal = ({ selectedReport, onClose }) => {
 
               <h5 className="text-primary mb-3">Technical Description</h5>
               <p>
-                A chest X-ray was performed using a standard X-ray machine. The
-                chest was imaged in both anterior and posterior positions.
+                A {selectedReport.body_anatomical_region}{" "}
+                {selectedReport.radiology_modality}
+                {""} was performed using a standard{" "}
+                {selectedReport.radiology_modality} machine.
               </p>
 
               <h5 style={{ color: "red" }} className="mt-4">
                 Results
               </h5>
-              <p>{selectedReport.report_details || "No details available"}</p>
+              {(selectedReport.report_details || "No details available")
+                .split("\n")
+                .map((line, index) => {
+                  const match = line.match(/^([^:]+:)(.*)$/);
+                  if (match) {
+                    const [, heading, rest] = match;
+                    return (
+                      <p key={index}>
+                        <strong>{heading}</strong>
+                        {rest}
+                      </p>
+                    );
+                  } else {
+                    return <p key={index}>{line}</p>;
+                  }
+                })}
 
-
-              <h5 className="text-info mt-4">Recommendations</h5>
+              {/* <h5 className="text-info mt-4">Recommendations</h5>
               <ol>
                 <li>Further tests are advised.</li>
                 <li>Follow-up with a physician is needed.</li>
@@ -121,13 +137,13 @@ const ReportModal = ({ selectedReport, onClose }) => {
               <ul>
                 <li>AI model still under development.</li>
                 <li>Human evaluation required.</li>
-              </ul>
+              </ul> */}
             </div>
           </div>
-          <div className="modal-footer d-flex justify-content-end">
+          <div className="modal-footer d-flex justify-content-between">
             <button
               onClick={handleDownloadPDF}
-              className="btn btn-outline-primary mt-3"
+              className="btn btn-outline-primary"
             >
               <i className="bi bi-download me-2"></i> Download PDF Report
             </button>

@@ -21,6 +21,7 @@ import ModalitiesAdmin from "./Pages/pages-Admin/ModalitiesAdmin";
 import AnatomiesAdmin from "./Pages/pages-Admin/AnatomiesAdmin";
 import RadiologyDetailsAdmin from "./Pages/pages-Admin/RadiologyDetailsAdmin";
 import ErrorPage from "./Pages/ErrorPage";
+import VerifyEmail from "./Pages/VerifyEmail"
 
 //Css//
 import "./App.css";
@@ -38,6 +39,8 @@ function App() {
           <Route path="/Registration" element={<Registration />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/Verify-Email" element={<VerifyEmail/>} />
+
           <Route
             path="/reset-password/:uid/:token"
             element={<ResetPassword />}

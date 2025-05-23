@@ -54,8 +54,33 @@ const Upload = () => {
         const res = await axios.get(API_MODELS, {
           headers: { Authorization: `Bearer ${token}` },
         });
+
         if (res.data && res.data.length > 0) {
-          setModelDescription(res.data[0].description || "");
+          // أولاً: نجيب اسم الموداليتي حسب ID المختار من السليكت
+          const selectedModality = radioOptions.find(
+            (opt) => opt.modality.id === Number(formData.type)
+          );
+          
+
+          const selectedModalityName = selectedModality?.modality.name;
+
+          if (!selectedModalityName) {
+            setModelDescription("No modality selected.");
+            return;
+          }
+
+          
+          // ثانيًا: نبحث عن الموديل الاكتف ويطابق نفس الموداليتي
+          const activeModel = res.data.find(
+            (model) =>
+              model.active_status === true &&
+              model.modalities.name === selectedModalityName
+          );
+
+          // ثالثًا: نحط الديسكربشن
+          setModelDescription(
+            activeModel?.description || "No matching active model found."
+          );
         }
       } catch (error) {
         console.error("Failed to fetch model description:", error);
@@ -63,7 +88,7 @@ const Upload = () => {
     };
 
     fetchModelDescription();
-  }, [token]);
+  }, [token, formData.type, radioOptions]);
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -394,7 +419,7 @@ const Upload = () => {
                 </div>
               </div>
             </div>
-            <div className="d-flex align-items-center-jestfiy-content-center">
+            <div className="d-flex align-items-center justify-content-center">
               <button
                 onClick={handleDownloadPDF}
                 className="btn btn-outline-primary mt-3"
