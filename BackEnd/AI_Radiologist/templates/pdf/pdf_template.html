@@ -1,5 +1,5 @@
-{# templates/pdf/pdf_template.html #} {% load static %} {% load static
-report_extras %}
+{# templates/pdf/pdf_template.html #} {% load static %}
+{% load static report_extras %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -134,7 +134,7 @@ report_extras %}
 
       <div class="section">
         <h2>Results</h2>
-        <p>{{ report_details}}</p>
+        <p>{{ report_details|bold_headings|linebreaks }}</p>
       </div>
 
       <div class="section">
