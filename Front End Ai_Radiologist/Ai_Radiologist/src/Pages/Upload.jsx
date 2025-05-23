@@ -54,7 +54,6 @@ const Upload = () => {
         const res = await axios.get(API_MODELS, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        // حسب هيكلة البيانات، نفترض أن res.data هي مصفوفة من النماذج
         if (res.data && res.data.length > 0) {
           setModelDescription(res.data[0].description || "");
         }
@@ -123,7 +122,6 @@ const Upload = () => {
         },
       });
 
-      // ✅ تحديث reportId بعد نجاح الرفع
       setFormData((prev) => ({
         ...prev,
         predictionResult: response.data.report_details,
@@ -175,7 +173,6 @@ const Upload = () => {
       toast.error("Failed to download report.");
     }
   };
-  
 
   return (
     <div>
@@ -380,12 +377,6 @@ const Upload = () => {
                     }
                   })}
 
-                  <h5 className="text-info mt-4">Clinical Interpretation</h5>
-                  <p>
-                    The model demonstrates low accuracy in detecting minor
-                    changes. Results are preliminary and must be confirmed.
-                  </p>
-
                   <h5 className="text-info mt-4">Recommendations</h5>
                   <ol>
                     <li>Further tests are advised.</li>
@@ -393,9 +384,7 @@ const Upload = () => {
                   </ol>
 
                   <h5 className="text-info mt-4">Confidence Level</h5>
-                  <p>
-                    {modelDescription}
-                  </p>
+                  <p>{modelDescription}</p>
 
                   <h5 className="text-info mt-4">Additional Notes</h5>
                   <ul>
@@ -405,12 +394,14 @@ const Upload = () => {
                 </div>
               </div>
             </div>
-            <button
-              onClick={handleDownloadPDF}
-              className="btn btn-outline-primary mt-3"
-            >
-              <i className="bi bi-download me-2"></i> Download PDF Report
-            </button>
+            <div>
+              <button
+                onClick={handleDownloadPDF}
+                className="btn btn-outline-primary mt-3"
+              >
+                <i className="bi bi-download me-2"></i> Download PDF Report
+              </button>
+            </div>
           </div>
         )}
       </div>
