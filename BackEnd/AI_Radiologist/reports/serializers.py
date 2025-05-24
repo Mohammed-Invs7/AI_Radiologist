@@ -103,6 +103,7 @@ from .models import Report
 class AdminReportDetailSerializer(serializers.ModelSerializer):
     radiology_modality = serializers.CharField(source='model.radio_detail.radio_mod.name', read_only=True)
     body_anatomical_region = serializers.CharField(source='model.radio_detail.body_ana.name', read_only=True)
+    model = serializers.CharField(source='model.name', read_only=True)
     user_full_name = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
