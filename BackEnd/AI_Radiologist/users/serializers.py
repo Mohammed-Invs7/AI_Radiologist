@@ -60,27 +60,34 @@ class CustomRegisterSerializer(serializers.Serializer):
 
         return user
 
-
-
 class CustomUserDetailsSerializer(UserDetailsSerializer):
-    # Override or add fields
-    gender = serializers.ChoiceField(choices=[('M', 'Male'), ('F', 'Female')])
-    age = serializers.SerializerMethodField(read_only=True)
-    # Mark these fields as read-only (they will be available in the output but not editable)
-    date_of_birth = serializers.DateField(read_only=True)
-    # phone_number = serializers.CharField(max_length=15, read_only=True)
-    user_type = serializers.PrimaryKeyRelatedField(read_only=True)
-    profile_image = serializers.ImageField(validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png'])],allow_empty_file=True)
-    join_date = serializers.DateTimeField(read_only=True)
+    # kill the inherited `username` field:
+    username = None
 
+    # your extra and overridden fields
+    email         = serializers.EmailField(read_only=False)
+    first_name    = serializers.CharField(required=False)
+    last_name     = serializers.CharField(required=False)
+    gender        = serializers.ChoiceField(choices=[('M','Male'),('F','Female')])
+    profile_image = serializers.ImageField(
+                       validators=[FileExtensionValidator(['jpg','jpeg','png'])],
+                       required=False,
+                       allow_null=True
+                    )
+    age           = serializers.SerializerMethodField()
+    date_of_birth = serializers.DateField(read_only=True)
+    join_date     = serializers.DateTimeField(read_only=True)
+    user_type     = serializers.PrimaryKeyRelatedField(read_only=True)
 
     def get_age(self, obj):
         return obj.age
 
-    class Meta(UserDetailsSerializer.Meta):
-        # Only include first_name, last_name, and gender as editable fields.
-        # The rest are read-only.
-        fields = UserDetailsSerializer.Meta.fields + (
+    class Meta:
+        model  = User
+        # now explicitly list exactly the fields you want — no `username`
+        fields = [
+            'pk',
+            'email',
             'first_name',
             'last_name',
             'gender',
@@ -89,8 +96,38 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
             'join_date',
             'profile_image',
             'user_type',
-            # 'phone_number',
-        )
+        ]
+        read_only_fields = ['email', 'date_of_birth', 'join_date', 'age', 'user_type']
+
+# class CustomUserDetailsSerializer(UserDetailsSerializer):
+#     # Override or add fields
+#     gender = serializers.ChoiceField(choices=[('M', 'Male'), ('F', 'Female')])
+#     age = serializers.SerializerMethodField(read_only=True)
+#     # Mark these fields as read-only (they will be available in the output but not editable)
+#     date_of_birth = serializers.DateField(read_only=True)
+#     # phone_number = serializers.CharField(max_length=15, read_only=True)
+#     user_type = serializers.PrimaryKeyRelatedField(read_only=True)
+#     profile_image = serializers.ImageField(validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png'])],allow_empty_file=True)
+#     join_date = serializers.DateTimeField(read_only=True)
+#
+#
+#     def get_age(self, obj):
+#         return obj.age
+#
+#     class Meta(UserDetailsSerializer.Meta):
+#         # Only include first_name, last_name, and gender as editable fields.
+#         # The rest are read-only.
+#         fields = UserDetailsSerializer.Meta.fields + (
+#             'first_name',
+#             'last_name',
+#             'gender',
+#             'age',
+#             'date_of_birth',
+#             'join_date',
+#             'profile_image',
+#             'user_type',
+#             # 'phone_number',
+#         )
 
 
 class UserTypeIdSerializer(serializers.ModelSerializer):

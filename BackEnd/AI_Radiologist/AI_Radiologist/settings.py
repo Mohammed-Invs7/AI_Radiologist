@@ -122,7 +122,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory" # Require email confirmation
 
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True  # No need to sent POST request to confirmation link
-LOGIN_URL = FRONT_END_HOST + '/verify-email' # "/api/v1/auth/login/"  # Path, users will be redirected to after email verification
+LOGIN_URL = FRONT_END_HOST + '/login' # "/api/v1/auth/login/"  # Path, users will be redirected to after email verification
 
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = False
 
