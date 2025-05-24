@@ -52,7 +52,7 @@ const AdminReports = () => {
     filterReports();
   }, [
     reports,
-    userSearchTerm,
+    // userSearchTerm,
     titleSearchTerm,
     startDate,
     endDate,
@@ -62,7 +62,7 @@ const AdminReports = () => {
 
   const filterReports = () => {
     console.log("Filtering Reports with:", {
-      userSearchTerm,
+      // userSearchTerm,
       titleSearchTerm,
       startDate,
       endDate,
@@ -75,9 +75,9 @@ const AdminReports = () => {
     }
 
     let filtered = reports.filter((report) => {
-      const userMatch = report.user_full_name
-        ?.toLowerCase()
-        .includes(userSearchTerm.toLowerCase());
+      // const userMatch = report.user_full_name
+      //   ?.toLowerCase()
+      //   .includes(userSearchTerm.toLowerCase());
 
       const titleMatch = report.title
         ?.toLowerCase()
@@ -96,7 +96,7 @@ const AdminReports = () => {
         (!endDate || new Date(report.report_date) <= new Date(endDate));
 
       return (
-        userMatch && titleMatch && modalityMatch && regionMatch && dateMatch
+         titleMatch && modalityMatch && regionMatch && dateMatch
       );
     });
 
@@ -147,7 +147,7 @@ const AdminReports = () => {
       <div className="flex-grow-1 p-4">
         {/* Search and Filters */}
         <div className="row mb-3 d-flex justify-content-center">
-          <div className="col-6 mb-2">
+          {/* <div className="col-6 mb-2">
             <input
               type="text"
               className="form-control"
@@ -155,7 +155,7 @@ const AdminReports = () => {
               value={userSearchTerm}
               onChange={(e) => setUserSearchTerm(e.target.value)}
             />
-          </div>
+          </div> */}
           <div className="col-6 mb-2">
             <input
               type="text"
@@ -166,7 +166,7 @@ const AdminReports = () => {
             />
           </div>
 
-          <div className="col-2 mb-2">
+          <div className="col-2 mb-2 mx-1">
             <select
               className="form-select"
               value={modalitiesFilter}
@@ -223,7 +223,7 @@ const AdminReports = () => {
                 <tr>
                   <th>#</th>
                   <th>Title</th>
-                  <th>User</th>
+                  {/* <th>User</th> */}
                   <th>Modality</th>
                   <th>Anatomy</th>
                   <th>Date</th>
@@ -235,7 +235,7 @@ const AdminReports = () => {
                   <tr key={report.id}>
                     <td>{idx + 1 + currentPage * itemsPerPage}</td>
                     <td>{report.title}</td>
-                    <td>{report.user_full_name}</td>
+                    {/* <td>{report.user_full_name}</td> */}
                     <td>{report.radiology_modality}</td>
                     <td>{report.body_anatomical_region}</td>
                     <td>{new Date(report.report_date).toLocaleDateString()}</td>

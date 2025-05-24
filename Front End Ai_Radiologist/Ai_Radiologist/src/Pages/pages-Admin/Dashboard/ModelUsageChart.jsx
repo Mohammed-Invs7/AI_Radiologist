@@ -12,6 +12,7 @@ const ModelUsageChart = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Fetch model usage data from API and filter active models
   useEffect(() => {
     const fetchModelData = async () => {
       try {
@@ -69,9 +70,7 @@ const ModelUsageChart = () => {
         },
         ticks: {
           color: "#ccc",
-          font: {
-            size: 10,
-          },
+          font: { size: 10 },
         },
       },
       y: {
@@ -79,19 +78,14 @@ const ModelUsageChart = () => {
         grid: {
           color: "rgba(255, 255, 255, 0.1)",
         },
-        ticks: {
-          color: "#ccc",
-        },
+        ticks: { color: "#ccc" },
       },
     },
     plugins: {
       legend: {
         labels: {
           color: "#ccc",
-          font: {
-            size: 12,
-            weight: "bold",
-          },
+          font: { size: 12, weight: "bold" },
         },
       },
       tooltip: {
@@ -104,7 +98,10 @@ const ModelUsageChart = () => {
 
   return (
     <div className="card shadow-lg border-light rounded mb-4">
-      <div className="card-body" style={{ background: "#1f1f2e", color: "#fff", borderRadius: "12px" }}>
+      <div
+        className="card-body"
+        style={{ background: "#1f1f2e", color: "#fff", borderRadius: "12px" }}
+      >
         <div className="d-flex align-items-center mb-3">
           <i
             className="bx bx-bar-chart me-2"

@@ -4,47 +4,45 @@ import { useAuth } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import ReactPaginate from "react-paginate";
-import AddFileModal from "../../modals/AddFileModal";
 import EditFileModal from "../../modals/EditFileModal";
 import { BASE_URL } from "../../config";
 
 const API_Files = `${BASE_URL}/admin/ai_models/model-files/`;
-
-const fetchFiles = async (token) => {
-  try {
-    const res = await axios.get(API_Files, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return res.data;
-  } catch (error) {
-    toast.error("Failed to load files.");
-    throw error;
-  }
-};
-
-const deleteFile = async (fileId, token) => {
-  try {
-    const res = await axios.delete(`${API_Files}${fileId}/`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return res.data;
-  } catch (error) {
-    toast.error("Failed to delete file.");
-    throw error;
-  }
-};
 
 const FilesAdmin = () => {
   const { token } = useAuth();
   const [files, setFiles] = useState([]);
   const [filteredFiles, setFilteredFiles] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const [showAddFile, setShowAddFile] = useState(false);
   const [showRenameModal, setShowRenameModal] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [modelFilter, setModelFilter] = useState(""); // جديد: حقل الفلترة
+  const [modelFilter, setModelFilter] = useState("");
   const itemsPerPage = 10;
+
+  const fetchFiles = async (token) => {
+    try {
+      const res = await axios.get(API_Files, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return res.data;
+    } catch (error) {
+      toast.error("Failed to load files.");
+      throw error;
+    }
+  };
+
+  const deleteFile = async (fileId, token) => {
+    try {
+      const res = await axios.delete(`${API_Files}${fileId}/`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return res.data;
+    } catch (error) {
+      toast.error("Failed to delete file.");
+      throw error;
+    }
+  };
 
   const fetchFilesData = async () => {
     try {
@@ -60,33 +58,6 @@ const FilesAdmin = () => {
 
   const handlePageClick = (event) => {
     setCurrentPage(event.selected);
-  };
-
-  const handleAddFile = async (file, modelId) => {
-    if (!file || !modelId) {
-      toast.error("Please select a file and model.");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("model", modelId);
-
-    try {
-      await axios.post(API_Files, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      toast.success("File added successfully.");
-      fetchFilesData();
-      setShowAddFile(false);
-    } catch (error) {
-      toast.error("Error uploading file.");
-      console.error(error);
-    }
   };
 
   const handleDelete = async (fileId) => {
@@ -162,15 +133,8 @@ const FilesAdmin = () => {
           ></i>
           Files Model
         </h4>
-        {/* <button
-          className="btn btn-primary"
-          onClick={() => setShowAddFile(true)}
-        >
-          Add File
-        </button> */}
       </div>
 
-      {/* Add Filter Input */}
       <div className="mb-3">
         <input
           type="text"
@@ -187,7 +151,6 @@ const FilesAdmin = () => {
           <thead className="table-dark text-center align-middle">
             <tr>
               <th>#</th>
-              {/* <th>Num Model</th> */}
               <th>Model Name</th>
               <th>File Name</th>
               <th>Uploaded</th>
@@ -198,7 +161,6 @@ const FilesAdmin = () => {
             {filesToDisplay.map((file, idx) => (
               <tr key={file.id}>
                 <td>{idx + 1 + currentPage * itemsPerPage}</td>
-                {/* <td>{file.model}</td> */}
                 <td>{file.model_name}</td>
                 <td>{file.file.split("/").pop()}</td>
                 <td>{new Date(file.uploaded).toLocaleString()}</td>
@@ -303,13 +265,7 @@ const FilesAdmin = () => {
         activeClassName="active"
       />
 
-      {/* Modals */}
-      <AddFileModal
-        show={showAddFile}
-        onClose={() => setShowAddFile(false)}
-        onSubmit={handleAddFile}
-      />
-
+      {/* Rename Modal */}
       <EditFileModal
         show={showRenameModal}
         onClose={() => setShowRenameModal(false)}

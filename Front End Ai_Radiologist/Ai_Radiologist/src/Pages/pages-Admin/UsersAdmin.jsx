@@ -21,6 +21,8 @@ const UsersAdmin = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [genderFilter, setGenderFilter] = useState("All");
   const [userTypeFilter, setUserTypeFilter] = useState("All");
+  const [searchName, setSearchName] = useState("");
+  const [searchEmail, setSearchEmail] = useState("");
 
   const [newUser, setNewUser] = useState({
     email: "",
@@ -171,19 +173,21 @@ const UsersAdmin = () => {
   };
 
   const filteredUsers = users.filter((user) => {
-    const fullText =
-      `${user.first_name} ${user.last_name} ${user.email} ${user.gender}`.toLowerCase();
-    const search = searchTerm.toLowerCase();
+    const fullName = `${user.first_name} ${user.last_name}`.toLowerCase();
+    const email = user.email.toLowerCase();
+
+    const matchesName = fullName.includes(searchName.toLowerCase());
+    const matchesEmail = email.includes(searchEmail.toLowerCase());
+
     const gender = genderFilter.toLowerCase();
     const userType = userTypeFilter.toLowerCase();
 
-    const matchesSearch = fullText.includes(search);
     const matchesGender =
       gender === "all" || user.gender?.toLowerCase() === gender;
     const matchesUserType =
       userType === "all" || String(user.user_type).toLowerCase() === userType;
 
-    return matchesSearch && matchesGender && matchesUserType;
+    return matchesName && matchesEmail && matchesGender && matchesUserType;
   });
 
   const usersToDisplay = filteredUsers.slice(
@@ -229,32 +233,43 @@ const UsersAdmin = () => {
               <input
                 type="text"
                 className="form-control"
-                placeholder="Search by name or email..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search by name..."
+                value={searchName}
+                onChange={(e) => setSearchName(e.target.value)}
               />
             </div>
-            <div className="col-md-3 mb-2">
-              <select
-                className="form-select"
-                value={genderFilter}
-                onChange={(e) => setGenderFilter(e.target.value)}
-              >
-                <option value="All">All Genders</option>
-                <option value="M">Male</option>
-                <option value="F">Female</option>
-              </select>
+            <div className="col-md-6 mb-2">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Search by email..."
+                value={searchEmail}
+                onChange={(e) => setSearchEmail(e.target.value)}
+              />
             </div>
-            <div className="col-md-3 mb-2">
-              <select
-                className="form-select"
-                value={userTypeFilter}
-                onChange={(e) => setUserTypeFilter(e.target.value)}
-              >
-                <option value="All">All User Types</option>
-                <option value="admin">Admin</option>
-                <option value="user">User</option>
-              </select>
+            <div className="d-flex align-items-center justify-content-center">
+              <div className="col-md-3 mb-2">
+                <select
+                  className="form-select"
+                  value={genderFilter}
+                  onChange={(e) => setGenderFilter(e.target.value)}
+                >
+                  <option value="All">All Genders</option>
+                  <option value="M">Male</option>
+                  <option value="F">Female</option>
+                </select>
+              </div>
+              <div className="col-md-3 mb-2">
+                <select
+                  className="form-select"
+                  value={userTypeFilter}
+                  onChange={(e) => setUserTypeFilter(e.target.value)}
+                >
+                  <option value="All">All User Types</option>
+                  <option value="admin">Admin</option>
+                  <option value="user">User</option>
+                </select>
+              </div>
             </div>
           </div>
 

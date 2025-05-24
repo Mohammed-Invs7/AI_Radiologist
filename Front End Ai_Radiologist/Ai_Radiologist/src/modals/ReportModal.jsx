@@ -123,30 +123,17 @@ const ReportModal = ({ selectedReport, onClose }) => {
                     return <p key={index}>{line}</p>;
                   }
                 })}
-
-              {/* <h5 className="text-info mt-4">Recommendations</h5>
-              <ol>
-                <li>Further tests are advised.</li>
-                <li>Follow-up with a physician is needed.</li>
-              </ol>
-
-              <h5 className="text-info mt-4">Confidence Level</h5>
-              <p>Approximate confidence is 70% based on AI performance.</p>
-
-              <h5 className="text-info mt-4">Additional Notes</h5>
-              <ul>
-                <li>AI model still under development.</li>
-                <li>Human evaluation required.</li>
-              </ul> */}
             </div>
           </div>
           <div className="modal-footer d-flex justify-content-between">
-            <button
-              onClick={handleDownloadPDF}
-              className="btn btn-outline-primary"
-            >
-              <i className="bi bi-download me-2"></i> Download PDF Report
-            </button>
+            {location.pathname !== "/AdminPanel/Reports%20Admin" && (
+              <button
+                onClick={handleDownloadPDF}
+                className="btn btn-outline-primary"
+              >
+                <i className="bi bi-download me-2"></i> Download PDF Report
+              </button>
+            )}
             <button className="btn btn-secondary" onClick={onClose}>
               Close
             </button>

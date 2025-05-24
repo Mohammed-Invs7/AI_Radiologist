@@ -25,6 +25,7 @@ const AnatomiesAdmin = () => {
     fetchAnatomies();
   }, []);
 
+  // Fetch the list of anatomies from the API and update the state
   const fetchAnatomies = async () => {
     try {
       const res = await axios.get(API_ANATOMIES, {
@@ -36,6 +37,7 @@ const AnatomiesAdmin = () => {
     }
   };
 
+  // Handle adding a new anatomy after validating the input
   const handleAdd = async () => {
     if (!newAnatomy.trim()) {
       setErrorMessage("Name is required.");
@@ -59,6 +61,7 @@ const AnatomiesAdmin = () => {
     }
   };
 
+  // Handle editing an existing anatomy by sending updated data to the API
   const handleEdit = async () => {
     try {
       await axios.patch(
@@ -75,6 +78,7 @@ const AnatomiesAdmin = () => {
     }
   };
 
+  // Handle deleting an anatomy after user confirmation via Swal dialog
   const handleDelete = async (id) => {
     const confirm = await Swal.fire({
       title: "Are you sure?",

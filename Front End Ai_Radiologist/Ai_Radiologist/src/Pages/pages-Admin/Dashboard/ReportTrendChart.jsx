@@ -7,7 +7,7 @@ import { useAuth } from "../../../context/AuthContext";
 const ReportTrendChart = () => {
   const { token } = useAuth();
   const [trendData, setTrendData] = useState(null);
-  const [selectedDays, setSelectedDays] = useState(30); // 👈 جديد
+  const [selectedDays, setSelectedDays] = useState(30);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -31,7 +31,7 @@ const ReportTrendChart = () => {
     };
 
     fetchTrendData();
-  }, [token, selectedDays]); // 👈 التحديث عند تغيير selectedDays
+  }, [token, selectedDays]);
 
   if (loading)
     return <div className="text-center text-light">Loading chart...</div>;
@@ -125,7 +125,6 @@ const ReportTrendChart = () => {
           </h5>
         </div>
 
-        {/* 👇 عنصر اختيار الأيام */}
         <select
           className="form-select form-select-sm"
           style={{ width: "120px" }}
