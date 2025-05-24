@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import axios from "axios";
-import { BASE_URL } from "../../../config";
-import { useAuth } from "../../../context/AuthContext";
+import { BASE_URL } from "../../config";
+import { useAuth } from "../../context/AuthContext";
 
 const API_MODEL_USAGE = `${BASE_URL}/admin/dashboard/models/`;
 

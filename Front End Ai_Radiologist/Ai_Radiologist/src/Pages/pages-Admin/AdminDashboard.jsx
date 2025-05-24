@@ -1,9 +1,9 @@
-import ReportTrendChart from "./ReportTrendChart";
-import UserTrendChart from "./UserTrendChart.jsx";
-import ModelUsageChart from "./ModelUsageChart";
-import RecentReports from "./RecentReports";
-import RecentUsers from "./RecentUsers";
-import DashboardSummary from "./DashboardSummary";
+import ReportTrendChart from "../../Components/Admin/ReportTrendChart.jsx";
+import UserTrendChart from "../../Components/Admin/UserTrendChart.jsx";
+import ModelUsageChart from "../../Components/Admin/ModelUsageChart.jsx";
+import RecentReports from "../../Components/Admin/RecentReports.jsx";
+import RecentUsers from "../../Components/Admin/RecentUsers.jsx";
+import DashboardSummary from "../../Components/Admin/DashboardSummary.jsx";
 
 const AdminDashboard = () => {
   return (

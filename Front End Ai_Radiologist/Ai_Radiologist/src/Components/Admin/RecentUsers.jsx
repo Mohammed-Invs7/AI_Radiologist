@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { BASE_URL } from "../../../config";
-import { useAuth } from "../../../context/AuthContext";
+import { BASE_URL } from "../../config";
+import { useAuth } from "../../context/AuthContext";
 
 const API_RECENT_USERS = `${BASE_URL}/admin/dashboard/recent/users/`;
 

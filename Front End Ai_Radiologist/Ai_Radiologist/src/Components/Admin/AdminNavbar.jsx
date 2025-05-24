@@ -45,6 +45,9 @@ const AdminNavbar = () => {
     "/AdminPanel/Reports%20Admin": "Reports Management",
     "/AdminPanel/Models%20Admin": "Models Management",
     "/AdminPanel/Files%20Admin": "Files Management",
+    "/AdminPanel/Modalities%20Admin": "Radiology Modalities Management",
+    "/AdminPanel/Anatomies%20Admin": "Anatomical Regions Management",
+    "/AdminPanel/RadiologyDetails%20Admin": "Radiology Details Management",
   };
 
   const getPageTitle = () => pageTitles[location.pathname];

@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
-import Chart from "chart.js/auto";
 import axios from "axios";
-import { BASE_URL } from "../../../config";
-import { useAuth } from "../../../context/AuthContext";
+import { BASE_URL } from "../../config";
+import { useAuth } from "../../context/AuthContext";
 
-const UserTrendChart = () => {
+const ReportTrendChart = () => {
   const { token } = useAuth();
   const [trendData, setTrendData] = useState(null);
   const [selectedDays, setSelectedDays] = useState(30);
@@ -17,7 +16,7 @@ const UserTrendChart = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          `${BASE_URL}/admin/dashboard/trends/users/?days=${selectedDays}`,
+          `${BASE_URL}/admin/dashboard/trends/reports/?days=${selectedDays}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -25,7 +24,7 @@ const UserTrendChart = () => {
         setTrendData(response.data);
       } catch (err) {
         setError(err);
-        console.error("Error fetching user trend data:", err);
+        console.error("Error fetching report trend data:", err);
       } finally {
         setLoading(false);
       }
@@ -43,8 +42,8 @@ const UserTrendChart = () => {
 
   const gradientFill = (ctx) => {
     const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-    gradient.addColorStop(0, "rgba(0, 255, 164, 0.7)");
-    gradient.addColorStop(1, "rgba(0, 90, 60, 0.3)");
+    gradient.addColorStop(0, "rgba(0, 212, 255, 0.7)");
+    gradient.addColorStop(1, "rgba(9, 9, 121, 0.3)");
     return gradient;
   };
 
@@ -52,12 +51,12 @@ const UserTrendChart = () => {
     labels: trendData.labels,
     datasets: [
       {
-        label: `User Registrations (${selectedDays} Days)`,
+        label: `Reports (${selectedDays} Days)`,
         data: trendData.data,
         fill: true,
         backgroundColor: (ctx) => gradientFill(ctx.chart.ctx),
-        borderColor: "#00ffa4",
-        pointBackgroundColor: "#00ffa4",
+        borderColor: "#00d4ff",
+        pointBackgroundColor: "#00d4ff",
         pointBorderColor: "#fff",
         tension: 0.4,
       },
@@ -118,11 +117,11 @@ const UserTrendChart = () => {
       <div className="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
         <div className="d-flex align-items-center">
           <i
-            className="bx bx-user-plus me-2"
-            style={{ fontSize: "26px", color: "#00ffa4" }}
+            className="bx bx-line-chart me-2"
+            style={{ fontSize: "26px", color: "#00d4ff" }}
           ></i>
           <h5 style={{ margin: 0, fontWeight: "bold" }}>
-            User Registrations (Last {selectedDays} Days)
+            Report Trends (Last {selectedDays} Days)
           </h5>
         </div>
 
@@ -148,4 +147,4 @@ const UserTrendChart = () => {
   );
 };
 
-export default UserTrendChart;
+export default ReportTrendChart;
