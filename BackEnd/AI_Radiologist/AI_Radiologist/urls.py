@@ -82,6 +82,7 @@ urlpatterns = [
     #     name="google_login_callback",
     # ),
     path('api/v1/auth/check-email/<str:email>/', CheckEmailView.as_view(), name='check-email'),    # apps
+
     path('api/v1/user/reports/', include('reports.urls.user_urls')),
     path('api/v1/admin/users/reports/', include('reports.urls.admin_urls')),
 
