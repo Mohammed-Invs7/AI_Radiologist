@@ -13,7 +13,7 @@ const AdminReports = () => {
   const { user, token } = useAuth();
   const [reports, setReports] = useState([]);
   const [filteredReports, setFilteredReports] = useState([]);
-  const [userSearchTerm, setUserSearchTerm] = useState("");
+  const [modelSearchTerm, setModelSearchTerm] = useState("");
   const [titleSearchTerm, setTitleSearchTerm] = useState("");
   const [modalitiesFilter, setModalitiesFilter] = useState("all");
   const [regionFilter, setRegionFilter] = useState("all");
@@ -52,7 +52,7 @@ const AdminReports = () => {
     filterReports();
   }, [
     reports,
-    // userSearchTerm,
+    modelSearchTerm,
     titleSearchTerm,
     startDate,
     endDate,
@@ -75,9 +75,9 @@ const AdminReports = () => {
     }
 
     let filtered = reports.filter((report) => {
-      // const userMatch = report.user_full_name
-      //   ?.toLowerCase()
-      //   .includes(userSearchTerm.toLowerCase());
+      const modelMatch = report.model
+        ?.toLowerCase()
+        .includes(modelSearchTerm.toLowerCase());
 
       const titleMatch = report.title
         ?.toLowerCase()
@@ -96,7 +96,7 @@ const AdminReports = () => {
         (!endDate || new Date(report.report_date) <= new Date(endDate));
 
       return (
-         titleMatch && modalityMatch && regionMatch && dateMatch
+        modelMatch && titleMatch && modalityMatch && regionMatch && dateMatch
       );
     });
 
@@ -147,15 +147,15 @@ const AdminReports = () => {
       <div className="flex-grow-1 p-4">
         {/* Search and Filters */}
         <div className="row mb-3 d-flex justify-content-center">
-          {/* <div className="col-6 mb-2">
+          <div className="col-6 mb-2">
             <input
               type="text"
               className="form-control"
-              placeholder="Search by User..."
-              value={userSearchTerm}
-              onChange={(e) => setUserSearchTerm(e.target.value)}
+              placeholder="Search by Model ..."
+              value={modelSearchTerm}
+              onChange={(e) => setModelSearchTerm(e.target.value)}
             />
-          </div> */}
+          </div>
           <div className="col-6 mb-2">
             <input
               type="text"
@@ -223,7 +223,7 @@ const AdminReports = () => {
                 <tr>
                   <th>#</th>
                   <th>Title</th>
-                  {/* <th>User</th> */}
+                  <th>Model</th>
                   <th>Modality</th>
                   <th>Anatomy</th>
                   <th>Date</th>
@@ -235,7 +235,7 @@ const AdminReports = () => {
                   <tr key={report.id}>
                     <td>{idx + 1 + currentPage * itemsPerPage}</td>
                     <td>{report.title}</td>
-                    {/* <td>{report.user_full_name}</td> */}
+                    <td>{report.model}</td>
                     <td>{report.radiology_modality}</td>
                     <td>{report.body_anatomical_region}</td>
                     <td>{new Date(report.report_date).toLocaleDateString()}</td>

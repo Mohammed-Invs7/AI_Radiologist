@@ -77,12 +77,17 @@ const ReportModal = ({ selectedReport, onClose }) => {
                 <strong>Title:</strong> {selectedReport.title}
               </p>
 
-              <p>
-                <strong>Name:</strong>{" "}
-                {pathname.includes("/AdminPanel/Reports%20Admin")
-                  ? selectedReport?.user_full_name || ""
-                  : `${user?.first_name || ""} ${user?.last_name || ""}`}
-              </p>
+              {!pathname.includes("/AdminPanel/Reports%20Admin") && (
+                <p>
+                  <strong>Name:</strong>{" "}
+                  {`${user?.first_name || ""} ${user?.last_name || ""}`}
+                </p>
+              )}
+              {!pathname.includes("/profile_User") && (
+                <p>
+                  <strong>Model:</strong> {selectedReport.model}
+                </p>
+              )}
 
               <p>
                 <strong>Modality:</strong> {selectedReport.radiology_modality}
