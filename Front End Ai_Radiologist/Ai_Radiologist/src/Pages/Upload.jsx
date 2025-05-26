@@ -48,47 +48,6 @@ const Upload = () => {
     fetchOptions();
   }, [token]);
 
-  useEffect(() => {
-    const fetchModelDescription = async () => {
-      try {
-        const res = await axios.get(API_MODELS, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (res.data && res.data.length > 0) {
-          // أولاً: نجيب اسم الموداليتي حسب ID المختار من السليكت
-          const selectedModality = radioOptions.find(
-            (opt) => opt.modality.id === Number(formData.type)
-          );
-          
-
-          const selectedModalityName = selectedModality?.modality.name;
-
-          if (!selectedModalityName) {
-            setModelDescription("No modality selected.");
-            return;
-          }
-
-          
-          // ثانيًا: نبحث عن الموديل الاكتف ويطابق نفس الموداليتي
-          const activeModel = res.data.find(
-            (model) =>
-              model.active_status === true &&
-              model.modalities.name === selectedModalityName
-          );
-
-          // ثالثًا: نحط الديسكربشن
-          setModelDescription(
-            activeModel?.description || "No matching active model found."
-          );
-        }
-      } catch (error) {
-        console.error("Failed to fetch model description:", error);
-      }
-    };
-
-    fetchModelDescription();
-  }, [token, formData.type, radioOptions]);
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -140,12 +99,20 @@ const Upload = () => {
       form.append("radio_modality", formData.type);
       form.append("body_ana", formData.bodyPart);
 
-      const response = await axios.post(`${API_CREATE_REPORT}`, form, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+const response = await axios.post(`${API_CREATE_REPORT}`, form, {
+  headers: {
+    "Content-Type": "multipart/form-data",
+    Authorization: `Bearer ${token}`,
+  },
+});
+
+setFormData((prev) => ({
+  ...prev,
+  predictionResult: response.data.report_details,
+  reportId: response.data.id,
+  loading: false,
+}));
+setModelDescription(response.data.model_description || "");
 
       setFormData((prev) => ({
         ...prev,
@@ -408,8 +375,12 @@ const Upload = () => {
                     <li>Follow-up with a physician is needed.</li>
                   </ol>
 
-                  <h5 className="text-info mt-4">Confidence Level</h5>
-                  <p>{modelDescription}</p>
+                 {modelDescription && (
+  <>
+    <h5 className="text-secondary mt-4">Model Description</h5>
+    <p>{modelDescription}</p>
+  </>
+)}
 
                   <h5 className="text-info mt-4">Additional Notes</h5>
                   <ul>

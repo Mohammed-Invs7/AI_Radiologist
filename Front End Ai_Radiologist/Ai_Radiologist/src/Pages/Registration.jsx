@@ -345,7 +345,7 @@ const Registration = () => {
                         html: `
                           <p>By using this service, you agree to the following:</p>
                           <ul style="text-align: left;" >
-                            <li><Strong>1-</Strong> Developers will have access to user reports to improve and analyze the service.</li>
+                            <li><Strong>1-</Strong> Developers will have access to user reports to improve and analyze the service, without accessing personal user information.</li>
                             <li><Strong>2-</Strong> Your medical data will be used only for diagnostic purposes and X-ray analysis and will not be shared with third parties without your permission.</li>
                             <li><Strong>3-</Strong> This service does not replace professional medical examination; you should always consult a qualified physician.</li>
                             <li><Strong>4-</Strong> We maintain the confidentiality of your data and adhere to privacy protection standards.</li>
