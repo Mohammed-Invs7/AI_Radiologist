@@ -68,7 +68,7 @@ const AdminNavbar = () => {
   return (
     <header className="header mb-3">
       <nav className="nav container d-flex">
-        <Link to="/" className="nav__logo p-0">
+        <Link to="/AI_Radiologist" className="nav__logo p-0">
           <Logo />
         </Link>
 
@@ -114,17 +114,26 @@ const AdminNavbar = () => {
                   </h6>
                 </div>
                 <li>
-                  <Link className="dropdown__link" to="/profile_User">
+                  <Link
+                    className="dropdown__link"
+                    to="/AI_Radiologist/profile_User"
+                  >
                     <i className="bx bx-user me-2"></i> Profile
                   </Link>
                 </li>
                 <li>
-                  <Link className="dropdown__link" to="/Settings_User">
+                  <Link
+                    className="dropdown__link"
+                    to="/AI_Radiologist/Settings_User"
+                  >
                     <i className="bx bx-cog me-2"></i> Settings
                   </Link>
                 </li>
                 <li>
-                  <Link className="dropdown__link" to="/AdminPanel">
+                  <Link
+                    className="dropdown__link"
+                    to="/AI_Radiologist/AdminPanel"
+                  >
                     <i className="bx bx-grid-alt me-2"></i> Dashboard
                   </Link>
                 </li>

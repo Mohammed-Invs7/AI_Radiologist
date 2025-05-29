@@ -27,7 +27,7 @@ const NavBar = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         logout();
-        navigate("/Login");
+        navigate("/AI_Radiologist/Login");
         Swal.fire({
           title: "Logged out!",
           text: "You have been logged out successfully.",
@@ -48,16 +48,16 @@ const NavBar = () => {
   }, []);
 
   const navItems = [
-    { name: "Home", path: "/Home" },
-    { name: "Our Vision", path: "/Home" },
-    { name: "Upload", path: "/Upload" },
-    { name: "How Use It", path: "/Home" },
+    { name: "Home", path: "/AI_Radiologist/Home" },
+    { name: "Our Vision", path: "/AI_Radiologist/Home" },
+    { name: "Upload", path: "/AI_Radiologist/Upload" },
+    { name: "How Use It", path: "/AI_Radiologist/Home" },
   ];
 
   return (
     <header className="header">
       <nav className="nav container">
-        <Link to="/" className="nav__logo p-0">
+        <Link to="/AI_Radiologist" className="nav__logo p-0">
           <Logo />
         </Link>
 
@@ -112,18 +112,27 @@ const NavBar = () => {
                   </h6>
                 </div>
                 <li>
-                  <Link className="dropdown__link" to="/profile_User">
+                  <Link
+                    className="dropdown__link"
+                    to="/AI_Radiologist/profile_User"
+                  >
                     <i className="bx bx-user me-2"></i> Profile
                   </Link>
                 </li>
                 <li>
-                  <Link className="dropdown__link" to="/Settings_User">
+                  <Link
+                    className="dropdown__link"
+                    to="/AI_Radiologist/Settings_User"
+                  >
                     <i className="bx bx-cog me-2"></i> Settings
                   </Link>
                 </li>
                 {user.user_type === "admin" && (
                   <li>
-                    <Link className="dropdown__link" to="/AdminPanel">
+                    <Link
+                      className="dropdown__link"
+                      to="/AI_Radiologist/AdminPanel"
+                    >
                       <i className="bx bx-grid-alt me-2"></i> Dashboard
                     </Link>
                   </li>

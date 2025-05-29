@@ -11,7 +11,10 @@ const ErrorPage = () => {
           We can't seem to find the page you're looking for.
         </p>
         <div className="d-flex justify-content-center gap-3">
-          <Link to="/" className="btn btn-outline-secondary px-4 py-2">
+          <Link
+            to="/AI_Radiologist"
+            className="btn btn-outline-secondary px-4 py-2"
+          >
             Return Home
           </Link>
         </div>

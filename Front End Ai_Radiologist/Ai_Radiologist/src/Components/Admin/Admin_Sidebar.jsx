@@ -38,7 +38,7 @@ const Admin_Sidebar = () => {
     <div className="bg-white Admin-Sidebar py-2 d-flex flex-column">
       <div className="list-group list-group-flush fw-semibold">
         <Link
-          to="/AdminPanel"
+          to="/AI_Radiologist/AdminPanel"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-bar-chart-alt-2 fs-5 me-2"></i>
@@ -46,7 +46,7 @@ const Admin_Sidebar = () => {
         </Link>
 
         <Link
-          to="/AdminPanel/Users Admin"
+          to="/AI_Radiologist/AdminPanel/Users Admin"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-user fs-4 me-2"></i>
@@ -54,7 +54,7 @@ const Admin_Sidebar = () => {
         </Link>
 
         <Link
-          to="/AdminPanel/Models Admin"
+          to="/AI_Radiologist/AdminPanel/Models Admin"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-layer fs-4 me-2"></i>
@@ -62,7 +62,7 @@ const Admin_Sidebar = () => {
         </Link>
 
         <Link
-          to="/AdminPanel/Files Admin"
+          to="/AI_Radiologist/AdminPanel/Files Admin"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-file fs-4 me-2"></i>
@@ -70,7 +70,7 @@ const Admin_Sidebar = () => {
         </Link>
 
         <Link
-          to="/AdminPanel/Modalities Admin"
+          to="/AI_Radiologist/AdminPanel/Modalities Admin"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-heart fs-4 me-2"></i>
@@ -78,14 +78,14 @@ const Admin_Sidebar = () => {
         </Link>
 
         <Link
-          to="/AdminPanel/Anatomies Admin"
+          to="/AI_Radiologist/AdminPanel/Anatomies Admin"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-body fs-4 me-2"></i>
           <span>Anatomies</span>
         </Link>
         <Link
-          to="/AdminPanel/RadiologyDetails Admin"
+          to="/AI_Radiologist/AdminPanel/RadiologyDetails Admin"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-health fs-4 me-2"></i>
@@ -93,7 +93,7 @@ const Admin_Sidebar = () => {
         </Link>
 
         <Link
-          to="/AdminPanel/Reports Admin"
+          to="/AI_Radiologist/AdminPanel/Reports Admin"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-detail fs-4 me-2"></i>

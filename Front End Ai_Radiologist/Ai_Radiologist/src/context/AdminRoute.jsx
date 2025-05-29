@@ -7,7 +7,7 @@ const AdminRoute = () => {
     if (loading) return <p>Loading...</p>; 
 
     if (!user || user.user_type !== "admin") {
-        return <Navigate to="/Login"  />;
+        return <Navigate to="/AI_Radiologist/Login" />;
     }
 
     return <Outlet />;

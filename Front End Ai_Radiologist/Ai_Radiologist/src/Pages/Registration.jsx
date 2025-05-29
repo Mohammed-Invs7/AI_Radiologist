@@ -85,7 +85,7 @@ const Registration = () => {
   });
 
   if (token) {
-    return <Navigate to="/" />;
+    return <Navigate to="/AI_Radiologist" />;
   }
 
   const passwordValue = watch("password");
@@ -174,7 +174,7 @@ const Registration = () => {
     <div className="page-form">
       <div className="container-form">
         <div className="form-box registration">
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form className="form-r-l" onSubmit={handleSubmit(onSubmit)}>
             <h1>Registration</h1>
 
             {/* First Name */}

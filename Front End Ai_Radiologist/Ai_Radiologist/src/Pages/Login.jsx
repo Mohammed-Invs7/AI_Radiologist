@@ -33,19 +33,17 @@ const Login = () => {
     resolver: yupResolver(schema),
   });
 
- 
-
   if (loading) return null;
   if (token && user) {
     if (user.user_type === "admin") {
-      return <Navigate to="/AdminPanel" />;
+      return <Navigate to="/AI_Radiologist/AdminPanel" />;
     } else if (user.user_type === "user") {
-      return <Navigate to="/" />;
+      return <Navigate to="/AI_Radiologist" />;
     } else {
       return null;
     }
   }
-  
+
   const onSubmit = async (data) => {
     try {
       const response = await axios.post(API_LOGIN, data, {
@@ -66,7 +64,7 @@ const Login = () => {
             ? "admin"
             : userData.user_type === 2
             ? "user"
-            :"";
+            : "";
         userData.user_type = userType;
 
         await login(token, userData, refreshToken);
@@ -91,7 +89,7 @@ const Login = () => {
     <div className="page-form">
       <div className="container-form">
         <div className="form-box login flex-column">
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form className="form-r-l" onSubmit={handleSubmit(onSubmit)}>
             <h3>Login</h3>
             <p>Log in to your account</p>
 
@@ -121,7 +119,7 @@ const Login = () => {
               <i className="bx bx-lock-alt"></i>
             </div>
 
-            <Link to="/forgot-password" className="forget-link">
+            <Link to="/AI_Radiologist/forgot-password" className="forget-link">
               <div className="forget-link">Forgot Password?</div>
             </Link>
 

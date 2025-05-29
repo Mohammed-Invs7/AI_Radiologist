@@ -26,7 +26,7 @@ const Profile_User = () => {
           </h6>
 
           <Link
-            to="/Upload"
+            to="/AI_Radiologist/Upload"
             className="btn btn-light d-flex align-items-center gap-2 px-3 py-2"
           >
             <span className="fw-semibold">Add New Radiology Image</span>
@@ -37,8 +37,6 @@ const Profile_User = () => {
           </Link>
         </div>
       </div>
-
-      
 
       {/* Radiology Reports */}
       <div className="container-fluid">

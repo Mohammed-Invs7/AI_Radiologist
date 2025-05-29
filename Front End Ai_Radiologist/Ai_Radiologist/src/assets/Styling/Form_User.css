@@ -35,8 +35,9 @@
   z-index: 1;
 }
 
-form {
+.form-r-l {
   width: 85%;
+  height: 117%;
 }
 
 .container h1 {
@@ -120,7 +121,7 @@ form {
   }
 
   .login {
-    height: 85%;
+    height: 68%;
   }
   .input-box i {
     right: 10%;

@@ -14,13 +14,13 @@ const Footer = () => {
         Save time and costs with instant results—no hospital visits required.
       </p>
       <div className="d-flex justify-content-center gap-5">
-        <Link to={"/"}>
+        <Link to={"/AI_Radiologist"}>
           <img src={Instagram} alt="Instagram" width="40" />
         </Link>
-        <Link to={"/"}>
+        <Link to={"/AI_Radiologist"}>
           <img src={Gmail} alt="Email" width="40" />
         </Link>
-        <Link to={"/"}>
+        <Link to={"/AI_Radiologist"}>
           <img src={Twitter} alt="X (Twitter)" width="40" />
         </Link>
       </div>
