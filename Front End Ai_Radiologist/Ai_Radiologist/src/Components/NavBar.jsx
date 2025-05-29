@@ -155,7 +155,7 @@ const NavBar = () => {
           ) : (
             <button
               className="btn-go-reg"
-              onClick={() => navigate("/Registration")}
+              onClick={() => navigate("/AI_Radiologist/Registration")}
             >
               <span className="btn-go-reg-span">Registration</span>
             </button>
