@@ -1,16 +1,16 @@
 {
-  "homepage": "https://mohammed-invs7.github.io/ai-radiologist-f",
+  "homepage": "https://mohammed-invs7.github.io/AI_Radiologist/",
   "name": "ai-radiologist",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@fontsource/inter": "^5.2.5",
