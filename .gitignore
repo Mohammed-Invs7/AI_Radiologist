@@ -25,4 +25,7 @@ yarn-error.log*
 .DS_Store
 
 # Backend ignored folders
-/BackEnd/AI_Radiologist/media/models/
+/BackEnd/AI_Radiologist/media/models/**
+
+!/BackEnd/AI_Radiologist/media/models/6_The real chest X-ray/
+!/BackEnd/AI_Radiologist/media/models/6_The real chest X-ray/**
