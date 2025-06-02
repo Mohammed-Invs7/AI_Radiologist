@@ -28,7 +28,7 @@ const Login = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -123,8 +123,11 @@ const Login = () => {
               <div className="forget-link">Forgot Password?</div>
             </Link>
 
-            <button type="submit" className="btn-blue btn-submit">
-              Log In
+            <button type="submit" className="btn-blue" disabled={isSubmitting}>
+              {isSubmitting ? "Login" : "Login"}
+              {isSubmitting && (
+                <span className="spinner-border spinner-border-sm ms-2" />
+              )}
             </button>
           </form>
         </div>

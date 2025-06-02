@@ -39,6 +39,11 @@
   width: 85%;
   height: 117%;
 }
+@media screen and (max-width: 696px) {
+  .form-r-l {
+    height: 140%;
+  }
+}
 
 .container h1 {
   font-size: 36px;
