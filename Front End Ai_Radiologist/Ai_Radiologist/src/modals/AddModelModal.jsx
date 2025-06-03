@@ -79,8 +79,8 @@ const AddModelModal = ({
               onClick={onClose}
             ></button>
           </div>
-          <div className="modal-body">
-            <form onSubmit={handleSubmit(onSubmit)}>
+          <div  className="modal-body">
+            <form  onSubmit={handleSubmit(onSubmit)}>
               {/* Name */}
               <div className="mb-3">
                 <label className="form-label">Name</label>

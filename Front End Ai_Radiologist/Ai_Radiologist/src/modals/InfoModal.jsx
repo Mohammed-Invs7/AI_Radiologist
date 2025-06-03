@@ -47,7 +47,7 @@ const InfoModal = ({
               ></button>
             </div>
 
-            <div className="modal-body">
+            <div style={{width: "400px"}} className="modal-body ">
               <div className="d-flex align-items-center flex-column">
                 {previewImage && (
                   <div

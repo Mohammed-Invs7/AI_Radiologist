@@ -68,7 +68,7 @@ const PasswordModal = ({ show, onClose, onSave }) => {
               ></button>
             </div>
 
-            <div className="modal-body w-100">
+            <div style={{width: "400px"}} className="modal-body">
               <div className="mb-3">
                 <label>New Password</label>
                 <motion.div whileFocus={{ scale: 1.05 }}>

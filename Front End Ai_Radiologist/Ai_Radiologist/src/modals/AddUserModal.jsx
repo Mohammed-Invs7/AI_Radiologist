@@ -31,7 +31,7 @@ const AddUserModal = ({ show, onClose, onSubmit }) => {
             ></button>
           </div>
           <div className="modal-body d-flex justify-content-center ">
-            <form onSubmit={handleSubmit(onFormSubmit)}>
+            <form style={{width:"400px"}} onSubmit={handleSubmit(onFormSubmit)}>
               <div className="mb-3">
                 <label className="form-label">First Name</label>
                 <input
