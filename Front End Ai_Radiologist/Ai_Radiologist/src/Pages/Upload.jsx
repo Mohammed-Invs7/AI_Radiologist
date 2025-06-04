@@ -11,7 +11,6 @@ import { BASE_URL } from "../config";
 
 const API_CREATE_REPORT = `${BASE_URL}/user/reports/create/`;
 const API_FETCH_OPTIONS = `${BASE_URL}/user/reports/options/`;
-const API_MODELS = `${BASE_URL}/admin/ai_models/models/`;
 
 const Upload = () => {
   const { token, user } = useAuth();
