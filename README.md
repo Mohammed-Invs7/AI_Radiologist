@@ -34,43 +34,70 @@ The system allows users to **upload medical images** (such as X-rays, CT scans, 
 
 ```mermaid
 graph TD
-    A[Frontend (React)] --> B[Backend (Django REST API)]
-    B --> C[AI Model Server (Deep Learning Engine)]
-    C --> D[(MySQL Database)]
+    A[Frontend (React)] --> B[Backend (Django REST API + Integrated AI Model)]
+    B --> C[(MySQL Database)]
+
+Explanation
+
+Frontend (React): The user interface for uploading images and viewing reports.
+
+Backend (Django REST API + Integrated AI Model): Handles API requests, runs the AI model for image analysis, and generates reports.
+
+Database (MySQL): Stores users, reports, image paths, and model information.
+
+
 
 ---
 
-## 🧪 Example Workflow
+🧪 Example Workflow
 
-1. User uploads an image (e.g., Chest X-ray).  
-2. The backend sends the image path to the AI model.  
-3. The model analyzes and generates findings.  
-4. A structured report is created and stored in the database.  
-5. The report is displayed to the user via the React interface.
+1. User uploads an image (e.g., Chest X-ray).
 
----
 
-## 📚 Future Enhancements
+2. The backend processes the image and passes it to the integrated AI model.
 
-- Support for additional imaging modalities (MRI, Ultrasound, etc.).  
-- Integration with hospital systems (PACS, HIS).  
-- Real-time AI inference performance optimization.  
-- Report translation and multilingual support.  
 
----
+3. The AI model analyzes and generates diagnostic findings.
 
-## 👨‍💻 Authors
 
-**AI Radiologist Team**  
-Developed by **Mohammed Ali Alamoudi** and collaborators.  
-📧 Contact: [asdmloon1@gmail.com](mailto:asdmloon1@gmail.com)
+4. A structured report is created and stored in the database.
+
+
+5. The report is displayed to the user through the React interface.
+
+
+
 
 ---
 
-## 📄 License
+📚 Future Enhancements
 
-This project is licensed under the **MIT License** – free to use, modify, and distribute.
+Support for additional imaging modalities (MRI, Ultrasound, etc.).
+
+Integration with hospital systems (PACS, HIS).
+
+Real-time AI inference performance optimization.
+
+Report translation and multilingual support.
+
+
 
 ---
 
-⭐ **If you like this project, please consider giving it a star on GitHub!**
+👨‍💻 Authors
+
+AI Radiologist Team
+Developed by Mohammed Ali Alamoudi and collaborators.
+📧 Contact: asdmloon1@gmail.com
+
+
+---
+
+📄 License
+
+This project is licensed under the MIT License – free to use, modify, and distribute.
+
+
+---
+
+⭐ If you like this project, please consider giving it a star on GitHub!
