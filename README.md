@@ -31,7 +31,6 @@ The system allows users to **upload medical images** (such as X-rays, CT scans, 
 ---
 
 ## 🏗️ Architecture Overview
-## 🏗️ Architecture Overview
 
 ```mermaid
 graph TD
