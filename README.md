@@ -32,72 +32,49 @@ The system allows users to **upload medical images** (such as X-rays, CT scans, 
 
 ## 🏗️ Architecture Overview
 
-```mermaid
-graph TD
-    A[Frontend (React)] --> B[Backend (Django REST API + Integrated AI Model)]
-    B --> C[(MySQL Database)]
+**System Flow:**
 
-Explanation
+Frontend (React) ↓ Backend (Django REST API + Integrated AI Model) ↓ Database (MySQL)
 
-Frontend (React): The user interface for uploading images and viewing reports.
+### Explanation
 
-Backend (Django REST API + Integrated AI Model): Handles API requests, runs the AI model for image analysis, and generates reports.
-
-Database (MySQL): Stores users, reports, image paths, and model information.
-
-
+- **Frontend (React):** The user interface for uploading images and viewing reports.  
+- **Backend (Django REST API + Integrated AI Model):** Handles API requests, runs the AI model for image analysis, and generates reports.  
+- **Database (MySQL):** Stores users, reports, image paths, and model information.
 
 ---
 
-🧪 Example Workflow
+## 🧪 Example Workflow
 
-1. User uploads an image (e.g., Chest X-ray).
-
-
-2. The backend processes the image and passes it to the integrated AI model.
-
-
-3. The AI model analyzes and generates diagnostic findings.
-
-
-4. A structured report is created and stored in the database.
-
-
+1. User uploads an image (e.g., Chest X-ray).  
+2. The backend processes the image and passes it to the integrated AI model.  
+3. The AI model analyzes and generates diagnostic findings.  
+4. A structured report is created and stored in the database.  
 5. The report is displayed to the user through the React interface.
 
+---
 
+## 📚 Future Enhancements
 
+- Support for additional imaging modalities (MRI, Ultrasound, etc.).  
+- Integration with hospital systems (PACS, HIS).  
+- Real-time AI inference performance optimization.  
+- Report translation and multilingual support.  
 
 ---
 
-📚 Future Enhancements
+## 👨‍💻 Authors
 
-Support for additional imaging modalities (MRI, Ultrasound, etc.).
-
-Integration with hospital systems (PACS, HIS).
-
-Real-time AI inference performance optimization.
-
-Report translation and multilingual support.
-
-
+**AI Radiologist Team**  
+Developed by **Mohammed Ali Alamoudi** and collaborators.  
+📧 Contact: [asdmloon1@gmail.com](mailto:asdmloon1@gmail.com)
 
 ---
 
-👨‍💻 Authors
+## 📄 License
 
-AI Radiologist Team
-Developed by Mohammed Ali Alamoudi and collaborators.
-📧 Contact: asdmloon1@gmail.com
-
+This project is licensed under the **MIT License** – free to use, modify, and distribute.
 
 ---
 
-📄 License
-
-This project is licensed under the MIT License – free to use, modify, and distribute.
-
-
----
-
-⭐ If you like this project, please consider giving it a star on GitHub!
+⭐ **If you like this project, please consider giving it a star on GitHub!**
