@@ -34,7 +34,26 @@ The system allows users to **upload medical images** (such as X-rays, CT scans, 
 
 **System Flow:**
 
-Frontend (React) ↓ Backend (Django REST API + Integrated AI Model) ↓ Database (MySQL)
+```text
+┌─────────────────────┐
+│   Frontend (React)  │
+└─────────┬───────────┘
+          │
+          ▼
+┌─────────────────────────────────────┐
+│ Backend (Django REST API + AI Model)│
+└─────────┬───────────────────────────┘
+          │
+          ▼
+┌───────────────┐
+│   Database    │
+│    (MySQL)    │
+└───────────────┘
+
+```mermaid
+flowchart TD
+    A[Frontend (React)] --> B[Backend (Django REST API + AI Model)]
+    B --> C[Database (MySQL)]
 
 ### Explanation
 
